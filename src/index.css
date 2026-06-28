@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   Design tokens (mirrored from tailwind theme for use in raw CSS / SVG fills)
+--------------------------------------------------------------------------- */
+:root {
+  --cream: #f8f4ec;
+  --ivory: #ffffff;
+  --emerald: #18463a;
+  --emerald-deep: #0f3329;
+  --gold: #c2a14d;
+  --gold-soft: #d9c189;
+  --stone: #e6decf;
+  --ink: #2b2a26;
+  --muted: #6b665c;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* offset for the sticky header when anchor-scrolling */
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    @apply bg-cream text-ink font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif text-emerald;
+    font-feature-settings: 'kern' 1;
+  }
+
+  ::selection {
+    background: var(--gold-soft);
+    color: var(--emerald-deep);
+  }
+}
+
+@layer components {
+  /* Latin display flourish used for "Sandrine Events" etc. */
+  .latin {
+    @apply font-display tracking-latin;
+  }
+
+  /* Thin gold hairline divider */
+  .hairline {
+    @apply h-px w-full bg-gradient-to-l from-transparent via-gold/50 to-transparent;
+  }
+
+  /* Small uppercase-ish eyebrow label above section titles */
+  .eyebrow {
+    @apply latin text-gold text-sm md:text-base font-medium tracking-[0.22em] uppercase;
+  }
+
+  /* Subtle film grain / paper texture for dark sections */
+  .grain {
+    position: relative;
+  }
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* Custom scrollbar — quiet, on-brand */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--stone);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-soft);
+}
+
+/* Respect reduced-motion globally as a safety net (framer-motion handles its own) */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
