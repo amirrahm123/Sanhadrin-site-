@@ -2,11 +2,19 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { CONTACT } from '../data/sections'
 
-// WhatsApp glyph (lucide has no brand mark)
-function WhatsAppIcon({ size = 26 }: { size?: number }) {
+// Official WhatsApp glyph (lucide has no brand mark). Drawn on a 32-unit grid
+// and centered within the viewBox so it sits perfectly inside the round button.
+function WhatsAppIcon({ size = 30 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 1.82c2.16 0 4.18.84 5.71 2.37a8.03 8.03 0 0 1 2.37 5.72c0 4.46-3.63 8.09-8.09 8.09a8.1 8.1 0 0 1-4.13-1.13l-.3-.18-3.12.82.83-3.04-.19-.31a8.05 8.05 0 0 1-1.24-4.29c0-4.46 3.63-8.09 8.09-8.09l.36.05Zm-4.5 4.34c-.21 0-.55.08-.84.39-.29.31-1.1 1.08-1.1 2.63s1.13 3.05 1.29 3.26c.16.21 2.22 3.39 5.38 4.62 2.62 1.03 3.15.83 3.72.78.57-.05 1.84-.75 2.1-1.48.26-.73.26-1.35.18-1.48-.08-.13-.29-.21-.6-.37-.31-.16-1.84-.91-2.13-1.01-.29-.1-.5-.16-.71.16-.21.31-.81 1.01-.99 1.22-.18.21-.37.24-.68.08-.31-.16-1.31-.48-2.5-1.54-.92-.82-1.54-1.84-1.72-2.15-.18-.31-.02-.48.14-.63.14-.14.31-.37.47-.55.16-.18.21-.31.31-.52.1-.21.05-.39-.03-.55-.08-.16-.71-1.72-.99-2.35-.26-.61-.52-.53-.71-.54l-.6-.01Z" />
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 32 32"
+      fill="currentColor"
+      aria-hidden="true"
+      className="block shrink-0"
+    >
+      <path d="M16.003 5.333c-5.887 0-10.667 4.78-10.667 10.667 0 1.88.494 3.72 1.433 5.34L5.333 26.667l5.5-1.42a10.62 10.62 0 0 0 5.166 1.32h.004c5.884 0 10.664-4.78 10.664-10.667 0-2.85-1.11-5.53-3.126-7.546a10.6 10.6 0 0 0-7.542-3.354Zm0 1.92a8.71 8.71 0 0 1 6.19 2.564 8.68 8.68 0 0 1 2.563 6.183c0 4.83-3.926 8.747-8.75 8.747h-.003a8.68 8.68 0 0 1-4.42-1.21l-.316-.188-3.263.855.87-3.18-.206-.328a8.68 8.68 0 0 1-1.328-4.63c.002-4.826 3.927-8.75 8.663-8.75Zm-4.863 4.69c-.23 0-.6.086-.913.427-.313.34-1.196 1.168-1.196 2.847s1.224 3.302 1.395 3.53c.17.228 2.4 3.665 5.816 5.14.812.35 1.446.56 1.94.717.816.26 1.558.223 2.145.135.654-.098 2.01-.822 2.294-1.616.283-.795.283-1.475.198-1.617-.085-.142-.312-.227-.652-.398-.34-.17-2.01-.99-2.322-1.104-.313-.114-.54-.17-.767.17-.227.34-.88 1.104-1.08 1.332-.198.227-.397.256-.737.086-.34-.17-1.435-.53-2.734-1.688-1.01-.9-1.693-2.014-1.892-2.354-.198-.34-.02-.523.15-.693.153-.152.34-.397.51-.596.17-.198.227-.34.34-.567.114-.227.057-.426-.028-.596-.085-.17-.767-1.85-1.05-2.532-.276-.665-.558-.575-.767-.586l-.653-.012Z" />
     </svg>
   )
 }
@@ -35,7 +43,8 @@ export function FloatingContact() {
           exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.6, y: 20 }}
           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
           whileHover={reduce ? undefined : { scale: 1.08 }}
-          className="fixed bottom-5 left-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-card"
+          whileTap={reduce ? undefined : { scale: 0.95 }}
+          className="fixed bottom-5 left-5 z-40 flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_4px_16px_rgba(37,211,102,0.45)] transition-shadow duration-300 hover:shadow-[0_8px_24px_rgba(37,211,102,0.6)]"
         >
           {/* gentle pulse ring */}
           {!reduce && (

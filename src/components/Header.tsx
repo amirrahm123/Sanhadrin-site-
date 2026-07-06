@@ -1,21 +1,39 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Menu, X, Instagram, Facebook } from 'lucide-react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { NAV_ITEMS, BRAND, CONTACT, HERO } from '../data/sections'
 import { useScrollSpy } from '../hooks/useScrollSpy'
 import { Button } from './ui/Button'
 
+// Stable id list so the scroll-spy observer isn't rebuilt on every render.
+const NAV_IDS = NAV_ITEMS.map((n) => n.id)
+
 export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const reduce = useReducedMotion()
-  const active = useScrollSpy(NAV_ITEMS.map((n) => n.id))
+  const active = useScrollSpy(NAV_IDS)
+  const barRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // Publish the *measured* nav-bar height (the top bar only — not the open
+  // mobile drawer) so anchor scrolling can offset by the real height instead of
+  // a hardcoded guess. Re-measures across breakpoints via ResizeObserver.
+  useEffect(() => {
+    const bar = barRef.current
+    if (!bar) return
+    const apply = () =>
+      document.documentElement.style.setProperty('--nav-h', `${bar.offsetHeight}px`)
+    apply()
+    const ro = new ResizeObserver(apply)
+    ro.observe(bar)
+    return () => ro.disconnect()
   }, [])
 
   // lock body scroll while drawer is open
@@ -34,7 +52,10 @@ export function Header() {
         solid ? 'bg-cream/95 backdrop-blur-md shadow-header' : 'bg-transparent'
       }`}
     >
-      <div className="mx-auto flex max-w-content items-center justify-between gap-4 px-5 py-3.5 sm:px-8 lg:px-10">
+      <div
+        ref={barRef}
+        className="mx-auto flex max-w-content items-center justify-between gap-4 px-5 py-3.5 sm:px-8 lg:px-10"
+      >
         {/* Logo lockup */}
         <a href="#home" className="group flex flex-col leading-none" aria-label={BRAND.he}>
           <span

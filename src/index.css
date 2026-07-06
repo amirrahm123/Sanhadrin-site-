@@ -15,13 +15,16 @@
   --stone: #e6decf;
   --ink: #2b2a26;
   --muted: #6b665c;
+  /* Fixed nav-bar height; overwritten at runtime with the measured value. */
+  --nav-h: 4.5rem;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    /* offset for the sticky header when anchor-scrolling */
-    scroll-padding-top: 5.5rem;
+    /* offset anchor landings by the real nav-bar height (+ a little breathing
+       room) so headings clear the fixed header. */
+    scroll-padding-top: calc(var(--nav-h, 4.5rem) + 1rem);
   }
 
   body {

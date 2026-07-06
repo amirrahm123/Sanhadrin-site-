@@ -27,8 +27,8 @@ export const CONTACT = {
   phoneIntl: '+972046222221',
   whatsapp: '972526222221', // demo number for the floating WhatsApp CTA
   location: 'מרכז רגבה–נהריה',
-  instagram: 'https://instagram.com',
-  facebook: 'https://facebook.com',
+  instagram: 'https://www.instagram.com/sandrine_event/',
+  facebook: 'https://www.facebook.com/sandrin.rgba',
 } as const
 
 export const HERO = {

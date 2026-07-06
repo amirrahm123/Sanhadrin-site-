@@ -15,7 +15,7 @@ export function Section({ id, children, className = '', dark = false, grain = fa
   return (
     <section
       id={id}
-      className={`relative scroll-mt-24 py-20 md:py-28 lg:py-32 ${
+      className={`relative py-20 md:py-28 lg:py-32 ${
         dark ? 'bg-emerald-deep text-cream' : ''
       } ${grain ? 'grain' : ''} ${className}`}
     >
