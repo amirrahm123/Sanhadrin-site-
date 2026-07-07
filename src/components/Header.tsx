@@ -235,14 +235,18 @@ function NavGroup({
         <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
       </button>
       <div className="invisible absolute right-0 top-full z-50 min-w-[12rem] translate-y-1 pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
-        <ul className="overflow-hidden rounded-2xl border border-stone bg-cream/98 p-1.5 shadow-card backdrop-blur-md">
+        {/* Solid cream panel so the dark item text always reads (a transparent
+            panel over the dark hero made the items blend in). */}
+        <ul className="overflow-hidden rounded-2xl border border-stone bg-ivory p-1.5 shadow-card">
           {items.map((i) => (
             <li key={i.to}>
               <NavLink
                 to={i.to}
                 className={({ isActive }) =>
-                  `block rounded-xl px-4 py-2.5 text-sm font-medium transition-colors ${
-                    isActive ? 'bg-gold/15 text-gold' : 'text-ink/80 hover:bg-stone/60 hover:text-emerald'
+                  `block rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors ${
+                    isActive
+                      ? 'bg-gold/15 text-gold'
+                      : 'text-emerald hover:bg-stone/60 hover:text-gold'
                   }`
                 }
               >
