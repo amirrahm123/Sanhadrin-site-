@@ -12,6 +12,7 @@ export function Component() {
         title="הדף לא נמצא"
         subtitle="נראה שהעמוד שחיפשתם אינו קיים. הנה הדרך חזרה אל האחוזה."
         breadcrumbs={[{ label: '404' }]}
+        showCta={false}
       />
       <section className="bg-cream px-5 py-20 text-center sm:px-8 lg:px-10">
         <div className="mx-auto flex max-w-md flex-col items-center gap-6">
