@@ -28,13 +28,15 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'האולמות', to: '/halls' },
   { label: 'קולינריה', to: '/culinary' },
   { label: 'גלריה', to: '/gallery' },
-  { label: 'צור קשר', to: '/contact' },
+  // Scroll target — the contact form lives in the global footer (id=contact-form).
+  { label: 'צור קשר', to: '#contact-form' },
 ]
 
-// Flat list of every real link in the nav — handy for the footer sitemap block.
+// Flat list of the real *route* links (hash/scroll links excluded) — used for
+// the footer nav grid.
 export const NAV_LINKS: NavLeaf[] = NAV_ITEMS.flatMap((i) =>
   isNavGroup(i) ? i.children : [i],
-)
+).filter((l) => l.to.startsWith('/'))
 
 export const BRAND = {
   he: 'אחוזת סנדרין',

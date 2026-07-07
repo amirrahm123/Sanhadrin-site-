@@ -71,7 +71,7 @@ export function Hero() {
           {...fade(0.75)}
           className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row"
         >
-          <Button as="link" to="/contact" variant="primary" size="lg" className="w-full sm:w-auto">
+          <Button as="a" href="#contact-form" variant="primary" size="lg" className="w-full sm:w-auto">
             {HERO.primaryCta}
           </Button>
           <Button

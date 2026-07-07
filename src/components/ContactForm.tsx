@@ -107,7 +107,7 @@ export function ContactForm() {
   const errCls = 'mt-1 text-xs text-gold-soft'
 
   return (
-    <Section id="contact" dark grain>
+    <Section id="contact-form" dark grain>
       <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
         {/* Left: form / success */}
         <Reveal>

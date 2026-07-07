@@ -20,7 +20,6 @@ export const routes: RouteRecord[] = [
       { path: 'halls', lazy: () => import('./pages/Halls') },
       { path: 'culinary', lazy: () => import('./pages/Culinary') },
       { path: 'gallery', lazy: () => import('./pages/Gallery') },
-      { path: 'contact', lazy: () => import('./pages/Contact') },
       // Pre-rendered 404.html (Vercel serves it for unknown paths) + SPA fallback.
       { path: '404', lazy: () => import('./pages/NotFound') },
       { path: '*', lazy: () => import('./pages/NotFound') },

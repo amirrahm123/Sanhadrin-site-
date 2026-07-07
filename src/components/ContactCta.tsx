@@ -29,7 +29,7 @@ export function ContactCta({
             <span className="hairline max-w-[7rem] opacity-70" />
             <p className="text-base leading-relaxed text-cream/80 md:text-lg">{body}</p>
             <div className="mt-3 flex flex-col items-center gap-3 sm:flex-row">
-              <Button as="link" to="/contact" variant="primary" size="lg" className="w-full bg-gold text-emerald-deep hover:bg-gold-soft sm:w-auto">
+              <Button as="a" href="#contact-form" variant="primary" size="lg" className="w-full bg-gold text-emerald-deep hover:bg-gold-soft sm:w-auto">
                 לתיאום סיור
               </Button>
               <WhatsAppLink

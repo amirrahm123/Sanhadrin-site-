@@ -1,14 +1,17 @@
 import { Link } from 'react-router-dom'
-import { Instagram, Facebook, Phone, MapPin } from 'lucide-react'
+import { Instagram, Facebook } from 'lucide-react'
 import { NAV_LINKS, BRAND, CONTACT, FOOTER } from '../data/sections'
-import { PhoneLink } from './ui/TrackedLinks'
+import { ContactForm } from './ContactForm'
 
 export function Footer() {
   return (
     <footer className="grain relative bg-emerald-deep text-cream">
+      {/* Global contact hub: the form + full NAP, hours, map (id=contact-form) */}
+      <ContactForm />
+
       <div className="hairline opacity-60" />
       <div className="relative z-10 mx-auto max-w-content px-5 py-14 sm:px-8 lg:px-10">
-        <div className="grid gap-10 md:grid-cols-3">
+        <div className="grid gap-10 md:grid-cols-2">
           {/* Brand */}
           <div className="flex flex-col gap-3">
             <Link to="/" className="flex flex-col leading-none">
@@ -24,12 +27,19 @@ export function Footer() {
                 <Facebook size={18} />
               </SocialLink>
             </div>
+            {/* TODO: point to the sister-brand site once its URL is provided. */}
+            <a
+              href="#"
+              className="mt-3 inline-block text-sm text-cream/70 underline-offset-4 transition-colors hover:text-gold hover:underline"
+            >
+              {FOOTER.crossLink}
+            </a>
           </div>
 
           {/* Nav */}
-          <div>
+          <div className="md:justify-self-end">
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gold">ניווט</h4>
-            <ul className="grid grid-cols-2 gap-x-6 gap-y-2.5">
+            <ul className="grid grid-cols-2 gap-x-8 gap-y-2.5">
               {NAV_LINKS.map((item) => (
                 <li key={item.to}>
                   <Link
@@ -40,34 +50,15 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gold">צרו קשר</h4>
-            <ul className="flex flex-col gap-3 text-sm text-cream/80">
               <li>
-                <PhoneLink
-                  location="footer"
-                  className="flex items-center gap-2.5 hover:text-gold"
+                <a
+                  href="#contact-form"
+                  className="text-sm text-cream/75 transition-colors hover:text-gold"
                 >
-                  <Phone size={16} className="text-gold" />
-                  <span dir="ltr">{CONTACT.phone}</span>
-                </PhoneLink>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <MapPin size={16} className="mt-0.5 shrink-0 text-gold" />
-                {CONTACT.addressFull}
+                  צור קשר
+                </a>
               </li>
             </ul>
-            {/* TODO: point to the sister-brand site once its URL is provided. */}
-            <a
-              href="#"
-              className="mt-5 inline-block text-sm text-cream/70 underline-offset-4 transition-colors hover:text-gold hover:underline"
-            >
-              {FOOTER.crossLink}
-            </a>
           </div>
         </div>
 

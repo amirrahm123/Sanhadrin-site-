@@ -102,8 +102,8 @@ export function Header() {
           </div>
 
           <Button
-            as="link"
-            to="/contact"
+            as="a"
+            href="#contact-form"
             variant={solid ? 'primary' : 'outlineLight'}
             size="md"
             className="hidden md:inline-flex"
@@ -146,12 +146,23 @@ export function Header() {
                       </p>
                       <div className="flex flex-col">
                         {item.children.map((c) => (
-                          <MobileLink key={c.to} to={c.to} label={c.label} nested />
+                          <MobileLink
+                            key={c.to}
+                            to={c.to}
+                            label={c.label}
+                            nested
+                            onNavigate={() => setOpen(false)}
+                          />
                         ))}
                       </div>
                     </div>
                   ) : (
-                    <MobileLink key={item.to} to={item.to} label={item.label} />
+                    <MobileLink
+                      key={item.to}
+                      to={item.to}
+                      label={item.label}
+                      onNavigate={() => setOpen(false)}
+                    />
                   ),
                 )}
               </nav>
@@ -164,7 +175,7 @@ export function Header() {
                     <Facebook size={20} />
                   </SocialIcon>
                 </div>
-                <Button as="link" to="/contact" variant="primary">
+                <Button as="a" href="#contact-form" onClick={() => setOpen(false)} variant="primary">
                   {HERO.primaryCta}
                 </Button>
               </div>
@@ -177,6 +188,20 @@ export function Header() {
 }
 
 function NavItemLink({ to, label, solid }: { to: string; label: string; solid: boolean }) {
+  // Scroll link (e.g. #contact-form) — plain anchor so native/CSS smooth scroll
+  // (which honours prefers-reduced-motion) handles it on any page.
+  if (to.startsWith('#')) {
+    return (
+      <a
+        href={to}
+        className={`relative px-3 py-2 text-sm font-medium transition-colors ${
+          solid ? 'text-ink/80 hover:text-emerald' : 'text-cream/90 hover:text-cream'
+        }`}
+      >
+        {label}
+      </a>
+    )
+  }
   return (
     <NavLink
       to={to}
@@ -260,15 +285,34 @@ function NavGroup({
   )
 }
 
-function MobileLink({ to, label, nested = false }: { to: string; label: string; nested?: boolean }) {
+function MobileLink({
+  to,
+  label,
+  nested = false,
+  onNavigate,
+}: {
+  to: string
+  label: string
+  nested?: boolean
+  onNavigate?: () => void
+}) {
+  const base = `${nested ? 'py-2.5 text-base' : 'border-b border-stone/50 py-3.5 text-lg'} font-medium transition-colors`
+
+  // Scroll link (e.g. #contact-form) — anchor + close the drawer on tap.
+  if (to.startsWith('#')) {
+    return (
+      <a href={to} onClick={onNavigate} className={`${base} text-ink hover:text-emerald`}>
+        {label}
+      </a>
+    )
+  }
   return (
     <NavLink
       to={to}
       end={to === '/'}
+      onClick={onNavigate}
       className={({ isActive }) =>
-        `${nested ? 'py-2.5 text-base' : 'border-b border-stone/50 py-3.5 text-lg'} font-medium transition-colors ${
-          isActive ? 'text-gold' : 'text-ink hover:text-emerald'
-        }`
+        `${base} ${isActive ? 'text-gold' : 'text-ink hover:text-emerald'}`
       }
     >
       {label}
