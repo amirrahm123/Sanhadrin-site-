@@ -5,6 +5,7 @@ export function Component() {
   return (
     <CelebrationPage
       content={HENNA}
+      path="/henna"
       location="henna"
       related={[
         { label: 'חתונות', to: '/weddings' },

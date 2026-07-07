@@ -1,26 +1,35 @@
 import { Link } from 'react-router-dom'
+import { Seo } from './Seo'
+import { SEO } from '../data/seo'
 
 export type Crumb = { label: string; to?: string }
 
 type PageHeroProps = {
   eyebrow?: string
-  /** The page's single <h1>. */
-  title: string
+  /**
+   * Route path (e.g. "/weddings"). When given, the <h1> and all head/meta tags
+   * are sourced from src/data/seo.ts — the single source of truth.
+   */
+  path?: string
+  /** Explicit <h1>, for pages without an SEO entry (e.g. 404). */
+  title?: string
   subtitle?: string
   /** Trail after "בית". Defaults to just this page. */
   breadcrumbs?: Crumb[]
 }
 
 /**
- * Compact emerald banner for inner pages: breadcrumb + eyebrow + the page's
- * single <h1> + optional lead, over a faint aqueduct-arch motif (the brand
- * signature, shared with ImagePlaceholder).
+ * Compact emerald banner for inner pages: renders the per-page <Seo> head,
+ * breadcrumb, eyebrow and the page's single <h1> (from the SEO config) + an
+ * optional lead, over a faint aqueduct-arch motif (the brand signature).
  */
-export function PageHero({ eyebrow, title, subtitle, breadcrumbs }: PageHeroProps) {
-  const trail: Crumb[] = [{ label: 'בית', to: '/' }, ...(breadcrumbs ?? [{ label: title }])]
+export function PageHero({ eyebrow, path, title, subtitle, breadcrumbs }: PageHeroProps) {
+  const h1 = path ? SEO[path]?.h1 ?? title ?? '' : title ?? ''
+  const trail: Crumb[] = [{ label: 'בית', to: '/' }, ...(breadcrumbs ?? [{ label: h1 }])]
 
   return (
     <section className="grain relative overflow-hidden bg-emerald-deep text-cream">
+      {path && <Seo path={path} />}
       {/* faint arch motif */}
       <svg
         className="pointer-events-none absolute inset-x-0 bottom-0 h-40 w-full opacity-[0.12]"
@@ -62,7 +71,7 @@ export function PageHero({ eyebrow, title, subtitle, breadcrumbs }: PageHeroProp
 
         {eyebrow && <span className="eyebrow text-gold-soft">{eyebrow}</span>}
         <h1 className="mt-3 font-serif text-4xl font-bold leading-tight text-cream md:text-5xl lg:text-6xl">
-          {title}
+          {h1}
         </h1>
         {subtitle && (
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-cream/75 md:text-lg">

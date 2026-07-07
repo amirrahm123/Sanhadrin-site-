@@ -3,6 +3,7 @@ import { Header } from './Header'
 import { Footer } from './Footer'
 import { FloatingContact } from './FloatingContact'
 import { ScrollToTop } from './ScrollToTop'
+import { StructuredData } from './StructuredData'
 
 /**
  * Shared shell wrapping every route: header, footer and the floating WhatsApp
@@ -11,6 +12,7 @@ import { ScrollToTop } from './ScrollToTop'
 export function Layout() {
   return (
     <div className="min-h-screen bg-cream">
+      <StructuredData />
       <ScrollToTop />
       <Header />
       <main>

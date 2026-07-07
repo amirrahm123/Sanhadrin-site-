@@ -9,6 +9,8 @@ import { ContactCta } from './ContactCta'
 
 type CelebrationPageProps = {
   content: CelebrationContent
+  /** route path for SEO/h1 sourcing, e.g. "/bar-mitzvah" */
+  path: string
   /** whatsapp/contact tracking location, e.g. "bar_mitzvah" */
   location: string
   /** sibling celebration links for internal linking */
@@ -19,12 +21,12 @@ type CelebrationPageProps = {
  * Shared layout for the celebration pages (bar/bat mitzvah, henna): hero,
  * intro + image, feature grid, related-celebration links and a contact CTA.
  */
-export function CelebrationPage({ content, location, related }: CelebrationPageProps) {
+export function CelebrationPage({ content, path, location, related }: CelebrationPageProps) {
   return (
     <>
       <PageHero
+        path={path}
         eyebrow={content.eyebrow}
-        title={content.h1}
         subtitle={content.heroSubtitle}
         breadcrumbs={[{ label: 'אירועים' }, { label: content.h1 }]}
       />

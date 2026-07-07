@@ -5,6 +5,7 @@ export function Component() {
   return (
     <CelebrationPage
       content={BAR_MITZVAH}
+      path="/bar-mitzvah"
       location="bar_mitzvah"
       related={[
         { label: 'בת מצווה', to: '/bat-mitzvah' },

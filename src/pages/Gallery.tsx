@@ -6,8 +6,8 @@ export function Component() {
   return (
     <>
       <PageHero
+        path="/gallery"
         eyebrow="Gallery"
-        title="גלריה"
         subtitle="רגעים, מרחבים ופרטים מתוך אירועים באחוזה — טעימה ממה שמחכה לכם בסנדרין."
       />
       <Gallery />

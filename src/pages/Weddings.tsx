@@ -6,8 +6,8 @@ export function Component() {
   return (
     <>
       <PageHero
+        path="/weddings"
         eyebrow="Weddings"
-        title="חתונות באחוזת סנדרין"
         subtitle="ערב אחד, בול תפור למידותיכם — מקבלת הפנים ועד הריקוד האחרון, בגנים ובאולמות של האחוזה."
         breadcrumbs={[{ label: 'אירועים' }, { label: 'חתונות' }]}
       />

@@ -7,8 +7,8 @@ export function Component() {
   return (
     <>
       <PageHero
+        path="/about"
         eyebrow="Our Estate"
-        title="האחוזה שלנו"
         subtitle="כחמישים דונם של גנים פורחים, מזרקות ונחלים לאורך אקוודוקט רומי עתיק — הסיפור והמרחבים שמאחורי אחוזת סנדרין."
       />
       <About />

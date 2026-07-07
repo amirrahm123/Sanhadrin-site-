@@ -6,6 +6,7 @@ import { Reveal } from '../components/ui/Reveal'
 import { Button } from '../components/ui/Button'
 import { ImagePlaceholder } from '../components/ImagePlaceholder'
 import { ContactCta } from '../components/ContactCta'
+import { Seo } from '../components/Seo'
 import { ABOUT, GALLERY } from '../data/sections'
 
 // Curated gateway cards — each links out to a dedicated, indexable page so the
@@ -26,6 +27,7 @@ const AREA_CARDS = [
 export function Component() {
   return (
     <>
+      <Seo path="/" />
       <Hero />
 
       {/* Estate intro teaser → /about */}

@@ -1,9 +1,13 @@
+import { Head } from 'vite-react-ssg'
 import { PageHero } from '../components/PageHero'
 import { Button } from '../components/ui/Button'
 
 export function Component() {
   return (
     <>
+      <Head>
+        <title>הדף לא נמצא | אחוזת סנדרין</title>
+      </Head>
       <PageHero
         title="הדף לא נמצא"
         subtitle="נראה שהעמוד שחיפשתם אינו קיים. הנה הדרך חזרה אל האחוזה."
