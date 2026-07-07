@@ -4,6 +4,7 @@ import { Menu, X, ChevronDown, Instagram, Facebook } from 'lucide-react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { NAV_ITEMS, BRAND, CONTACT, HERO, isNavGroup } from '../data/sections'
 import { Button } from './ui/Button'
+import logoUrl from '../assets/logo.avif'
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false)
@@ -61,22 +62,18 @@ export function Header() {
         ref={barRef}
         className="mx-auto flex max-w-content items-center justify-between gap-4 px-5 py-3.5 sm:px-8 lg:px-10"
       >
-        {/* Logo lockup */}
-        <Link to="/" className="group flex flex-col leading-none" aria-label={BRAND.he}>
-          <span
-            className={`font-serif text-xl font-bold tracking-tight transition-colors md:text-2xl ${
-              solid ? 'text-emerald' : 'text-cream'
+        {/* Logo (RTL start / top-right). Native 432x200 -> ~2.16:1 aspect. */}
+        <Link to="/" className="flex items-center" aria-label={BRAND.he}>
+          <img
+            src={logoUrl}
+            alt={BRAND.he}
+            width={432}
+            height={200}
+            className={`h-9 w-auto md:h-11 ${
+              // Extra lift only over the transparent (dark hero) header.
+              solid ? '' : 'drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]'
             }`}
-          >
-            {BRAND.he}
-          </span>
-          <span
-            className={`latin text-[0.7rem] font-medium uppercase transition-colors md:text-xs ${
-              solid ? 'text-gold' : 'text-gold-soft'
-            }`}
-          >
-            {BRAND.latin}
-          </span>
+          />
         </Link>
 
         {/* Desktop nav */}
