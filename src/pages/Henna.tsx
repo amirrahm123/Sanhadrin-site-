@@ -9,8 +9,8 @@ export function Component() {
       location="henna"
       related={[
         { label: 'חתונות', to: '/weddings' },
-        { label: 'בר מצווה', to: '/bar-mitzvah' },
-        { label: 'בת מצווה', to: '/bat-mitzvah' },
+        { label: 'בר/בת מצווה', to: '/bar-bat-mitzvah' },
+        { label: 'גלריה', to: '/gallery' },
       ]}
     />
   )

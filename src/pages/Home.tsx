@@ -13,8 +13,7 @@ import { ABOUT, GALLERY } from '../data/sections'
 // home page stays a hub and page content isn't duplicated across the site.
 const EVENT_CARDS = [
   { to: '/weddings', label: 'חתונות', desc: 'ערב אחד שנחקק בלב — בגנים ובאולמות של האחוזה.' },
-  { to: '/bar-mitzvah', label: 'בר מצווה', desc: 'חגיגה מלכותית לבר המצווה, בין גנים לאולמות מפוארים.' },
-  { to: '/bat-mitzvah', label: 'בת מצווה', desc: 'ערב קסום לבת המצווה, בעיצוב ובאווירה בלתי נשכחים.' },
+  { to: '/bar-bat-mitzvah', label: 'בר/בת מצווה', desc: 'חגיגה מלכותית לבר ולבת המצווה, בין גנים לאולמות מפוארים.' },
   { to: '/henna', label: 'חינה יוקרתית', desc: 'חינה צבעונית וחמה — מסורת בהתחדשות, באירוח מפואר.' },
 ]
 
@@ -69,9 +68,9 @@ export function Component() {
           title="כל שמחה, הבית שלה"
           subtitle="חתונות, בר ובת מצווה וחינות יוקרתיות — כל אירוע נתפר למידותיכם בגנים ובאולמות של סנדרין."
         />
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {EVENT_CARDS.map((c, i) => (
-            <Reveal key={c.to} delay={(i % 4) * 0.08}>
+            <Reveal key={c.to} delay={(i % 3) * 0.08}>
               <Link
                 to={c.to}
                 className="group flex h-full flex-col overflow-hidden rounded-3xl bg-ivory shadow-soft transition-shadow hover:shadow-card"
