@@ -15,7 +15,9 @@ export const routes: RouteRecord[] = [
       { index: true, lazy: () => import('./pages/Home') },
       { path: 'about', lazy: () => import('./pages/About') },
       { path: 'weddings', lazy: () => import('./pages/Weddings') },
-      // /bar-mitzvah, /bat-mitzvah, /henna added in Phase 3.
+      { path: 'bar-mitzvah', lazy: () => import('./pages/BarMitzvah') },
+      { path: 'bat-mitzvah', lazy: () => import('./pages/BatMitzvah') },
+      { path: 'henna', lazy: () => import('./pages/Henna') },
       { path: 'halls', lazy: () => import('./pages/Halls') },
       { path: 'culinary', lazy: () => import('./pages/Culinary') },
       { path: 'gallery', lazy: () => import('./pages/Gallery') },
