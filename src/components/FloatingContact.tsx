@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { CONTACT } from '../data/sections'
+import { WHATSAPP_HREF } from './ui/TrackedLinks'
+import { track } from '../lib/track'
 
 // Official Simple Icons WhatsApp glyph (24-unit grid) so the proportions match
 // the real WhatsApp mark.
@@ -34,10 +35,11 @@ export function FloatingContact() {
     <AnimatePresence>
       {visible && (
         <motion.a
-          href={`https://wa.me/${CONTACT.whatsapp}`}
+          href={WHATSAPP_HREF}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="שליחת הודעת וואטסאפ"
+          onClick={() => track('whatsapp_click', { link_location: 'floating_button' })}
           initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.6, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.6, y: 20 }}

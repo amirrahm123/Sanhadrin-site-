@@ -23,8 +23,8 @@ export function Gallery() {
       </div>
 
       <Reveal delay={0.1} className="mt-12 flex justify-center">
-        <Button as="a" href="#contact" variant="outline" size="lg">
-          {GALLERY.cta}
+        <Button as="link" to="/contact" variant="outline" size="lg">
+          לתיאום סיור באחוזה
         </Button>
       </Reveal>
     </Section>

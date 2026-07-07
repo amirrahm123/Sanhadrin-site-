@@ -70,12 +70,12 @@ export function Hero() {
           {...fade(0.75)}
           className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row"
         >
-          <Button as="a" href="#contact" variant="primary" size="lg" className="w-full sm:w-auto">
+          <Button as="link" to="/contact" variant="primary" size="lg" className="w-full sm:w-auto">
             {HERO.primaryCta}
           </Button>
           <Button
-            as="a"
-            href="#gallery"
+            as="link"
+            to="/gallery"
             variant="outlineLight"
             size="lg"
             className="w-full sm:w-auto"
@@ -85,9 +85,9 @@ export function Hero() {
         </motion.div>
       </div>
 
-      {/* scroll cue */}
+      {/* scroll cue → first section below the hero on the home gateway */}
       <a
-        href="#about"
+        href="#estate-intro"
         aria-label="גלילה למטה"
         className="absolute bottom-7 left-1/2 z-10 -translate-x-1/2 text-cream/70 transition-colors hover:text-gold-soft"
       >

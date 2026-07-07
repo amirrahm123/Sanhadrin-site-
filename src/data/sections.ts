@@ -1,20 +1,41 @@
 // Centralised, typed copy + nav config. Edit here, not in JSX.
 
-export type NavItem = {
-  id: string
+export type NavLeaf = {
   label: string
+  to: string
 }
 
+export type NavItem = NavLeaf | { label: string; children: NavLeaf[] }
+
+export function isNavGroup(item: NavItem): item is { label: string; children: NavLeaf[] } {
+  return 'children' in item
+}
+
+// Top-level navigation. Real page routes (react-router), not anchor scrolling.
+// The "אירועים" group is a dropdown so the bar stays clean as celebration
+// pages grow (corporate / testimonials can be added here later).
 export const NAV_ITEMS: NavItem[] = [
-  { id: 'home', label: 'בית' },
-  { id: 'about', label: 'אודות' },
-  { id: 'garden', label: 'הגן' },
-  { id: 'halls', label: 'האולמות' },
-  { id: 'weddings', label: 'חתונות' },
-  { id: 'culinary', label: 'קולינריה' },
-  { id: 'gallery', label: 'גלריה' },
-  { id: 'contact', label: 'צור קשר' },
+  { label: 'בית', to: '/' },
+  { label: 'האחוזה', to: '/about' },
+  {
+    label: 'אירועים',
+    children: [
+      { label: 'חתונות', to: '/weddings' },
+      { label: 'בר מצווה', to: '/bar-mitzvah' },
+      { label: 'בת מצווה', to: '/bat-mitzvah' },
+      { label: 'חינות יוקרתיות', to: '/henna' },
+    ],
+  },
+  { label: 'האולמות', to: '/halls' },
+  { label: 'קולינריה', to: '/culinary' },
+  { label: 'גלריה', to: '/gallery' },
+  { label: 'צור קשר', to: '/contact' },
 ]
+
+// Flat list of every real link in the nav — handy for the footer sitemap block.
+export const NAV_LINKS: NavLeaf[] = NAV_ITEMS.flatMap((i) =>
+  isNavGroup(i) ? i.children : [i],
+)
 
 export const BRAND = {
   he: 'אחוזת סנדרין',
@@ -24,9 +45,23 @@ export const BRAND = {
 
 export const CONTACT = {
   phone: '04-622-2221',
-  phoneIntl: '+972046222221',
-  whatsapp: '972526222221', // demo number for the floating WhatsApp CTA
-  location: 'מרכז רגבה–נהריה',
+  // Fixed: was +972046222221 — dropped the stray 0 after the country code.
+  phoneIntl: '+97246222221',
+  whatsapp: '972526222221',
+  // Prefilled Hebrew WhatsApp message (encoded at use site).
+  whatsappMessage: 'היי, אשמח לקבל פרטים על אירוע באחוזת סנדרין',
+  location: 'מתחם רגבה, נהריה',
+  addressFull: 'מתחם רגבה (BIG רגבה), רגבה 26814',
+  addressLocality: 'רגבה',
+  addressRegion: 'צפון',
+  postalCode: '26814',
+  areaServed: 'צפון הארץ — נהריה, רגבה והסביבה',
+  hours: [
+    { days: 'ראשון–חמישי', time: '10:00–21:30' },
+    { days: 'שישי', time: '09:30–13:00' },
+    { days: 'שבת', time: 'סגור' },
+  ],
+  googleBusiness: 'https://maps.app.goo.gl/VDUEPkBFPHHQYibn8',
   instagram: 'https://www.instagram.com/sandrine_event/',
   facebook: 'https://www.facebook.com/sandrin.rgba',
 } as const

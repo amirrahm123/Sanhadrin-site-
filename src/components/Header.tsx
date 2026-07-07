@@ -1,19 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
-import { Menu, X, Instagram, Facebook } from 'lucide-react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Menu, X, ChevronDown, Instagram, Facebook } from 'lucide-react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { NAV_ITEMS, BRAND, CONTACT, HERO } from '../data/sections'
-import { useScrollSpy } from '../hooks/useScrollSpy'
+import { NAV_ITEMS, BRAND, CONTACT, HERO, isNavGroup } from '../data/sections'
 import { Button } from './ui/Button'
-
-// Stable id list so the scroll-spy observer isn't rebuilt on every render.
-const NAV_IDS = NAV_ITEMS.map((n) => n.id)
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const reduce = useReducedMotion()
-  const active = useScrollSpy(NAV_IDS)
   const barRef = useRef<HTMLDivElement>(null)
+  const { pathname } = useLocation()
+
+  const isHome = pathname === '/'
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -22,9 +21,8 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Publish the *measured* nav-bar height (the top bar only — not the open
-  // mobile drawer) so anchor scrolling can offset by the real height instead of
-  // a hardcoded guess. Re-measures across breakpoints via ResizeObserver.
+  // Publish the measured nav-bar height so anchor scrolling / layout can offset
+  // by the real height. Re-measures across breakpoints via ResizeObserver.
   useEffect(() => {
     const bar = barRef.current
     if (!bar) return
@@ -36,6 +34,11 @@ export function Header() {
     return () => ro.disconnect()
   }, [])
 
+  // Close the drawer whenever the route changes.
+  useEffect(() => {
+    setOpen(false)
+  }, [pathname])
+
   // lock body scroll while drawer is open
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
@@ -44,7 +47,9 @@ export function Header() {
     }
   }, [open])
 
-  const solid = scrolled || open
+  // Solid bar when scrolled, when the drawer is open, or on any inner page
+  // (only the home hero is dark/full-bleed enough for a transparent bar).
+  const solid = scrolled || open || !isHome
 
   return (
     <header
@@ -57,7 +62,7 @@ export function Header() {
         className="mx-auto flex max-w-content items-center justify-between gap-4 px-5 py-3.5 sm:px-8 lg:px-10"
       >
         {/* Logo lockup */}
-        <a href="#home" className="group flex flex-col leading-none" aria-label={BRAND.he}>
+        <Link to="/" className="group flex flex-col leading-none" aria-label={BRAND.he}>
           <span
             className={`font-serif text-xl font-bold tracking-tight transition-colors md:text-2xl ${
               solid ? 'text-emerald' : 'text-cream'
@@ -72,30 +77,17 @@ export function Header() {
           >
             {BRAND.latin}
           </span>
-        </a>
+        </Link>
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-1 xl:flex">
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              className={`relative px-3 py-2 text-sm font-medium transition-colors ${
-                solid
-                  ? active === item.id
-                    ? 'text-gold'
-                    : 'text-ink/80 hover:text-emerald'
-                  : active === item.id
-                    ? 'text-gold-soft'
-                    : 'text-cream/90 hover:text-cream'
-              }`}
-            >
-              {item.label}
-              {active === item.id && (
-                <span className="absolute inset-x-3 -bottom-0.5 h-px bg-gold" />
-              )}
-            </a>
-          ))}
+          {NAV_ITEMS.map((item) =>
+            isNavGroup(item) ? (
+              <NavGroup key={item.label} label={item.label} items={item.children} solid={solid} />
+            ) : (
+              <NavItemLink key={item.to} to={item.to} label={item.label} solid={solid} />
+            ),
+          )}
         </nav>
 
         {/* Right cluster */}
@@ -110,8 +102,8 @@ export function Header() {
           </div>
 
           <Button
-            as="a"
-            href="#contact"
+            as="link"
+            to="/contact"
             variant={solid ? 'primary' : 'outlineLight'}
             size="md"
             className="hidden md:inline-flex"
@@ -146,18 +138,22 @@ export function Header() {
           >
             <div className="border-t border-stone/70 bg-cream px-5 pb-8 pt-2 sm:px-8">
               <nav className="flex flex-col">
-                {NAV_ITEMS.map((item) => (
-                  <a
-                    key={item.id}
-                    href={`#${item.id}`}
-                    onClick={() => setOpen(false)}
-                    className={`border-b border-stone/50 py-3.5 text-lg font-medium transition-colors ${
-                      active === item.id ? 'text-gold' : 'text-ink hover:text-emerald'
-                    }`}
-                  >
-                    {item.label}
-                  </a>
-                ))}
+                {NAV_ITEMS.map((item) =>
+                  isNavGroup(item) ? (
+                    <div key={item.label} className="border-b border-stone/50 py-3">
+                      <p className="mb-1 text-sm font-semibold uppercase tracking-wider text-gold">
+                        {item.label}
+                      </p>
+                      <div className="flex flex-col">
+                        {item.children.map((c) => (
+                          <MobileLink key={c.to} to={c.to} label={c.label} nested />
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <MobileLink key={item.to} to={item.to} label={item.label} />
+                  ),
+                )}
               </nav>
               <div className="mt-6 flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -168,7 +164,7 @@ export function Header() {
                     <Facebook size={20} />
                   </SocialIcon>
                 </div>
-                <Button as="a" href="#contact" onClick={() => setOpen(false)} variant="primary">
+                <Button as="link" to="/contact" variant="primary">
                   {HERO.primaryCta}
                 </Button>
               </div>
@@ -177,6 +173,102 @@ export function Header() {
         )}
       </AnimatePresence>
     </header>
+  )
+}
+
+function NavItemLink({ to, label, solid }: { to: string; label: string; solid: boolean }) {
+  return (
+    <NavLink
+      to={to}
+      end={to === '/'}
+      className={({ isActive }) =>
+        `relative px-3 py-2 text-sm font-medium transition-colors ${
+          solid
+            ? isActive
+              ? 'text-gold'
+              : 'text-ink/80 hover:text-emerald'
+            : isActive
+              ? 'text-gold-soft'
+              : 'text-cream/90 hover:text-cream'
+        }`
+      }
+    >
+      {({ isActive }) => (
+        <>
+          {label}
+          {isActive && <span className="absolute inset-x-3 -bottom-0.5 h-px bg-gold" />}
+        </>
+      )}
+    </NavLink>
+  )
+}
+
+/** Desktop dropdown group. Opens on hover and on keyboard focus (focus-within). */
+function NavGroup({
+  label,
+  items,
+  solid,
+}: {
+  label: string
+  items: { label: string; to: string }[]
+  solid: boolean
+}) {
+  const { pathname } = useLocation()
+  const groupActive = items.some((i) => i.to === pathname)
+
+  return (
+    <div className="group relative">
+      <button
+        type="button"
+        aria-haspopup="true"
+        className={`inline-flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
+          solid
+            ? groupActive
+              ? 'text-gold'
+              : 'text-ink/80 hover:text-emerald'
+            : groupActive
+              ? 'text-gold-soft'
+              : 'text-cream/90 hover:text-cream'
+        }`}
+      >
+        {label}
+        <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
+      </button>
+      <div className="invisible absolute right-0 top-full z-50 min-w-[12rem] translate-y-1 pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+        <ul className="overflow-hidden rounded-2xl border border-stone bg-cream/98 p-1.5 shadow-card backdrop-blur-md">
+          {items.map((i) => (
+            <li key={i.to}>
+              <NavLink
+                to={i.to}
+                className={({ isActive }) =>
+                  `block rounded-xl px-4 py-2.5 text-sm font-medium transition-colors ${
+                    isActive ? 'bg-gold/15 text-gold' : 'text-ink/80 hover:bg-stone/60 hover:text-emerald'
+                  }`
+                }
+              >
+                {i.label}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+function MobileLink({ to, label, nested = false }: { to: string; label: string; nested?: boolean }) {
+  return (
+    <NavLink
+      to={to}
+      end={to === '/'}
+      className={({ isActive }) =>
+        `${nested ? 'py-2.5 text-base' : 'border-b border-stone/50 py-3.5 text-lg'} font-medium transition-colors ${
+          isActive ? 'text-gold' : 'text-ink hover:text-emerald'
+        }`
+      }
+    >
+      {label}
+    </NavLink>
   )
 }
 

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Check, Crown, ArrowLeft } from 'lucide-react'
 import { Section, SectionHeading } from './ui/Section'
 import { Reveal } from './ui/Reveal'
@@ -70,13 +71,13 @@ export function Halls() {
                     ))}
                   </ul>
 
-                  <a
-                    href="#contact"
+                  <Link
+                    to="/contact"
                     className="group mt-1 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-emerald transition-colors hover:text-gold"
                   >
                     {HALLS_SECTION.cta}
                     <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
-                  </a>
+                  </Link>
                 </div>
               </article>
             </Reveal>

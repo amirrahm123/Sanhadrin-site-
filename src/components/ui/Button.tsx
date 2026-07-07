@@ -1,5 +1,7 @@
 import { forwardRef } from 'react'
 import type { ButtonHTMLAttributes, AnchorHTMLAttributes, ReactNode } from 'react'
+import { Link } from 'react-router-dom'
+import type { LinkProps } from 'react-router-dom'
 
 type Variant = 'primary' | 'outline' | 'outlineLight' | 'ghost'
 type Size = 'md' | 'lg'
@@ -36,12 +38,23 @@ type ButtonAsButton = CommonProps &
   ButtonHTMLAttributes<HTMLButtonElement> & { as?: 'button' }
 type ButtonAsAnchor = CommonProps &
   AnchorHTMLAttributes<HTMLAnchorElement> & { as: 'a' }
+// Internal navigation: render a react-router <Link> when `to` is provided.
+type ButtonAsLink = CommonProps & Omit<LinkProps, 'className'> & { as: 'link' }
 
-type ButtonProps = ButtonAsButton | ButtonAsAnchor
+type ButtonProps = ButtonAsButton | ButtonAsAnchor | ButtonAsLink
 
 export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
   ({ variant = 'primary', size = 'md', className = '', children, ...rest }, ref) => {
     const cls = `${base} ${variants[variant]} ${sizes[size]} ${className}`
+
+    if (rest.as === 'link') {
+      const { as: _as, ...linkProps } = rest
+      return (
+        <Link ref={ref as React.Ref<HTMLAnchorElement>} className={cls} {...linkProps}>
+          {children}
+        </Link>
+      )
+    }
 
     if (rest.as === 'a') {
       const { as: _as, ...anchorProps } = rest
