@@ -57,8 +57,12 @@ In [`src/data/sections.ts`](src/data/sections.ts) `CONTACT`:
 - Google Business: <https://maps.app.goo.gl/VDUEPkBFPHHQYibn8>
 
 ## 3. Routes
-`/` · `/about` · `/weddings` · `/bar-mitzvah` · `/bat-mitzvah` · `/henna` ·
-`/halls` · `/culinary` · `/gallery` · `/contact` (+ pre-rendered `404.html`).
+`/` · `/about` · `/weddings` · `/bar-bat-mitzvah` · `/henna` · `/halls` ·
+`/culinary` · `/gallery` (+ pre-rendered `404.html`).
+
+There is **no `/contact` page** — the contact form lives in the global footer
+(`id="contact-form"`); "צור קשר" and the "לתיאום סיור" CTAs smooth-scroll to it.
+Bar & Bat Mitzvah share one page, `/bar-bat-mitzvah`.
 
 Edit per-page SEO text in [`src/data/seo.ts`](src/data/seo.ts). To add a page:
 add a route in `src/routes.tsx` **and** an entry in `seo.ts` with the same path.
