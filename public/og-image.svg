@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <!-- TODO(launch): replace with a real 1200x630 estate photo exported to og-image.jpg -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#18463A"/>
+      <stop offset="1" stop-color="#0F3329"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- aqueduct arch motif -->
+  <g fill="none" stroke="#C2A14D" stroke-opacity="0.35" stroke-width="2">
+    <line x1="80" y1="470" x2="1120" y2="470"/>
+    <g>
+      <path d="M120 560 L120 470 A55 55 0 0 1 230 470 L230 560"/>
+      <path d="M250 560 L250 470 A55 55 0 0 1 360 470 L360 560"/>
+      <path d="M380 560 L380 470 A55 55 0 0 1 490 470 L490 560"/>
+      <path d="M510 560 L510 470 A55 55 0 0 1 620 470 L620 560"/>
+      <path d="M640 560 L640 470 A55 55 0 0 1 750 470 L750 560"/>
+      <path d="M770 560 L770 470 A55 55 0 0 1 880 470 L880 560"/>
+      <path d="M900 560 L900 470 A55 55 0 0 1 1010 470 L1010 560"/>
+    </g>
+  </g>
+  <text x="600" y="290" text-anchor="middle" font-family="'Frank Ruhl Libre', Georgia, serif" font-size="96" font-weight="700" fill="#F8F4EC">אחוזת סנדרין</text>
+  <text x="600" y="360" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="40" letter-spacing="6" fill="#D9C189">SANDRINE EVENTS</text>
+  <text x="600" y="415" text-anchor="middle" font-family="'Heebo', Arial, sans-serif" font-size="30" fill="#F8F4EC" fill-opacity="0.85">חתונות ואירועים יוקרתיים בצפון</text>
+</svg>

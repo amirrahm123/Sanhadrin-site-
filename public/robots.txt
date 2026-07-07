@@ -1,0 +1,8 @@
+# https://www.robotstxt.org/robotstxt.html
+# Allow all crawlers — no blocking rules.
+User-agent: *
+Allow: /
+
+# The Sitemap line is rewritten at build time with the real origin
+# (scripts/gen-sitemap.mjs). TODO(launch): confirm the domain once SITE.url is set.
+Sitemap: https://REPLACE-WITH-DOMAIN.com/sitemap.xml

@@ -25,6 +25,7 @@ export function Hero() {
           tone="dark"
           rounded={false}
           label=""
+          eager
           className="!aspect-auto h-full w-full"
         />
         {/* soft dark overlay for legibility */}

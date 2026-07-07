@@ -12,6 +12,8 @@ type ImagePlaceholderProps = {
   /** darker stone/emerald variant for hero & overlays */
   tone?: 'light' | 'dark'
   rounded?: boolean
+  /** eager-load (above-the-fold, e.g. the hero); otherwise lazy. */
+  eager?: boolean
 }
 
 const ratioClass: Record<Ratio, string> = {
@@ -20,6 +22,16 @@ const ratioClass: Record<Ratio, string> = {
   '1/1': 'aspect-square',
   '3/2': 'aspect-[3/2]',
   '21/9': 'aspect-[21/9]',
+}
+
+// Intrinsic width/height (px) per ratio — set on real <img> to reserve space
+// and prevent layout shift (CLS).
+const ratioDims: Record<Ratio, [number, number]> = {
+  '16/9': [1200, 675],
+  '4/5': [1200, 1500],
+  '1/1': [1200, 1200],
+  '3/2': [1200, 800],
+  '21/9': [1200, 514],
 }
 
 /**
@@ -35,13 +47,27 @@ export function ImagePlaceholder({
   className = '',
   tone = 'light',
   rounded = true,
+  eager = false,
 }: ImagePlaceholderProps) {
   const radius = rounded ? 'rounded-2xl' : ''
 
+  // Real photo path. TODO(assets): export photos as compressed webp/avif at the
+  // ratio's intrinsic size; alt is a meaningful Hebrew description (falls back
+  // to the caption label).
   if (src) {
+    const [w, h] = ratioDims[ratio]
     return (
       <div className={`relative overflow-hidden ${radius} ${ratioClass[ratio]} ${className}`}>
-        <img src={src} alt={alt ?? label ?? ''} className="h-full w-full object-cover" />
+        <img
+          src={src}
+          alt={alt ?? label ?? ''}
+          width={w}
+          height={h}
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+          {...(eager ? { fetchPriority: 'high' as const } : {})}
+          className="h-full w-full object-cover"
+        />
       </div>
     )
   }
