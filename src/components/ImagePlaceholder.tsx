@@ -8,6 +8,9 @@ type ImagePlaceholderProps = {
   /** swap-in real image later: just pass src (+ alt) and the motif is replaced */
   src?: string
   alt?: string
+  /** optional responsive sources (only used when `src` is set) */
+  srcSet?: string
+  sizes?: string
   className?: string
   /** darker stone/emerald variant for hero & overlays */
   tone?: 'light' | 'dark'
@@ -44,6 +47,8 @@ export function ImagePlaceholder({
   ratio = '16/9',
   src,
   alt,
+  srcSet,
+  sizes,
   className = '',
   tone = 'light',
   rounded = true,
@@ -60,6 +65,8 @@ export function ImagePlaceholder({
       <div className={`relative overflow-hidden ${radius} ${ratioClass[ratio]} ${className}`}>
         <img
           src={src}
+          {...(srcSet ? { srcSet } : {})}
+          {...(sizes ? { sizes } : {})}
           alt={alt ?? label ?? ''}
           width={w}
           height={h}
