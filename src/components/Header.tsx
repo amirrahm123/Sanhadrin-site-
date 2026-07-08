@@ -60,16 +60,16 @@ export function Header() {
     >
       <div
         ref={barRef}
-        className="mx-auto flex max-w-content items-center justify-between gap-4 px-5 py-3.5 sm:px-8 lg:px-10"
+        className="mx-auto flex max-w-content items-center justify-between gap-4 px-5 py-4 sm:px-8 lg:px-10"
       >
-        {/* Logo (RTL start / top-right). Native 432x200 -> ~2.16:1 aspect. */}
+        {/* Logo (RTL start / top-right). Native 266x180 -> ~1.48:1 aspect. */}
         <Link to="/" className="flex items-center" aria-label={BRAND.he}>
           <img
             src={logoUrl}
             alt={BRAND.he}
-            width={432}
-            height={200}
-            className={`h-9 w-auto md:h-11 ${
+            width={266}
+            height={180}
+            className={`h-16 w-auto md:h-20 ${
               // Extra lift only over the transparent (dark hero) header.
               solid ? '' : 'drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]'
             }`}
