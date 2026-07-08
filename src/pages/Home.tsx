@@ -8,6 +8,10 @@ import { ImagePlaceholder } from '../components/ImagePlaceholder'
 import { ContactCta } from '../components/ContactCta'
 import { Seo } from '../components/Seo'
 import { ABOUT, GALLERY } from '../data/sections'
+import { GALLERY_IMAGE_ALT, useCloudinaryGallery } from '../lib/cloudinary'
+
+// Preview tiles render at ~50vw (mobile) / 33vw (>=md).
+const PREVIEW_SIZES = '(min-width: 768px) 33vw, 50vw'
 
 // Curated gateway cards — each links out to a dedicated, indexable page so the
 // home page stays a hub and page content isn't duplicated across the site.
@@ -24,6 +28,10 @@ const AREA_CARDS = [
 ]
 
 export function Component() {
+  const gallery = useCloudinaryGallery()
+  // Newest 6 from the live folder; null → keep the designed placeholder tiles.
+  const previewImages = gallery.status === 'ready' ? gallery.images.slice(0, 6) : null
+
   return (
     <>
       <Seo path="/" />
@@ -120,12 +128,26 @@ export function Component() {
       {/* Gallery preview → /gallery */}
       <Section id="gallery-preview" className="bg-stone/30">
         <SectionHeading eyebrow={GALLERY.eyebrow} title={GALLERY.title} subtitle={GALLERY.subtitle} />
+        {/* Square grid; shows the newest live photos, else placeholder tiles. */}
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5">
-          {GALLERY.tiles.slice(0, 6).map((tile, i) => (
-            <Reveal key={`${tile.label}-${i}`} delay={(i % 3) * 0.06}>
-              <ImagePlaceholder label={tile.label} ratio="1/1" className="shadow-soft" />
-            </Reveal>
-          ))}
+          {previewImages
+            ? previewImages.map((img, i) => (
+                <Reveal key={img.publicId} delay={(i % 3) * 0.06}>
+                  <ImagePlaceholder
+                    src={img.src}
+                    srcSet={img.srcSet}
+                    sizes={PREVIEW_SIZES}
+                    alt={GALLERY_IMAGE_ALT}
+                    ratio="1/1"
+                    className="shadow-soft"
+                  />
+                </Reveal>
+              ))
+            : GALLERY.tiles.slice(0, 6).map((tile, i) => (
+                <Reveal key={`${tile.label}-${i}`} delay={(i % 3) * 0.06}>
+                  <ImagePlaceholder label={tile.label} ratio="1/1" className="shadow-soft" />
+                </Reveal>
+              ))}
         </div>
         <Reveal delay={0.1} className="mt-12 flex justify-center">
           <Button as="link" to="/gallery" variant="outline" size="lg">
