@@ -35,6 +35,17 @@ export const SITE = {
   // coordinates. TODO(launch): look up מתחם רגבה / BIG Regba and fill in; geo is
   // then emitted into the JSON-LD automatically.
   geo: null as { lat: number; lng: number } | null,
+
+  // Cloudinary — powers the live gallery (Gallery page + home preview). The
+  // social-media manager curates photos from Cloudinary's Media Library by
+  // tagging them; the site lists them client-side, keyless. cloudName and the
+  // folder/tag are PUBLIC — never add an API key or secret here.
+  cloudinary: {
+    cloudName: 'sfkhp1te',
+    // Doubles as the *tag* used for keyless `image/list` delivery: photos
+    // tagged with this value appear in the gallery, newest first.
+    galleryFolder: 'sandrine_gallery',
+  },
 } as const
 
 /** Absolute URL for a route path ('/', '/weddings', …). */
