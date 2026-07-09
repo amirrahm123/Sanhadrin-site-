@@ -31,7 +31,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://w
 writeFileSync(join(DIST, 'sitemap.xml'), sitemap)
 
 const origin = new URL(urls[0]).origin
-const robots = `# https://www.robotstxt.org/robotstxt.html\nUser-agent: *\nAllow: /\n\nSitemap: ${origin}/sitemap.xml\n`
+const robots = `# https://www.robotstxt.org/robotstxt.html\nUser-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: ${origin}/sitemap.xml\n`
 writeFileSync(join(DIST, 'robots.txt'), robots)
 
 console.log(`[gen-sitemap] wrote sitemap.xml (${urls.length} urls) + robots.txt @ ${origin}`)

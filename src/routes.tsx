@@ -25,4 +25,8 @@ export const routes: RouteRecord[] = [
       { path: '*', lazy: () => import('./pages/NotFound') },
     ],
   },
+  // Standalone admin dashboard — deliberately OUTSIDE the public Layout (no
+  // header/footer/contact chrome) and its own lazy chunk, so public routes
+  // never load any admin code. noindex is set in the page's <Head>.
+  { path: '/admin', lazy: () => import('./pages/Admin') },
 ]
