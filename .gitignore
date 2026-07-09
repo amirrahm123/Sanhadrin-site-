@@ -11,3 +11,8 @@ dist-ssr
 .idea
 
 .vercel
+
+# env / secrets (Cloudinary Admin API key etc. — never commit)
+.env
+.env.*
+!.env.example
