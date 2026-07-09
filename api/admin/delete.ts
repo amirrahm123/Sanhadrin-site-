@@ -1,0 +1,60 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { requireAuth } from '../../lib/auth'
+import { readSlots, writeSlots } from '../../lib/blob'
+import { isValidSlotKey } from '../../src/data/photoSlots'
+import { cloudinary } from '../../lib/cloudinaryServer'
+
+// Auth-required.
+//   target:'slot'    → clear the slot (revert to placeholder) + delete its asset
+//   target:'gallery' → delete a gallery photo by publicId
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (!requireAuth(req, res)) return
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: 'method_not_allowed' })
+    return
+  }
+
+  const { target, slotKey, publicId } = (req.body ?? {}) as {
+    target?: unknown
+    slotKey?: unknown
+    publicId?: unknown
+  }
+
+  try {
+    if (target === 'slot') {
+      if (typeof slotKey !== 'string' || !isValidSlotKey(slotKey)) {
+        res.status(400).json({ error: 'invalid_slot' })
+        return
+      }
+      const map = await readSlots()
+      const existing = map[slotKey]
+      delete map[slotKey]
+      await writeSlots(map)
+      // Best-effort asset cleanup — never block the slot clear on it.
+      if (existing?.publicId) {
+        try {
+          await cloudinary.uploader.destroy(existing.publicId)
+        } catch {
+          /* orphaned asset is harmless */
+        }
+      }
+      res.status(200).json({ ok: true })
+      return
+    }
+
+    if (target === 'gallery') {
+      if (typeof publicId !== 'string' || !publicId) {
+        res.status(400).json({ error: 'invalid_public_id' })
+        return
+      }
+      await cloudinary.uploader.destroy(publicId)
+      res.status(200).json({ ok: true })
+      return
+    }
+
+    res.status(400).json({ error: 'invalid_target' })
+  } catch (err) {
+    console.error('[api/admin/delete] failed:', err instanceof Error ? err.message : err)
+    res.status(500).json({ error: 'delete_failed' })
+  }
+}

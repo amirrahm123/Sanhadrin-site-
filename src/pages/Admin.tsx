@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Head } from 'vite-react-ssg'
-import { fetchIsAdmin, login, logout } from '../lib/adminApi'
+import { fetchIsAdmin, login } from '../lib/adminApi'
+import { Dashboard } from '../components/admin/Dashboard'
 
 type AuthState = 'checking' | 'anon' | 'admin'
 
@@ -116,31 +117,3 @@ function LoginScreen({ onSuccess }: { onSuccess: () => void }) {
   )
 }
 
-// Placeholder dashboard shell — the slot manager + gallery manager land here in
-// later phases.
-function Dashboard({ onLogout }: { onLogout: () => void }) {
-  async function onLogoutClick() {
-    await logout()
-    onLogout()
-  }
-
-  return (
-    <div className="mx-auto max-w-content px-5 py-8 sm:px-8">
-      <header className="flex items-center justify-between gap-4 border-b border-stone pb-5">
-        <div>
-          <h1 className="font-serif text-2xl text-emerald md:text-3xl">ניהול תמונות האתר</h1>
-          <p className="mt-1 text-sm text-muted">אחוזת סנדרין</p>
-        </div>
-        <button
-          type="button"
-          onClick={onLogoutClick}
-          className="rounded-full border border-stone px-5 py-2 text-sm font-semibold text-emerald transition-colors hover:bg-stone/50"
-        >
-          יציאה
-        </button>
-      </header>
-
-      <p className="mt-8 text-muted">לוח הניהול ייטען כאן.</p>
-    </div>
-  )
-}

@@ -77,6 +77,12 @@ export function buildResponsiveImage(publicId: string): { src: string; srcSet: s
   }
 }
 
+/** Square, cropped thumbnail for the admin dashboard. */
+export function buildThumbUrl(publicId: string, size = 240): string {
+  const { cloudName } = SITE.cloudinary
+  return `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto,c_fill,g_auto,w_${size},h_${size}/${publicId}`
+}
+
 export type GalleryState =
   | { status: 'loading' }
   | { status: 'ready'; images: GalleryImage[] }
