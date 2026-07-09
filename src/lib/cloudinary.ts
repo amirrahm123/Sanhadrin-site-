@@ -61,10 +61,20 @@ export function ratioFromDimensions(width?: number, height?: number): Ratio {
 
 // f_auto (webp/avif) + q_auto (auto compression) + c_limit,w_* (cap width,
 // never upscale) — auto optimise-on-delivery, matching the ~1200px intrinsic
-// size the tiles already reserve.
-function deliveryUrl(publicId: string, format: string, width: number): string {
+// size the tiles already reserve. The extension is omitted on purpose so
+// f_auto fully controls the delivered format (works for slots that store only
+// a public_id, no format).
+function deliveryUrl(publicId: string, width: number): string {
   const { cloudName } = SITE.cloudinary
-  return `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto,c_limit,w_${width}/${publicId}.${format}`
+  return `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto,c_limit,w_${width}/${publicId}`
+}
+
+/** {src, srcSet} for a public_id — a 1200px src + a 600/1200 responsive set. */
+export function buildResponsiveImage(publicId: string): { src: string; srcSet: string } {
+  return {
+    src: deliveryUrl(publicId, 1200),
+    srcSet: `${deliveryUrl(publicId, 600)} 600w, ${deliveryUrl(publicId, 1200)} 1200w`,
+  }
 }
 
 export type GalleryState =
@@ -107,12 +117,7 @@ export function useCloudinaryGallery(): GalleryState {
           .map(
             (r): GalleryImage => ({
               publicId: r.public_id,
-              src: deliveryUrl(r.public_id, r.format, 1200),
-              srcSet: `${deliveryUrl(r.public_id, r.format, 600)} 600w, ${deliveryUrl(
-                r.public_id,
-                r.format,
-                1200,
-              )} 1200w`,
+              ...buildResponsiveImage(r.public_id),
               ratio: ratioFromDimensions(r.width, r.height),
             }),
           )

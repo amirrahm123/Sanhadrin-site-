@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react'
+import { useSlotOverride } from '../lib/slots'
 
 type Ratio = '16/9' | '4/5' | '1/1' | '3/2' | '21/9'
 
@@ -11,6 +12,12 @@ type ImagePlaceholderProps = {
   /** optional responsive sources (only used when `src` is set) */
   srcSet?: string
   sizes?: string
+  /**
+   * Managed photo-slot key (see photoSlots.ts). When the admin has assigned a
+   * photo to this slot it renders here; otherwise the designed placeholder
+   * shows. An explicit `src` (e.g. gallery images) always takes precedence.
+   */
+  slot?: string
   className?: string
   /** darker stone/emerald variant for hero & overlays */
   tone?: 'light' | 'dark'
@@ -49,6 +56,7 @@ export function ImagePlaceholder({
   alt,
   srcSet,
   sizes,
+  slot,
   className = '',
   tone = 'light',
   rounded = true,
@@ -56,18 +64,24 @@ export function ImagePlaceholder({
 }: ImagePlaceholderProps) {
   const radius = rounded ? 'rounded-2xl' : ''
 
-  // Real photo path. TODO(assets): export photos as compressed webp/avif at the
-  // ratio's intrinsic size; alt is a meaningful Hebrew description (falls back
-  // to the caption label).
-  if (src) {
+  // Admin-assigned photo for this slot (null when none → placeholder). An
+  // explicit `src` prop still wins (used by the gallery).
+  const override = useSlotOverride(slot)
+  const effectiveSrc = src ?? override?.src
+  const effectiveSrcSet = srcSet ?? override?.srcSet
+  const effectiveAlt = alt ?? override?.alt ?? label ?? ''
+
+  // Real photo path. Renders a real <img> (object-cover, width/height reserved
+  // for CLS, lazy unless eager) whenever a slot override or explicit src exists.
+  if (effectiveSrc) {
     const [w, h] = ratioDims[ratio]
     return (
       <div className={`relative overflow-hidden ${radius} ${ratioClass[ratio]} ${className}`}>
         <img
-          src={src}
-          {...(srcSet ? { srcSet } : {})}
+          src={effectiveSrc}
+          {...(effectiveSrcSet ? { srcSet: effectiveSrcSet } : {})}
           {...(sizes ? { sizes } : {})}
-          alt={alt ?? label ?? ''}
+          alt={effectiveAlt}
           width={w}
           height={h}
           loading={eager ? 'eager' : 'lazy'}

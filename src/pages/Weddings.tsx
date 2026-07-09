@@ -7,6 +7,7 @@ export function Component() {
     <>
       <PageHero
         path="/weddings"
+        heroSlot="weddings_hero"
         eyebrow="Weddings"
         subtitle="ערב אחד, בול תפור למידותיכם — מקבלת הפנים ועד הריקוד האחרון, בגנים ובאולמות של האחוזה."
         breadcrumbs={[{ label: 'אירועים' }, { label: 'חתונות' }]}

@@ -17,7 +17,12 @@ export function Weddings() {
         {WEDDINGS.features.map((f, i) => (
           <Reveal key={f.id} delay={i * 0.12}>
             <article className="flex h-full flex-col overflow-hidden rounded-3xl bg-ivory shadow-soft">
-              <ImagePlaceholder label={f.imageLabel} ratio="3/2" rounded={false} />
+              <ImagePlaceholder
+                label={f.imageLabel}
+                slot={`weddings_${i + 1}`}
+                ratio="3/2"
+                rounded={false}
+              />
               <div className="flex flex-1 flex-col gap-4 p-7 md:p-8">
                 <h3 className="flex items-center gap-2 text-2xl text-emerald md:text-3xl">
                   <Sparkles size={20} className="text-gold" />

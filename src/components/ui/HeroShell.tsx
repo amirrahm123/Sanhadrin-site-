@@ -8,6 +8,8 @@ type HeroShellProps = {
   topSlot?: ReactNode
   /** absolutely-positioned bottom-center slot (e.g. scroll cue) */
   bottomSlot?: ReactNode
+  /** managed photo-slot key for the full-bleed hero background */
+  photoSlot?: string
   id?: string
   children: ReactNode
 }
@@ -21,6 +23,7 @@ export function HeroShell({
   minHClass = 'min-h-[100svh]',
   topSlot,
   bottomSlot,
+  photoSlot,
   id,
   children,
 }: HeroShellProps) {
@@ -36,6 +39,7 @@ export function HeroShell({
           tone="dark"
           rounded={false}
           label=""
+          slot={photoSlot}
           eager
           className="!aspect-auto h-full w-full"
         />

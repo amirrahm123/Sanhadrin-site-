@@ -16,15 +16,15 @@ const PREVIEW_SIZES = '(min-width: 768px) 33vw, 50vw'
 // Curated gateway cards — each links out to a dedicated, indexable page so the
 // home page stays a hub and page content isn't duplicated across the site.
 const EVENT_CARDS = [
-  { to: '/weddings', label: 'חתונות', desc: 'ערב אחד שנחקק בלב — בגנים ובאולמות של האחוזה.' },
-  { to: '/bar-bat-mitzvah', label: 'בר/בת מצווה', desc: 'חגיגה מלכותית לבר ולבת המצווה, בין גנים לאולמות מפוארים.' },
-  { to: '/henna', label: 'חינה יוקרתית', desc: 'חינה צבעונית וחמה — מסורת בהתחדשות, באירוח מפואר.' },
+  { to: '/weddings', label: 'חתונות', slot: 'event_card_weddings', desc: 'ערב אחד שנחקק בלב — בגנים ובאולמות של האחוזה.' },
+  { to: '/bar-bat-mitzvah', label: 'בר/בת מצווה', slot: 'event_card_barbat', desc: 'חגיגה מלכותית לבר ולבת המצווה, בין גנים לאולמות מפוארים.' },
+  { to: '/henna', label: 'חינה יוקרתית', slot: 'event_card_henna', desc: 'חינה צבעונית וחמה — מסורת בהתחדשות, באירוח מפואר.' },
 ]
 
 const AREA_CARDS = [
-  { to: '/about', label: 'האחוזה והגנים', desc: 'חמישים דונם, אקוודוקט רומי עתיק וגן זכוכית ייחודי.' },
-  { to: '/halls', label: 'האולמות', desc: 'שלושה אולמות וגנים פרטיים — לכל גודל אירוע.' },
-  { to: '/culinary', label: 'קולינריה', desc: 'מטבח גבוה, עמדות שף, והכול כשר בהשגחת הרבנות.' },
+  { to: '/about', label: 'האחוזה והגנים', slot: 'area_card_about', desc: 'חמישים דונם, אקוודוקט רומי עתיק וגן זכוכית ייחודי.' },
+  { to: '/halls', label: 'האולמות', slot: 'area_card_halls', desc: 'שלושה אולמות וגנים פרטיים — לכל גודל אירוע.' },
+  { to: '/culinary', label: 'קולינריה', slot: 'area_card_culinary', desc: 'מטבח גבוה, עמדות שף, והכול כשר בהשגחת הרבנות.' },
 ]
 
 export function Component() {
@@ -62,7 +62,12 @@ export function Component() {
           </Reveal>
           <Reveal delay={0.15} className="order-1 lg:order-2">
             <div className="relative">
-              <ImagePlaceholder label={ABOUT.imageLabel} ratio="4/5" className="shadow-card" />
+              <ImagePlaceholder
+                label={ABOUT.imageLabel}
+                slot="about_main"
+                ratio="4/5"
+                className="shadow-card"
+              />
               <div className="pointer-events-none absolute -bottom-4 -left-4 -z-0 hidden h-full w-full rounded-2xl border border-gold/40 sm:block" />
             </div>
           </Reveal>
@@ -83,7 +88,7 @@ export function Component() {
                 to={c.to}
                 className="group flex h-full flex-col overflow-hidden rounded-3xl bg-ivory shadow-soft transition-shadow hover:shadow-card"
               >
-                <ImagePlaceholder label={c.label} ratio="4/5" rounded={false} />
+                <ImagePlaceholder label={c.label} slot={c.slot} ratio="4/5" rounded={false} />
                 <div className="flex flex-1 flex-col gap-2 p-6">
                   <h3 className="flex items-center justify-between text-2xl text-emerald">
                     {c.label}
@@ -110,7 +115,7 @@ export function Component() {
                 to={c.to}
                 className="group flex h-full flex-col gap-4 rounded-3xl border border-stone bg-ivory p-7 shadow-soft transition-shadow hover:shadow-card"
               >
-                <ImagePlaceholder label={c.label} ratio="16/9" />
+                <ImagePlaceholder label={c.label} slot={c.slot} ratio="16/9" />
                 <h3 className="flex items-center justify-between text-2xl text-emerald">
                   {c.label}
                   <ArrowLeft

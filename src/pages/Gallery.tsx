@@ -7,6 +7,7 @@ export function Component() {
     <>
       <PageHero
         path="/gallery"
+        heroSlot="gallery_hero"
         eyebrow="Gallery"
         subtitle="רגעים, מרחבים ופרטים מתוך אירועים באחוזה — טעימה ממה שמחכה לכם בסנדרין."
       />

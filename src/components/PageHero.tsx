@@ -22,6 +22,8 @@ type PageHeroProps = {
   breadcrumbs?: Crumb[]
   /** Show the "לתיאום סיור" CTA (scrolls to the footer form). */
   showCta?: boolean
+  /** managed photo-slot key for this page's hero background */
+  heroSlot?: string
 }
 
 /**
@@ -37,6 +39,7 @@ export function PageHero({
   subtitle,
   breadcrumbs,
   showCta = true,
+  heroSlot,
 }: PageHeroProps) {
   const reduce = useReducedMotion()
   const h1 = path ? SEO[path]?.h1 ?? title ?? '' : title ?? ''
@@ -54,6 +57,7 @@ export function PageHero({
   return (
     <HeroShell
       minHClass="min-h-[80svh]"
+      photoSlot={heroSlot}
       topSlot={
         <nav
           aria-label="פירורי לחם"

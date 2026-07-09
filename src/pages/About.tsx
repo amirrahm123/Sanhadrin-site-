@@ -8,6 +8,7 @@ export function Component() {
     <>
       <PageHero
         path="/about"
+        heroSlot="about_hero"
         eyebrow="Our Estate"
         subtitle="כחמישים דונם של גנים פורחים, מזרקות ונחלים לאורך אקוודוקט רומי עתיק — הסיפור והמרחבים שמאחורי אחוזת סנדרין."
       />

@@ -27,6 +27,7 @@ export function Halls() {
                 <div className={`relative ${reverse ? 'lg:order-2' : ''}`}>
                   <ImagePlaceholder
                     label={hall.imageLabel}
+                    slot={`halls_${i + 1}`}
                     ratio="4/5"
                     rounded={false}
                     className="h-full min-h-[280px]"

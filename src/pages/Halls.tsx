@@ -7,6 +7,7 @@ export function Component() {
     <>
       <PageHero
         path="/halls"
+        heroSlot="halls_hero"
         eyebrow="The Halls"
         subtitle="שלושה אולמות וגנים פרטיים — מאולם הדגל הענק ועד אולם בוטיק אינטימי, לכל אירוע הבמה המושלמת שלו."
       />

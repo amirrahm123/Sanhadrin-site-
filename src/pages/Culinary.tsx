@@ -7,6 +7,7 @@ export function Component() {
     <>
       <PageHero
         path="/culinary"
+        heroSlot="culinary_hero"
         eyebrow="Culinary"
         subtitle="מטבח גבוה, חומרי גלם משובחים ועמדות קבלת פנים מכל קצוות העולם — והכול כשר בהשגחת הרבנות."
       />

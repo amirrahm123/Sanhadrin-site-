@@ -22,7 +22,12 @@ export function About() {
         {/* Image */}
         <Reveal delay={0.15} className="order-1 lg:order-2">
           <div className="relative">
-            <ImagePlaceholder label={ABOUT.imageLabel} ratio="4/5" className="shadow-card" />
+            <ImagePlaceholder
+              label={ABOUT.imageLabel}
+              slot="about_main"
+              ratio="4/5"
+              className="shadow-card"
+            />
             {/* gold frame accent */}
             <div className="pointer-events-none absolute -bottom-4 -left-4 -z-0 hidden h-full w-full rounded-2xl border border-gold/40 sm:block" />
           </div>

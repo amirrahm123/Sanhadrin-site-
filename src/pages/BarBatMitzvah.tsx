@@ -7,6 +7,8 @@ export function Component() {
       content={BAR_BAT_MITZVAH}
       path="/bar-bat-mitzvah"
       location="bar_bat_mitzvah"
+      heroSlot="barbat_hero"
+      introSlot="barbat_intro"
       related={[
         { label: 'חתונות', to: '/weddings' },
         { label: 'חינות יוקרתיות', to: '/henna' },

@@ -7,6 +7,8 @@ export function Component() {
       content={HENNA}
       path="/henna"
       location="henna"
+      heroSlot="henna_hero"
+      introSlot="henna_intro"
       related={[
         { label: 'חתונות', to: '/weddings' },
         { label: 'בר/בת מצווה', to: '/bar-bat-mitzvah' },

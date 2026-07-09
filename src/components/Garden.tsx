@@ -27,7 +27,13 @@ export function Garden() {
           <div className="grid grid-cols-2 gap-4 md:gap-5">
             {GARDEN.gallery.map((g, i) => (
               <Reveal key={g.label} delay={i * 0.08} className={i % 2 === 1 ? 'mt-6 md:mt-10' : ''}>
-                <ImagePlaceholder label={g.label} ratio={g.ratio} tone="dark" className="shadow-soft" />
+                <ImagePlaceholder
+                  label={g.label}
+                  slot={`garden_${i + 1}`}
+                  ratio={g.ratio}
+                  tone="dark"
+                  className="shadow-soft"
+                />
               </Reveal>
             ))}
           </div>

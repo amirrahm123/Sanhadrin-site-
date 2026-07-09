@@ -11,7 +11,12 @@ export function Culinary() {
         {/* Image */}
         <Reveal className="lg:order-2">
           <div className="relative">
-            <ImagePlaceholder label={CULINARY.imageLabel} ratio="4/5" className="shadow-card" />
+            <ImagePlaceholder
+              label={CULINARY.imageLabel}
+              slot="culinary_main"
+              ratio="4/5"
+              className="shadow-card"
+            />
             <div className="pointer-events-none absolute -bottom-4 -right-4 -z-0 hidden h-full w-full rounded-2xl border border-gold/40 sm:block" />
           </div>
         </Reveal>

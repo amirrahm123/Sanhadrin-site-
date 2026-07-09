@@ -19,6 +19,7 @@ export function Hero() {
   return (
     <HeroShell
       id="home"
+      photoSlot="home_hero"
       bottomSlot={
         <a
           href="#estate-intro"

@@ -15,17 +15,29 @@ type CelebrationPageProps = {
   location: string
   /** sibling celebration links for internal linking */
   related: { label: string; to: string }[]
+  /** managed photo-slot key for the hero background */
+  heroSlot?: string
+  /** managed photo-slot key for the intro image */
+  introSlot?: string
 }
 
 /**
  * Shared layout for the celebration pages (bar/bat mitzvah, henna): hero,
  * intro + image, feature grid, related-celebration links and a contact CTA.
  */
-export function CelebrationPage({ content, path, location, related }: CelebrationPageProps) {
+export function CelebrationPage({
+  content,
+  path,
+  location,
+  related,
+  heroSlot,
+  introSlot,
+}: CelebrationPageProps) {
   return (
     <>
       <PageHero
         path={path}
+        heroSlot={heroSlot}
         eyebrow={content.eyebrow}
         subtitle={content.heroSubtitle}
         breadcrumbs={[{ label: 'אירועים' }, { label: content.h1 }]}
@@ -45,7 +57,12 @@ export function CelebrationPage({ content, path, location, related }: Celebratio
           </Reveal>
           <Reveal delay={0.15} className="order-1 lg:order-2">
             <div className="relative">
-              <ImagePlaceholder label={content.intro.imageLabel} ratio="4/5" className="shadow-card" />
+              <ImagePlaceholder
+                label={content.intro.imageLabel}
+                slot={introSlot}
+                ratio="4/5"
+                className="shadow-card"
+              />
               <div className="pointer-events-none absolute -bottom-4 -left-4 -z-0 hidden h-full w-full rounded-2xl border border-gold/40 sm:block" />
             </div>
           </Reveal>
