@@ -48,6 +48,26 @@ export async function fetchSlots(): Promise<SlotMap> {
   }
 }
 
+export type GalleryItem = { publicId: string; width?: number; height?: number }
+
+/** Current gallery photos (auth not required — same public listing the site uses). */
+export async function fetchGallery(): Promise<GalleryItem[]> {
+  try {
+    const res = await fetch('/api/gallery', { headers: { Accept: 'application/json' } })
+    if (!res.ok) return []
+    const data = (await res.json()) as {
+      resources?: { public_id: string; width?: number; height?: number }[]
+    }
+    return (data.resources ?? []).map((r) => ({
+      publicId: r.public_id,
+      width: r.width,
+      height: r.height,
+    }))
+  } catch {
+    return []
+  }
+}
+
 export type UploadResult = { publicId: string; width?: number; height?: number }
 
 /** Upload a downscaled data-URL image. target 'gallery' tags it for the gallery. */

@@ -4,6 +4,7 @@ import type { PhotoSlot, SlotMap, SlotOverride } from '../../data/photoSlots'
 import { buildThumbUrl } from '../../lib/cloudinary'
 import { fetchSlots, logout, removeSlot, setSlot, uploadImage } from '../../lib/adminApi'
 import { fileToDownscaledDataUrl } from '../../lib/imageResize'
+import { GalleryManager } from './GalleryManager'
 
 type ToastKind = 'ok' | 'err'
 type Toast = { id: number; kind: ToastKind; msg: string }
@@ -80,6 +81,8 @@ export function Dashboard({ onLogout }: { onLogout: () => void }) {
           </section>
         )
       })}
+
+      <GalleryManager pushToast={pushToast} />
 
       <ToastStack toasts={toasts} />
     </div>
