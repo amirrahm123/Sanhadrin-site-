@@ -1,10 +1,13 @@
 // Client-side Cloudinary gallery integration.
 //
-// Reads the gallery photos from a public Cloudinary folder via the keyless
-// "image/list" (list-by-tag) delivery endpoint — no API key, safe to ship in a
-// static site. The social-media manager curates the gallery entirely from
-// Cloudinary's Media Library by tagging photos `sandrine_gallery`; because the
-// list is fetched at runtime in the browser, changes appear without a rebuild.
+// Listing is done by our own `/api/gallery` serverless function (Cloudinary
+// Admin API, secret kept server-side) because this account has the keyless
+// image/list delivery endpoint locked. The browser only ever sees trimmed
+// metadata + public delivery URLs — no API key. The manager curates the gallery
+// from Cloudinary's Media Library by tagging photos `sandrine_gallery`; because
+// the list is fetched at runtime in the browser, changes appear without a
+// rebuild. Delivery URLs (f_auto/q_auto/...) are still built here from the
+// public cloudName, which is fine to expose.
 import { useEffect, useState } from 'react'
 import { SITE } from '../data/site'
 
@@ -83,9 +86,9 @@ export function useCloudinaryGallery(): GalleryState {
   const [state, setState] = useState<GalleryState>({ status: 'loading' })
 
   useEffect(() => {
-    const { cloudName, galleryFolder } = SITE.cloudinary
-    // Lists every asset tagged `galleryFolder`. Keyless, CDN-cached.
-    const listUrl = `https://res.cloudinary.com/${cloudName}/image/list/${galleryFolder}.json`
+    // Our serverless function lists the folder via the Admin API (secret stays
+    // server-side) and returns trimmed, newest-first resources.
+    const listUrl = '/api/gallery'
     let cancelled = false
 
     fetch(listUrl)
