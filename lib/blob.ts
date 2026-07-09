@@ -6,6 +6,15 @@ import type { SlotMap } from '../src/data/photoSlots'
 
 const SLOTS_PATH = 'slots.json'
 
+// Call before a write inside a handler (never at module load). Throws a clear
+// message the handler logs + turns into a 500 when the Blob store token is
+// absent, instead of an opaque SDK error.
+export function assertBlobConfigured(): void {
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    throw new Error('blob store not configured — missing env: BLOB_READ_WRITE_TOKEN')
+  }
+}
+
 /** Read the current slot map. Fails safe to `{}` (→ site shows placeholders). */
 export async function readSlots(): Promise<SlotMap> {
   try {

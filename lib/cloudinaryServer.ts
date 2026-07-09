@@ -16,3 +16,15 @@ export { cloudinary }
 // they never leak into the public gallery listing.
 export const GALLERY_TAG = 'sandrine_gallery'
 export const SLOT_FOLDER = 'sandrine_slots'
+
+// Call inside a handler (never at module load, so importing this file stays
+// side-effect-free for tests). Throws with a clear message the handler logs and
+// turns into a 500, instead of a cryptic Cloudinary auth error deep in a call.
+export function assertCloudinaryConfigured(): void {
+  const missing = (
+    ['CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET'] as const
+  ).filter((k) => !process.env[k])
+  if (missing.length > 0) {
+    throw new Error(`cloudinary not configured — missing env: ${missing.join(', ')}`)
+  }
+}

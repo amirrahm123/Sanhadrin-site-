@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { buildThumbUrl } from '../../lib/cloudinary'
 import { deleteGalleryImage, fetchGallery, uploadImage } from '../../lib/adminApi'
 import type { GalleryItem } from '../../lib/adminApi'
-import { fileToDownscaledDataUrl } from '../../lib/imageResize'
+import { fileToDownscaledDataUrl, ImageTooLargeError } from '../../lib/imageResize'
 
 type PushToast = (kind: 'ok' | 'err', msg: string) => void
 
@@ -44,14 +44,16 @@ export function GalleryManager({ pushToast }: { pushToast: PushToast }) {
     setUploading(true)
     const added: GalleryItem[] = []
     let failed = 0
+    let tooLarge = 0
     for (const file of imageFiles) {
       try {
         const dataUrl = await fileToDownscaledDataUrl(file)
         const up = await uploadImage(dataUrl, 'gallery')
         if (!up) throw new Error('upload')
         added.push({ publicId: up.publicId, width: up.width, height: up.height })
-      } catch {
+      } catch (err) {
         failed += 1
+        if (err instanceof ImageTooLargeError) tooLarge += 1
       }
     }
     // Prepend newest-first, matching the public gallery's ordering.
@@ -62,6 +64,8 @@ export function GalleryManager({ pushToast }: { pushToast: PushToast }) {
       pushToast('ok', added.length === 1 ? 'התמונה נוספה לגלריה' : `${added.length} תמונות נוספו לגלריה`)
     } else if (added.length > 0 && failed > 0) {
       pushToast('err', `${added.length} נוספו, ${failed} נכשלו`)
+    } else if (tooLarge > 0 && tooLarge === failed) {
+      pushToast('err', 'התמונה גדולה מדי — נסו תמונה קטנה יותר')
     } else {
       pushToast('err', 'ההעלאה נכשלה — נסו שוב (מומלץ JPG/PNG)')
     }

@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite-react-ssg build && node scripts/gen-sitemap.mjs",
+    "test:security": "node --import tsx --test scripts/tests/auth-guard.test.ts",
+    "build": "tsc -b && npm run test:security && vite-react-ssg build && node scripts/gen-sitemap.mjs && node scripts/postbuild-checks.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -26,6 +27,7 @@
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.40",
     "tailwindcss": "^3.4.7",
+    "tsx": "^4.21.0",
     "typescript": "^5.5.4",
     "vite": "^5.3.5"
   }

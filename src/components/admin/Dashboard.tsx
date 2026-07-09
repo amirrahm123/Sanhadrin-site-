@@ -3,7 +3,7 @@ import { PHOTO_SLOTS, SLOT_GROUPS } from '../../data/photoSlots'
 import type { PhotoSlot, SlotMap, SlotOverride } from '../../data/photoSlots'
 import { buildThumbUrl } from '../../lib/cloudinary'
 import { fetchSlots, logout, removeSlot, setSlot, uploadImage } from '../../lib/adminApi'
-import { fileToDownscaledDataUrl } from '../../lib/imageResize'
+import { fileToDownscaledDataUrl, ImageTooLargeError } from '../../lib/imageResize'
 import { GalleryManager } from './GalleryManager'
 
 type ToastKind = 'ok' | 'err'
@@ -121,8 +121,13 @@ function SlotCard({
       if (!ok) throw new Error('set')
       pushToast('ok', 'התמונה עודכנה')
       await onChanged()
-    } catch {
-      pushToast('err', 'העלאה נכשלה — נסו שוב (מומלץ JPG/PNG)')
+    } catch (err) {
+      pushToast(
+        'err',
+        err instanceof ImageTooLargeError
+          ? 'התמונה גדולה מדי — נסו תמונה קטנה יותר'
+          : 'העלאה נכשלה — נסו שוב (מומלץ JPG/PNG)',
+      )
     } finally {
       setBusy(false)
     }

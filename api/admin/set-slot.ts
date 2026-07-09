@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { requireAuth } from '../../lib/auth'
-import { readSlots, writeSlots } from '../../lib/blob'
+import { assertBlobConfigured, readSlots, writeSlots } from '../../lib/blob'
+import { clientIp, rateLimited } from '../../lib/rateLimit'
 import { isValidSlotKey } from '../../src/data/photoSlots'
 
 // Auth-required. Assigns a photo (publicId + optional alt) to a known slot in
@@ -9,6 +10,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!requireAuth(req, res)) return
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'method_not_allowed' })
+    return
+  }
+  if (rateLimited('admin-write', clientIp(req), { windowMs: 60_000, max: 120 })) {
+    res.status(429).json({ error: 'too_many_requests' })
     return
   }
 
@@ -28,6 +33,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
+    assertBlobConfigured()
     const map = await readSlots()
     map[slotKey] = { publicId, ...(typeof alt === 'string' && alt ? { alt } : {}) }
     await writeSlots(map)

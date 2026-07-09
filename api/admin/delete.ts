@@ -1,8 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { requireAuth } from '../../lib/auth'
-import { readSlots, writeSlots } from '../../lib/blob'
+import { assertBlobConfigured, readSlots, writeSlots } from '../../lib/blob'
+import { clientIp, rateLimited } from '../../lib/rateLimit'
 import { isValidSlotKey } from '../../src/data/photoSlots'
-import { cloudinary } from '../../lib/cloudinaryServer'
+import { assertCloudinaryConfigured, cloudinary } from '../../lib/cloudinaryServer'
 
 // Auth-required.
 //   target:'slot'    → clear the slot (revert to placeholder) + delete its asset
@@ -11,6 +12,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!requireAuth(req, res)) return
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'method_not_allowed' })
+    return
+  }
+  if (rateLimited('admin-write', clientIp(req), { windowMs: 60_000, max: 120 })) {
+    res.status(429).json({ error: 'too_many_requests' })
     return
   }
 
@@ -26,6 +31,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         res.status(400).json({ error: 'invalid_slot' })
         return
       }
+      assertBlobConfigured()
       const map = await readSlots()
       const existing = map[slotKey]
       delete map[slotKey]
@@ -47,6 +53,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         res.status(400).json({ error: 'invalid_public_id' })
         return
       }
+      assertCloudinaryConfigured()
       await cloudinary.uploader.destroy(publicId)
       res.status(200).json({ ok: true })
       return

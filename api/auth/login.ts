@@ -1,32 +1,17 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { createSessionToken, safeEqual, setSessionCookie } from '../../lib/auth'
+import { clientIp, rateLimited } from '../../lib/rateLimit'
 
-// Best-effort brute-force throttle. In-memory, so it only spans a single warm
-// instance (serverless is stateless across cold starts) — a modest speed bump,
-// not a hard limit. Combined with a fixed failure delay + generic errors.
-const attempts = new Map<string, { count: number; first: number }>()
-const WINDOW_MS = 60_000
-const MAX_ATTEMPTS = 10
-
-function tooMany(ip: string): boolean {
-  const now = Date.now()
-  const rec = attempts.get(ip)
-  if (!rec || now - rec.first > WINDOW_MS) {
-    attempts.set(ip, { count: 1, first: now })
-    return false
-  }
-  rec.count += 1
-  return rec.count > MAX_ATTEMPTS
-}
-
+// Best-effort brute-force throttle (shared in-memory limiter): 10 attempts per
+// IP per minute. Serverless is stateless across cold starts, so it's a speed
+// bump, not a hard limit — combined with a fixed failure delay + generic errors.
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'method_not_allowed' })
     return
   }
 
-  const ip = String(req.headers['x-forwarded-for'] ?? '').split(',')[0].trim() || 'unknown'
-  if (tooMany(ip)) {
+  if (rateLimited('login', clientIp(req), { windowMs: 60_000, max: 10 })) {
     res.status(429).json({ error: 'too_many_attempts' })
     return
   }
