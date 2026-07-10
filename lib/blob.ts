@@ -2,7 +2,7 @@
 // (slots.json) in the Vercel Blob store. The SDK reads BLOB_READ_WRITE_TOKEN
 // from the environment automatically. Outside api/ so it's never an endpoint.
 import { list, put } from '@vercel/blob'
-import type { SlotMap } from '../src/data/photoSlots'
+import type { SlotMap } from '../src/data/photoSlots.js'
 
 const SLOTS_PATH = 'slots.json'
 

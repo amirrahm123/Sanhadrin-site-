@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { createSessionToken, safeEqual, setSessionCookie } from '../../lib/auth'
-import { clientIp, rateLimited } from '../../lib/rateLimit'
+import { createSessionToken, safeEqual, setSessionCookie } from '../../lib/auth.js'
+import { clientIp, rateLimited } from '../../lib/rateLimit.js'
 
 // Best-effort brute-force throttle (shared in-memory limiter): 10 attempts per
 // IP per minute. Serverless is stateless across cold starts, so it's a speed

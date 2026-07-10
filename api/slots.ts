@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { readSlots } from '../lib/blob'
+import { readSlots } from '../lib/blob.js'
 
 // Public, read-only: the current slot→image mapping so the public site can
 // render the chosen photos. Only public image ids — safe to expose. Briefly

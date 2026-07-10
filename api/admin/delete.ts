@@ -1,9 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { requireAuth } from '../../lib/auth'
-import { assertBlobConfigured, readSlots, writeSlots } from '../../lib/blob'
-import { clientIp, rateLimited } from '../../lib/rateLimit'
-import { isValidSlotKey } from '../../src/data/photoSlots'
-import { assertCloudinaryConfigured, cloudinary } from '../../lib/cloudinaryServer'
+import { requireAuth } from '../../lib/auth.js'
+import { assertBlobConfigured, readSlots, writeSlots } from '../../lib/blob.js'
+import { clientIp, rateLimited } from '../../lib/rateLimit.js'
+import { isValidSlotKey } from '../../src/data/photoSlots.js'
+import { assertCloudinaryConfigured, cloudinary } from '../../lib/cloudinaryServer.js'
 
 // Auth-required.
 //   target:'slot'    → clear the slot (revert to placeholder) + delete its asset

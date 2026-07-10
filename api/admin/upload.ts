@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { requireAuth } from '../../lib/auth'
-import { clientIp, rateLimited } from '../../lib/rateLimit'
-import { assertCloudinaryConfigured, cloudinary, GALLERY_TAG, SLOT_FOLDER } from '../../lib/cloudinaryServer'
+import { requireAuth } from '../../lib/auth.js'
+import { clientIp, rateLimited } from '../../lib/rateLimit.js'
+import { assertCloudinaryConfigured, cloudinary, GALLERY_TAG, SLOT_FOLDER } from '../../lib/cloudinaryServer.js'
 
 // The whole JSON body must stay under Vercel's ~4.5 MB serverless request cap;
 // the data-URI string dominates it, so cap the string well below that. The

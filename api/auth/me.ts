@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { isAuthed } from '../../lib/auth'
+import { isAuthed } from '../../lib/auth.js'
 
 // Whether the current request is an authenticated admin. Used by the client to
 // gate the /admin dashboard UI. Never cached.
