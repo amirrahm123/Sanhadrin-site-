@@ -36,10 +36,23 @@ export async function logout(): Promise<void> {
   }
 }
 
+// The admin must always see current data, so its reads bypass the edge cache
+// that the public site relies on: a unique `t` query param forces a CDN cache
+// MISS (Vercel keys on the full URL) and `no-store` skips the browser cache.
+// The public endpoints keep their Cache-Control headers untouched — only these
+// admin-side fetches opt out. Callers are admin-only (see file header).
+function noStore(path: string): Promise<Response> {
+  const sep = path.includes('?') ? '&' : '?'
+  return fetch(`${path}${sep}t=${Date.now()}`, {
+    headers: { Accept: 'application/json' },
+    cache: 'no-store',
+  })
+}
+
 /** Current slot→image map (same public endpoint the site reads). */
 export async function fetchSlots(): Promise<SlotMap> {
   try {
-    const res = await fetch('/api/slots', { headers: { Accept: 'application/json' } })
+    const res = await noStore('/api/slots')
     if (!res.ok) return {}
     const data = (await res.json()) as { slots?: SlotMap }
     return data.slots ?? {}
@@ -53,7 +66,7 @@ export type GalleryItem = { publicId: string; width?: number; height?: number }
 /** Current gallery photos (auth not required — same public listing the site uses). */
 export async function fetchGallery(): Promise<GalleryItem[]> {
   try {
-    const res = await fetch('/api/gallery', { headers: { Accept: 'application/json' } })
+    const res = await noStore('/api/gallery')
     if (!res.ok) return []
     const data = (await res.json()) as {
       resources?: { public_id: string; width?: number; height?: number }[]

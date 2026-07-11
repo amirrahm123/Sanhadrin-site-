@@ -13,8 +13,9 @@ type PushToast = (kind: ToastKind, msg: string) => void
 /**
  * The photo-management dashboard: every managed slot grouped by page, each with
  * a live thumbnail and upload / replace / remove. All mutations go through the
- * auth-guarded admin API; on success the slot map is refetched so the thumbnail
- * reflects reality.
+ * auth-guarded admin API; on success the slot map is updated optimistically so
+ * the thumbnail reflects the change immediately (no wait on the edge cache).
+ * The initial load and any refetch bypass that cache (see adminApi.noStore).
  */
 export function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [slots, setSlots] = useState<SlotMap>({})
@@ -28,6 +29,20 @@ export function Dashboard({ onLogout }: { onLogout: () => void }) {
   useEffect(() => {
     refresh()
   }, [refresh])
+
+  // Optimistic, immediate slot update after a successful mutation — the admin
+  // sees the change at once instead of waiting on a refetch. Pass null to clear
+  // a slot (removal). We deliberately don't refetch here: local state is
+  // authoritative post-mutation, and a failed reconcile fetch returns {} which
+  // would wipe the whole grid.
+  const applyOverride = useCallback((key: string, override: SlotOverride | null) => {
+    setSlots((prev) => {
+      const next = { ...prev }
+      if (override) next[key] = override
+      else delete next[key]
+      return next
+    })
+  }, [])
 
   const pushToast: PushToast = useCallback((kind, msg) => {
     const id = (toastId.current += 1)
@@ -73,7 +88,7 @@ export function Dashboard({ onLogout }: { onLogout: () => void }) {
                   key={slot.key}
                   slot={slot}
                   override={slots[slot.key]}
-                  onChanged={refresh}
+                  onApply={(override) => applyOverride(slot.key, override)}
                   pushToast={pushToast}
                 />
               ))}
@@ -92,12 +107,12 @@ export function Dashboard({ onLogout }: { onLogout: () => void }) {
 function SlotCard({
   slot,
   override,
-  onChanged,
+  onApply,
   pushToast,
 }: {
   slot: PhotoSlot
   override?: SlotOverride
-  onChanged: () => Promise<void>
+  onApply: (override: SlotOverride | null) => void
   pushToast: PushToast
 }) {
   const [busy, setBusy] = useState(false)
@@ -119,8 +134,8 @@ function SlotCard({
       if (!up) throw new Error('upload')
       const ok = await setSlot(slot.key, up.publicId)
       if (!ok) throw new Error('set')
+      onApply({ publicId: up.publicId })
       pushToast('ok', 'התמונה עודכנה')
-      await onChanged()
     } catch (err) {
       pushToast(
         'err',
@@ -138,8 +153,8 @@ function SlotCard({
     try {
       const ok = await removeSlot(slot.key)
       if (!ok) throw new Error('remove')
+      onApply(null)
       pushToast('ok', 'התמונה הוסרה')
-      await onChanged()
     } catch {
       pushToast('err', 'ההסרה נכשלה — נסו שוב')
     } finally {
