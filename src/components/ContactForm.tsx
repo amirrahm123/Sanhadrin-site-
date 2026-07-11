@@ -23,6 +23,7 @@ import { track } from '../lib/track'
 type FormState = {
   name: string
   phone: string
+  email: string
   eventType: string
   date: string
   guests: string
@@ -34,6 +35,7 @@ type Errors = Partial<Record<keyof FormState, string>>
 const empty: FormState = {
   name: '',
   phone: '',
+  email: '',
   eventType: '',
   date: '',
   guests: '',
@@ -58,6 +60,9 @@ export function ContactForm() {
     const next: Errors = {}
     if (!form.name.trim()) next.name = 'נא למלא שם מלא'
     if (!/^[0-9+\-\s()]{7,}$/.test(form.phone.trim())) next.phone = 'נא להזין מספר טלפון תקין'
+    // Email is optional; validate only when the customer filled it in.
+    if (form.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim()))
+      next.email = 'נא להזין כתובת אימייל תקינה'
     if (!form.eventType) next.eventType = 'נא לבחור סוג אירוע'
     setErrors(next)
     return Object.keys(next).length === 0
@@ -72,21 +77,32 @@ export function ContactForm() {
     track('form_submit', { event_type: form.eventType })
 
     setStatus('submitting')
+    // Empty optional values render as a clean dash instead of a blank row.
+    const orDash = (v: string) => v.trim() || '—'
+    const name = form.name.trim()
+    const email = form.email.trim()
     try {
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
+          // ── Web3Forms directives (not shown as rows in the email) ──────────
           access_key: SITE.web3formsKey,
-          subject: 'פנייה חדשה מאתר אחוזת סנדרין',
+          subject: name ? `פנייה חדשה מהאתר — ${name}` : 'פנייה חדשה מאתר אחוזת סנדרין',
           from_name: 'אתר אחוזת סנדרין',
-          name: form.name,
-          phone: form.phone,
-          event_type: form.eventType,
-          date: form.date,
-          guests: form.guests,
-          message: form.message,
+          // Reply-To → the customer's email so a reply goes straight to them
+          // (omitted by Web3Forms when empty, since email is optional).
+          replyto: email,
           botcheck: false,
+          // ── Data rows — Hebrew keys become the labels in the default email
+          // template, so every field reads cleanly in Hebrew. ───────────────
+          'שם מלא': name,
+          טלפון: form.phone.trim(),
+          אימייל: orDash(email),
+          'סוג אירוע': orDash(form.eventType),
+          'תאריך מבוקש': orDash(form.date),
+          'מספר אורחים': orDash(form.guests),
+          הודעה: orDash(form.message),
         }),
       })
       const data = await res.json().catch(() => ({}))
@@ -196,6 +212,24 @@ export function ContactForm() {
                       aria-invalid={!!errors.phone}
                     />
                     {errors.phone && <p className={errCls}>{errors.phone}</p>}
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label className={labelCls} htmlFor="email">
+                      אימייל <span className="text-cream/40">(לא חובה)</span>
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      autoComplete="email"
+                      dir="ltr"
+                      value={form.email}
+                      onChange={(e) => update('email', e.target.value)}
+                      className={`${fieldCls} text-start`}
+                      placeholder="name@example.com"
+                      aria-invalid={!!errors.email}
+                    />
+                    {errors.email && <p className={errCls}>{errors.email}</p>}
                   </div>
 
                   <div className="sm:col-span-1">
