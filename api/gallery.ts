@@ -35,9 +35,11 @@ cloudinary.config({
 })
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Edge-cache for 5 min (+ SWR) so we don't hit the Admin API on every load
-  // and stay well within its rate limits.
-  res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600')
+  // Short edge cache (+ SWR) so gallery edits show on the public site within
+  // ~10s while still shielding the Cloudinary Admin API: at most ~one origin
+  // call per 10s per edge region, and stale-while-revalidate serves the cached
+  // list during refresh so bursts never hit the rate limit.
+  res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=30')
 
   try {
     const result = await cloudinary.api.resources_by_tag(GALLERY_TAG, {
