@@ -1,12 +1,16 @@
 // Server-only helpers for the slot mapping, persisted as a single JSON object
 // (slots.json) in the Vercel Blob store. Outside api/ so it's never an endpoint.
 //
+// The store is PRIVATE, so blobs are written with access:'private' and can only
+// be read back through the SDK's authenticated read (get) — a plain fetch of the
+// blob URL would be rejected. Both go through the same auth path below.
+//
 // Auth is token-less on Vercel: our store is connected via OIDC, so the runtime
 // injects VERCEL_OIDC_TOKEN automatically and the only Blob var we set is
 // BLOB_STORE_ID. @vercel/blob's resolveBlobAuth picks up both from the
 // environment on its own (OIDC token + BLOB_STORE_ID) — no BLOB_READ_WRITE_TOKEN
 // needed. A classic read-write token still works if one is ever configured.
-import { list, put } from '@vercel/blob'
+import { get, put } from '@vercel/blob'
 import type { SlotMap } from '../src/data/photoSlots.js'
 
 const SLOTS_PATH = 'slots.json'
@@ -26,12 +30,13 @@ export function assertBlobConfigured(): void {
 /** Read the current slot map. Fails safe to `{}` (→ site shows placeholders). */
 export async function readSlots(): Promise<SlotMap> {
   try {
-    const { blobs } = await list({ prefix: SLOTS_PATH, limit: 100 })
-    const blob = blobs.find((b) => b.pathname === SLOTS_PATH)
-    if (!blob) return {}
-    const res = await fetch(blob.url, { cache: 'no-store' })
-    if (!res.ok) return {}
-    const data = (await res.json()) as SlotMap
+    // Authenticated read from the private store. useCache:false reads from
+    // origin so an admin edit is reflected immediately (the public /api/slots
+    // endpoint has its own short edge cache in front of this). Returns null
+    // when the blob doesn't exist yet.
+    const result = await get(SLOTS_PATH, { access: 'private', useCache: false })
+    if (!result || result.statusCode !== 200 || !result.stream) return {}
+    const data = (await new Response(result.stream).json()) as SlotMap
     return data && typeof data === 'object' ? data : {}
   } catch (err) {
     console.error('[blob] readSlots failed:', err instanceof Error ? err.message : err)
@@ -42,7 +47,8 @@ export async function readSlots(): Promise<SlotMap> {
 /** Overwrite the slot map. Throws on failure so the caller can 500. */
 export async function writeSlots(map: SlotMap): Promise<void> {
   await put(SLOTS_PATH, JSON.stringify(map), {
-    access: 'public',
+    // Private store — must match the store's access level or the API rejects it.
+    access: 'private',
     contentType: 'application/json',
     addRandomSuffix: false,
     allowOverwrite: true,
