@@ -24,6 +24,12 @@ type ImagePlaceholderProps = {
   rounded?: boolean
   /** eager-load (above-the-fold, e.g. the hero); otherwise lazy. */
   eager?: boolean
+  /**
+   * Show the centered seal marker (and caption) in the empty state. Default
+   * true. The full-bleed homepage hero opts out so an empty hero slot renders
+   * as a clean arch background with no icon in the middle.
+   */
+  showEmptyStateIcon?: boolean
 }
 
 const ratioClass: Record<Ratio, string> = {
@@ -61,6 +67,7 @@ export function ImagePlaceholder({
   tone = 'light',
   rounded = true,
   eager = false,
+  showEmptyStateIcon = true,
 }: ImagePlaceholderProps) {
   const radius = rounded ? 'rounded-2xl' : ''
 
@@ -151,27 +158,30 @@ export function ImagePlaceholder({
         }}
       />
 
-      {/* centered seal + caption */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-4 text-center">
-        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M6 19V11a6 6 0 0 1 12 0v8"
-            stroke={sealColor}
-            strokeWidth="1.4"
-            strokeLinecap="round"
-          />
-          <path d="M4 19h16" stroke={sealColor} strokeWidth="1.4" strokeLinecap="round" />
-          <circle cx="12" cy="7" r="1.1" fill={sealColor} />
-        </svg>
-        {label && (
-          <span
-            className={`latin-caption font-serif text-sm md:text-[0.95rem] italic ${captionColor}`}
-            style={{ fontFamily: '"Frank Ruhl Libre", serif' }}
-          >
-            {label}
-          </span>
-        )}
-      </div>
+      {/* centered seal + caption (hidden when showEmptyStateIcon is false, e.g.
+          the homepage hero, which wants a clean arch background) */}
+      {showEmptyStateIcon && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-4 text-center">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M6 19V11a6 6 0 0 1 12 0v8"
+              stroke={sealColor}
+              strokeWidth="1.4"
+              strokeLinecap="round"
+            />
+            <path d="M4 19h16" stroke={sealColor} strokeWidth="1.4" strokeLinecap="round" />
+            <circle cx="12" cy="7" r="1.1" fill={sealColor} />
+          </svg>
+          {label && (
+            <span
+              className={`latin-caption font-serif text-sm md:text-[0.95rem] italic ${captionColor}`}
+              style={{ fontFamily: '"Frank Ruhl Libre", serif' }}
+            >
+              {label}
+            </span>
+          )}
+        </div>
+      )}
     </div>
   )
 }

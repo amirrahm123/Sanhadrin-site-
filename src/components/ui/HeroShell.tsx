@@ -10,6 +10,12 @@ type HeroShellProps = {
   bottomSlot?: ReactNode
   /** managed photo-slot key for the full-bleed hero background */
   photoSlot?: string
+  /**
+   * Show the empty-state seal icon over the arch background (default true).
+   * The homepage hero passes false so an empty hero renders as a clean arch
+   * background with no icon in the middle.
+   */
+  showEmptyStateIcon?: boolean
   id?: string
   children: ReactNode
 }
@@ -24,6 +30,7 @@ export function HeroShell({
   topSlot,
   bottomSlot,
   photoSlot,
+  showEmptyStateIcon = true,
   id,
   children,
 }: HeroShellProps) {
@@ -41,6 +48,7 @@ export function HeroShell({
           label=""
           slot={photoSlot}
           eager
+          showEmptyStateIcon={showEmptyStateIcon}
           className="!aspect-auto h-full w-full"
         />
         <div
