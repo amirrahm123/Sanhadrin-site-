@@ -29,7 +29,7 @@ export const SITE = {
 
   // Web3Forms access key — register morvsandrine@gmail.com at web3forms.com.
   // TODO(launch): replace with the real access key.
-  web3formsKey: 'REPLACE_WITH_WEB3FORMS_KEY',
+  web3formsKey: '80511a4c-6b17-4c9f-a8d6-5f2a2687e363',
 
   // LocalBusiness geo coordinates. Left null on purpose — do NOT guess precise
   // coordinates. TODO(launch): look up מתחם רגבה / BIG Regba and fill in; geo is
