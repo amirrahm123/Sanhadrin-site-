@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
 import { Hero } from '../components/Hero'
+import { Aqueduct } from '../components/Aqueduct'
 import { Section, SectionHeading } from '../components/ui/Section'
 import { Reveal } from '../components/ui/Reveal'
 import { Button } from '../components/ui/Button'
@@ -73,6 +74,9 @@ export function Component() {
           </Reveal>
         </div>
       </Section>
+
+      {/* Signature differentiator → the ancient Roman aqueduct, its own moment */}
+      <Aqueduct />
 
       {/* Event types → dedicated celebration pages */}
       <Section id="events" className="bg-stone/30">

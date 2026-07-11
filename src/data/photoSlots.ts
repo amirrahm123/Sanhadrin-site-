@@ -47,6 +47,7 @@ export const PHOTO_SLOTS: PhotoSlot[] = [
     group: 'עמוד הבית',
     ratio: '4/5',
   },
+  { key: 'home_aqueduct', label: 'תמונת האקוודוקט — עמוד הבית', group: 'עמוד הבית', ratio: '4/5' },
   { key: 'event_card_weddings', label: 'כרטיס אירוע — חתונות', group: 'עמוד הבית', ratio: '4/5' },
   { key: 'event_card_barbat', label: 'כרטיס אירוע — בר/בת מצווה', group: 'עמוד הבית', ratio: '4/5' },
   { key: 'event_card_henna', label: 'כרטיס אירוע — חינה יוקרתית', group: 'עמוד הבית', ratio: '4/5' },

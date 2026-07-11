@@ -91,6 +91,17 @@ export const ABOUT = {
   imageLabel: 'מבט אל האחוזה',
 } as const
 
+// The venue's signature differentiator: the ancient Roman aqueduct running
+// through the gardens. Fresh wording (not copied from ABOUT/GARDEN) drawn from
+// the live-site language — deliberately no age, date or name, only "רומית עתיקה".
+export const AQUEDUCT = {
+  eyebrow: 'Roman Aqueduct',
+  title: 'חוגגים לצד אמת מים רומית עתיקה',
+  body: 'לאורך גני האחוזה משתרעת אמת מים רומית עתיקה (אקוודוקט), ולצדה נחגגים הרגעים הגדולים שלכם. מזרקות מים ופסיפסי רצפה בעבודת יד נשזרים בבנייני המתחם, בארכיטקטורה מודרנית שמפגישה עבר, הווה ועתיד. עם רדת החשכה מוארת אמת המים בתאורה יוקרתית — והטבע, ההיסטוריה והיוקרה מתלכדים לחוויה אחת.',
+  emphasis: 'תפאורה שכמוה לא תמצאו באף מקום אחר.',
+  imageLabel: 'אמת המים הרומית',
+} as const
+
 export const GARDEN = {
   eyebrow: 'The New Garden',
   title: 'הגן החדש — קסם לאורך האקוודוקט',
