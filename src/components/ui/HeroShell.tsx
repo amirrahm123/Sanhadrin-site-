@@ -11,9 +11,10 @@ type HeroShellProps = {
   /** managed photo-slot key for the full-bleed hero background */
   photoSlot?: string
   /**
-   * Show the empty-state seal icon over the arch background (default true).
-   * The homepage hero passes false so an empty hero renders as a clean arch
-   * background with no icon in the middle.
+   * Show the empty-state seal icon over the arch background. Defaults to FALSE
+   * for every hero: an empty hero renders as a clean arch background with no
+   * icon in the middle. (Non-hero placeholders — gallery tiles, section images
+   * — keep their marker; that's ImagePlaceholder's own default of true.)
    */
   showEmptyStateIcon?: boolean
   id?: string
@@ -30,7 +31,7 @@ export function HeroShell({
   topSlot,
   bottomSlot,
   photoSlot,
-  showEmptyStateIcon = true,
+  showEmptyStateIcon = false,
   id,
   children,
 }: HeroShellProps) {

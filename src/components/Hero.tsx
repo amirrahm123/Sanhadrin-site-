@@ -20,7 +20,6 @@ export function Hero() {
     <HeroShell
       id="home"
       photoSlot="home_hero"
-      showEmptyStateIcon={false}
       bottomSlot={
         <a
           href="#estate-intro"
