@@ -28,7 +28,7 @@ All launch values live in **one file: [`src/data/site.ts`](src/data/site.ts)**
 | **Web3Forms access key** | `SITE.web3formsKey` | `REPLACE_WITH_WEB3FORMS_KEY` |
 | **Geo coordinates** (JSON-LD) | `SITE.geo` (currently `null`) | not set — do **not** guess |
 | **Social share image** | `public/og-image.svg` → replace with real `og-image.jpg` and update `SITE.ogImage` | branded SVG placeholder |
-| **Sister-brand link** | `Footer.tsx` (`FOOTER.crossLink`, `href="#"`) | `#` |
+| ~~**Sister-brand link**~~ ✅ done | `Footer.tsx` (`FOOTER.crossLink`) | `https://www.glory-wedding.com` |
 | **Accessibility statement** | `Footer.tsx` (`FOOTER.accessibility`, `href="#"`) | `#` |
 
 > The GTM id and Search Console token appear in `index.html` because they must

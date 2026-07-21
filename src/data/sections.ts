@@ -307,5 +307,5 @@ export const FOOTER = {
   seoLine: 'אחוזת סנדרין · גן אירועים בצפון · חתונות יוקרה בצפון',
   disclaimer: 'התמונות להמחשה בלבד',
   accessibility: 'הצהרת נגישות',
-  crossLink: 'עוד מבית סנדרין: אולמי יהלום',
+  crossLink: 'עוד מבית סנדרין: אולמי גלורי',
 } as const

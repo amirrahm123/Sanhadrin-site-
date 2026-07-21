@@ -27,9 +27,10 @@ export function Footer() {
                 <Facebook size={18} />
               </SocialLink>
             </div>
-            {/* TODO: point to the sister-brand site once its URL is provided. */}
             <a
-              href="#"
+              href="https://www.glory-wedding.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="mt-3 inline-block text-sm text-cream/70 underline-offset-4 transition-colors hover:text-gold hover:underline"
             >
               {FOOTER.crossLink}
