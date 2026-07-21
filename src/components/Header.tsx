@@ -62,14 +62,17 @@ export function Header() {
         ref={barRef}
         className="mx-auto flex max-w-content items-center justify-between gap-4 px-5 py-4 sm:px-8 lg:px-10"
       >
-        {/* Logo (RTL start / top-right). Native 266x180 -> ~1.48:1 aspect. */}
+        {/* Logo (RTL start / top-right). Native 266x180 -> ~1.48:1 aspect.
+            The negative vertical margin (-my-2) lets the mark grow into the
+            bar's padding so it reads clearly larger WITHOUT increasing the
+            bar's outer height — the row height still tracks the original. */}
         <Link to="/" className="flex items-center" aria-label={BRAND.he}>
           <img
             src={logoUrl}
             alt={BRAND.he}
             width={266}
             height={180}
-            className={`h-16 w-auto md:h-20 ${
+            className={`-my-2 h-20 w-auto md:h-24 ${
               // Extra lift only over the transparent (dark hero) header.
               solid ? '' : 'drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]'
             }`}
@@ -212,7 +215,7 @@ function NavItemLink({ to, label, solid }: { to: string; label: string; solid: b
     return (
       <a
         href={to}
-        className={`relative px-3 py-2 text-sm font-medium transition-colors ${
+        className={`relative px-3 py-2 text-base font-medium transition-colors ${
           solid ? 'text-ink/80 hover:text-emerald' : 'text-cream/90 hover:text-cream'
         }`}
       >
@@ -225,7 +228,7 @@ function NavItemLink({ to, label, solid }: { to: string; label: string; solid: b
       to={to}
       end={to === '/'}
       className={({ isActive }) =>
-        `relative px-3 py-2 text-sm font-medium transition-colors ${
+        `relative px-3 py-2 text-base font-medium transition-colors ${
           solid
             ? isActive
               ? 'text-gold'
@@ -263,7 +266,7 @@ function NavGroup({
   // Active when the label's own route or any child route is current.
   const groupActive = to === pathname || items.some((i) => i.to === pathname)
 
-  const triggerCls = `inline-flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
+  const triggerCls = `inline-flex items-center gap-1 px-3 py-2 text-base font-medium transition-colors ${
     solid
       ? groupActive
         ? 'text-gold'
