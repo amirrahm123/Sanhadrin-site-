@@ -71,9 +71,13 @@ export function CelebrationPage({
 
       {/* Features */}
       <Section id="highlights" className="bg-stone/30">
-        <div className="grid gap-6 sm:grid-cols-2">
+        <div
+          className={`grid gap-6 ${
+            content.features.length === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2'
+          }`}
+        >
           {content.features.map((f, i) => (
-            <Reveal key={f.title} delay={(i % 2) * 0.1}>
+            <Reveal key={f.title} delay={(i % 3) * 0.1}>
               <article className="flex h-full flex-col gap-3 rounded-3xl bg-ivory p-7 shadow-soft md:p-8">
                 <h3 className="flex items-center gap-2 text-2xl text-emerald">
                   <Sparkles size={20} className="text-gold" />
