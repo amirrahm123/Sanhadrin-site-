@@ -42,3 +42,22 @@ export const GALLERY_CATEGORIES: GalleryCategory[] = [
   { id: 'palais-large-hall', title: 'פאלה - אולם גדול', images: placeholders('16/9') },
   { id: 'luxury-henna', title: 'חינות יוקרתיות', images: placeholders('4/5') },
 ]
+
+/** Base path for the gallery section. */
+export const GALLERY_BASE = '/gallery'
+
+/** Route path for a single category page, e.g. "/gallery/new-garden". */
+export const galleryPath = (id: string) => `${GALLERY_BASE}/${id}`
+
+/** Look up a category by its id/slug (undefined if unknown). */
+export const findGalleryCategory = (id: string | undefined) =>
+  GALLERY_CATEGORIES.find((c) => c.id === id)
+
+/**
+ * Category links derived from the config above — consumed by both the nav
+ * dropdown and the landing-page cards, so nothing is ever duplicated.
+ */
+export const GALLERY_NAV_LINKS = GALLERY_CATEGORIES.map((c) => ({
+  label: c.title,
+  to: galleryPath(c.id),
+}))

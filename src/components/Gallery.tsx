@@ -1,64 +1,64 @@
+import { Link } from 'react-router-dom'
+import { Section, SectionHeading } from './ui/Section'
 import { Reveal } from './ui/Reveal'
-import { Button } from './ui/Button'
 import { ImagePlaceholder } from './ImagePlaceholder'
-import { GALLERY_CATEGORIES, type GalleryCategory } from '../data/galleryData'
+import { GALLERY } from '../data/sections'
+import { GALLERY_CATEGORIES, galleryPath, type GalleryCategory } from '../data/galleryData'
 
-// Grid tile can span the full row on mobile down to a quarter on desktop.
-const TILE_SIZES = '(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw'
+const CARD_SIZES = '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'
 
-function CategorySection({ category, index }: { category: GalleryCategory; index: number }) {
-  // Alternate a subtle stone wash so adjacent blocks read as separated.
-  const banded = index % 2 === 1
+/**
+ * Gallery landing / index — one clickable card per category. Cards and the nav
+ * dropdown both read from GALLERY_CATEGORIES, so the set stays in sync.
+ */
+export function Gallery() {
   return (
-    <section
-      id={`gallery-${category.id}`}
-      className={`py-16 md:py-20 lg:py-24 ${banded ? 'bg-stone/30' : ''}`}
-    >
-      <div className="mx-auto w-full max-w-content px-5 sm:px-8 lg:px-10">
-        <Reveal className="mb-10 flex flex-col items-center gap-4 text-center md:mb-12">
-          <h2
-            className="text-3xl leading-tight md:text-4xl lg:text-5xl"
-            {...(category.dir === 'ltr' ? { dir: 'ltr' } : {})}
-          >
-            {category.title}
-          </h2>
-          <span className="hairline max-w-[7rem]" />
-        </Reveal>
+    <Section id="gallery" className="bg-stone/30">
+      <SectionHeading
+        eyebrow={GALLERY.eyebrow}
+        title={GALLERY.title}
+        subtitle={GALLERY.subtitle}
+      />
 
-        {/* 2 cols on mobile, 3 on tablet, 4 on desktop. */}
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
-          {category.images.map((img, i) => (
-            <Reveal key={`${category.id}-${i}`} delay={(i % 4) * 0.05}>
-              <ImagePlaceholder
-                src={img.src}
-                alt={img.alt}
-                sizes={img.src ? TILE_SIZES : undefined}
-                ratio={img.ratio ?? '4/5'}
-                label={img.src ? undefined : category.title}
-                className="shadow-soft"
-              />
-            </Reveal>
-          ))}
-        </div>
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
+        {GALLERY_CATEGORIES.map((category, i) => (
+          <Reveal key={category.id} delay={(i % 3) * 0.06}>
+            <CategoryCard category={category} />
+          </Reveal>
+        ))}
       </div>
-    </section>
+    </Section>
   )
 }
 
-export function Gallery() {
+function CategoryCard({ category }: { category: GalleryCategory }) {
+  const cover = category.images[0]
   return (
-    <div id="gallery">
-      {GALLERY_CATEGORIES.map((category, index) => (
-        <CategorySection key={category.id} category={category} index={index} />
-      ))}
-
-      <div className="mx-auto w-full max-w-content px-5 pb-20 sm:px-8 lg:px-10">
-        <Reveal className="flex justify-center">
-          <Button as="a" href="#contact-form" variant="outline" size="lg">
-            לתיאום סיור באחוזה
-          </Button>
-        </Reveal>
+    <Link
+      to={galleryPath(category.id)}
+      className="group block overflow-hidden rounded-2xl shadow-soft transition-shadow hover:shadow-card focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+      aria-label={category.title}
+    >
+      <div className="relative">
+        <ImagePlaceholder
+          src={cover?.src}
+          alt={cover?.alt}
+          sizes={cover?.src ? CARD_SIZES : undefined}
+          ratio="4/5"
+          label={cover?.src ? undefined : category.title}
+          rounded={false}
+          className="transition-transform duration-500 group-hover:scale-[1.03]"
+        />
+        {/* Title plate — always legible over photo or placeholder. */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-emerald-deep/80 via-emerald-deep/30 to-transparent p-5 pt-12">
+          <h3
+            className="font-serif text-xl font-semibold text-cream md:text-2xl"
+            {...(category.dir === 'ltr' ? { dir: 'ltr' } : {})}
+          >
+            {category.title}
+          </h3>
+        </div>
       </div>
-    </div>
+    </Link>
   )
 }

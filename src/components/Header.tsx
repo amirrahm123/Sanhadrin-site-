@@ -80,7 +80,13 @@ export function Header() {
         <nav className="hidden items-center gap-1 xl:flex">
           {NAV_ITEMS.map((item) =>
             isNavGroup(item) ? (
-              <NavGroup key={item.label} label={item.label} items={item.children} solid={solid} />
+              <NavGroup
+                key={item.label}
+                label={item.label}
+                to={item.to}
+                items={item.children}
+                solid={solid}
+              />
             ) : (
               <NavItemLink key={item.to} to={item.to} label={item.label} solid={solid} />
             ),
@@ -138,9 +144,24 @@ export function Header() {
                 {NAV_ITEMS.map((item) =>
                   isNavGroup(item) ? (
                     <div key={item.label} className="border-b border-stone/50 py-3">
-                      <p className="mb-1 text-sm font-semibold uppercase tracking-wider text-gold">
-                        {item.label}
-                      </p>
+                      {item.to ? (
+                        <NavLink
+                          to={item.to}
+                          end
+                          onClick={() => setOpen(false)}
+                          className={({ isActive }) =>
+                            `mb-1 block text-sm font-semibold uppercase tracking-wider transition-colors ${
+                              isActive ? 'text-gold-soft' : 'text-gold hover:text-emerald'
+                            }`
+                          }
+                        >
+                          {item.label}
+                        </NavLink>
+                      ) : (
+                        <p className="mb-1 text-sm font-semibold uppercase tracking-wider text-gold">
+                          {item.label}
+                        </p>
+                      )}
                       <div className="flex flex-col">
                         {item.children.map((c) => (
                           <MobileLink
@@ -228,34 +249,43 @@ function NavItemLink({ to, label, solid }: { to: string; label: string; solid: b
 /** Desktop dropdown group. Opens on hover and on keyboard focus (focus-within). */
 function NavGroup({
   label,
+  to,
   items,
   solid,
 }: {
   label: string
+  /** When set, the group label itself links here (e.g. גלריה → landing). */
+  to?: string
   items: { label: string; to: string }[]
   solid: boolean
 }) {
   const { pathname } = useLocation()
-  const groupActive = items.some((i) => i.to === pathname)
+  // Active when the label's own route or any child route is current.
+  const groupActive = to === pathname || items.some((i) => i.to === pathname)
+
+  const triggerCls = `inline-flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
+    solid
+      ? groupActive
+        ? 'text-gold'
+        : 'text-ink/80 hover:text-emerald'
+      : groupActive
+        ? 'text-gold-soft'
+        : 'text-cream/90 hover:text-cream'
+  }`
 
   return (
     <div className="group relative">
-      <button
-        type="button"
-        aria-haspopup="true"
-        className={`inline-flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
-          solid
-            ? groupActive
-              ? 'text-gold'
-              : 'text-ink/80 hover:text-emerald'
-            : groupActive
-              ? 'text-gold-soft'
-              : 'text-cream/90 hover:text-cream'
-        }`}
-      >
-        {label}
-        <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
-      </button>
+      {to ? (
+        <NavLink to={to} end aria-haspopup="true" className={triggerCls}>
+          {label}
+          <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
+        </NavLink>
+      ) : (
+        <button type="button" aria-haspopup="true" className={triggerCls}>
+          {label}
+          <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
+        </button>
+      )}
       <div className="invisible absolute right-0 top-full z-50 min-w-[12rem] translate-y-1 pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
         {/* Solid cream panel so the dark item text always reads (a transparent
             panel over the dark hero made the items blend in). */}

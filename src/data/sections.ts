@@ -1,19 +1,26 @@
 // Centralised, typed copy + nav config. Edit here, not in JSX.
+import { GALLERY_BASE, GALLERY_NAV_LINKS } from './galleryData'
 
 export type NavLeaf = {
   label: string
   to: string
 }
 
-export type NavItem = NavLeaf | { label: string; children: NavLeaf[] }
+// A dropdown group. `to` is optional: when set, the group label is itself a
+// link (e.g. "גלריה" → the gallery landing) while still opening the submenu.
+export type NavGroup = { label: string; to?: string; children: NavLeaf[] }
 
-export function isNavGroup(item: NavItem): item is { label: string; children: NavLeaf[] } {
+export type NavItem = NavLeaf | NavGroup
+
+export function isNavGroup(item: NavItem): item is NavGroup {
   return 'children' in item
 }
 
 // Top-level navigation. Real page routes (react-router), not anchor scrolling.
 // The "אירועים" group is a dropdown so the bar stays clean as celebration
-// pages grow (corporate / testimonials can be added here later).
+// pages grow (corporate / testimonials can be added here later). "גלריה" is a
+// dropdown too — its label links to the landing index while listing every
+// category (pulled from galleryData, the single source of truth).
 export const NAV_ITEMS: NavItem[] = [
   { label: 'בית', to: '/' },
   { label: 'האחוזה', to: '/about' },
@@ -27,15 +34,17 @@ export const NAV_ITEMS: NavItem[] = [
   },
   { label: 'האולמות', to: '/halls' },
   { label: 'קולינריה', to: '/culinary' },
-  { label: 'גלריה', to: '/gallery' },
+  { label: 'גלריה', to: GALLERY_BASE, children: GALLERY_NAV_LINKS },
   // Scroll target — the contact form lives in the global footer (id=contact-form).
   { label: 'צור קשר', to: '#contact-form' },
 ]
 
 // Flat list of the real *route* links (hash/scroll links excluded) — used for
-// the footer nav grid.
+// the footer nav grid. A group with its own `to` (e.g. גלריה) contributes that
+// single top-level link; a group without one (אירועים) contributes its
+// children, so the footer stays exactly as before.
 export const NAV_LINKS: NavLeaf[] = NAV_ITEMS.flatMap((i) =>
-  isNavGroup(i) ? i.children : [i],
+  isNavGroup(i) ? (i.to ? [{ label: i.label, to: i.to }] : i.children) : [i],
 ).filter((l) => l.to.startsWith('/'))
 
 export const BRAND = {

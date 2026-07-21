@@ -3,6 +3,8 @@
 // `path` is the route; the canonical URL is derived from SITE.url + path.
 // To add a page: add a route in routes.tsx and an entry here with the same key.
 // ---------------------------------------------------------------------------
+import { GALLERY_CATEGORIES, galleryPath } from './galleryData'
+
 export type SeoEntry = {
   /** <title> */
   title: string
@@ -65,4 +67,15 @@ export const SEO: Record<string, SeoEntry> = {
       'גלריית תמונות מאחוזת סנדרין — הגנים, האקוודוקט הרומי, האולמות, החופה ורחבת הריקודים. הציצו אל המתחם.',
     h1: 'גלריה',
   },
+}
+
+// One SEO entry per gallery category, generated from galleryData (the single
+// source of truth) so the category pages get a canonical URL, title and meta
+// without hand-maintaining nine near-identical blocks.
+for (const category of GALLERY_CATEGORIES) {
+  SEO[galleryPath(category.id)] = {
+    title: `${category.title} | גלריה | אחוזת סנדרין`,
+    description: `גלריית תמונות — ${category.title} באחוזת סנדרין, מתחם האירועים היוקרתי בצפון. הציצו אל המתחם ותאמו סיור.`,
+    h1: category.title,
+  }
 }

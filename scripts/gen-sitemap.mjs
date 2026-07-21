@@ -2,16 +2,27 @@
 // canonical URLs. Reading canonicals straight from dist means the sitemap can
 // never drift from what was actually built, and it picks up SITE.url
 // automatically (pages without a canonical, e.g. 404.html, are skipped).
-import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 const DIST = 'dist'
 const canonicalRe = /<link[^>]+rel="canonical"[^>]+href="([^"]+)"/i
 
+// Recurse so nested pre-rendered pages (e.g. dist/gallery/<slug>.html) are
+// picked up too, not just the top-level HTML files.
+function htmlFiles(dir) {
+  const out = []
+  for (const entry of readdirSync(dir)) {
+    const p = join(dir, entry)
+    if (statSync(p).isDirectory()) out.push(...htmlFiles(p))
+    else if (entry.endsWith('.html')) out.push(p)
+  }
+  return out
+}
+
 const urls = []
-for (const file of readdirSync(DIST)) {
-  if (!file.endsWith('.html')) continue
-  const html = readFileSync(join(DIST, file), 'utf8')
+for (const file of htmlFiles(DIST)) {
+  const html = readFileSync(file, 'utf8')
   const m = html.match(canonicalRe)
   if (m) urls.push(m[1])
 }
