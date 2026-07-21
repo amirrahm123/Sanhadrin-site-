@@ -82,7 +82,7 @@ export function Component() {
       <Section id="events" className="bg-stone/30">
         <SectionHeading
           eyebrow="Celebrations"
-          title="כל שמחה, הבית שלה"
+          title="כל אירוע מתחיל בהתאמה מדויקת"
           subtitle="חתונות, בר ובת מצווה וחינות יוקרתיות — כל אירוע נתפר למידותיכם בגנים ובאולמות של סנדרין."
         />
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
