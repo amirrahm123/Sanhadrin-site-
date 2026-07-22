@@ -25,7 +25,13 @@ export function Aqueduct() {
             <ImagePlaceholder
               label={AQUEDUCT.imageLabel}
               slot="home_aqueduct"
-              ratio="3/2"
+              ratio="4/5"
+              fit="cover"
+              // Portrait photo → a 4/5 box nearly matches it, so cover only trims
+              // a little. Bias the keep-window slightly above center so the arch
+              // crown and the blue monument beneath both stay in frame, trimming
+              // excess sky/foreground rather than cutting the subject.
+              objectPosition="center 42%"
               tone="dark"
               className="shadow-card"
             />

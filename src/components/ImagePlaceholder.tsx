@@ -24,6 +24,11 @@ type ImagePlaceholderProps = {
    * 'contain' to show the whole photo without cropping (letterboxes instead).
    */
   fit?: 'cover' | 'contain'
+  /**
+   * CSS object-position for the real image (cover mode only) — e.g. 'center 40%'
+   * — to steer which part of the photo the crop keeps. Defaults to centered.
+   */
+  objectPosition?: string
   /** darker stone/emerald variant for hero & overlays */
   tone?: 'light' | 'dark'
   rounded?: boolean
@@ -70,6 +75,7 @@ export function ImagePlaceholder({
   slot,
   className = '',
   fit = 'cover',
+  objectPosition,
   tone = 'light',
   rounded = true,
   eager = false,
@@ -101,6 +107,7 @@ export function ImagePlaceholder({
           decoding="async"
           {...(eager ? { fetchPriority: 'high' as const } : {})}
           className={`h-full w-full ${fit === 'contain' ? 'object-contain' : 'object-cover'}`}
+          {...(objectPosition && fit !== 'contain' ? { style: { objectPosition } } : {})}
         />
       </div>
     )
