@@ -19,6 +19,11 @@ type ImagePlaceholderProps = {
    */
   slot?: string
   className?: string
+  /**
+   * How the real image fills its box. Default 'cover' (crops to fill). Use
+   * 'contain' to show the whole photo without cropping (letterboxes instead).
+   */
+  fit?: 'cover' | 'contain'
   /** darker stone/emerald variant for hero & overlays */
   tone?: 'light' | 'dark'
   rounded?: boolean
@@ -64,6 +69,7 @@ export function ImagePlaceholder({
   sizes,
   slot,
   className = '',
+  fit = 'cover',
   tone = 'light',
   rounded = true,
   eager = false,
@@ -94,7 +100,7 @@ export function ImagePlaceholder({
           loading={eager ? 'eager' : 'lazy'}
           decoding="async"
           {...(eager ? { fetchPriority: 'high' as const } : {})}
-          className="h-full w-full object-cover"
+          className={`h-full w-full ${fit === 'contain' ? 'object-contain' : 'object-cover'}`}
         />
       </div>
     )

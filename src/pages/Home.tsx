@@ -63,13 +63,18 @@ export function Component() {
           </Reveal>
           <Reveal delay={0.15} className="order-1 lg:order-2">
             <div className="relative">
+              {/* gold frame accent — a ring just outside the photo edges. Placed
+                  before the image in DOM order so the image paints on top of it
+                  (no z-index needed); -inset keeps the border fully outside the
+                  photo, so it frames rather than overlaps. */}
+              <div className="pointer-events-none absolute -inset-3 hidden rounded-[1.25rem] border border-gold/40 sm:block" />
               <ImagePlaceholder
                 label={ABOUT.imageLabel}
                 slot="about_main"
                 ratio="4/5"
+                fit="contain"
                 className="shadow-card"
               />
-              <div className="pointer-events-none absolute -bottom-4 -left-4 -z-0 hidden h-full w-full rounded-2xl border border-gold/40 sm:block" />
             </div>
           </Reveal>
         </div>
@@ -119,7 +124,7 @@ export function Component() {
                 to={c.to}
                 className="group flex h-full flex-col gap-5 rounded-3xl border border-stone bg-ivory p-8 shadow-soft transition-shadow hover:shadow-card md:p-9"
               >
-                <ImagePlaceholder label={c.label} slot={c.slot} ratio="3/2" />
+                <ImagePlaceholder label={c.label} slot={c.slot} ratio="4/5" />
                 <h3 className="flex items-center justify-between text-2xl text-emerald md:text-3xl">
                   {c.label}
                   <ArrowLeft

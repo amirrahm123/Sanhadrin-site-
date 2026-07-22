@@ -19,14 +19,16 @@ export function Aqueduct() {
             flipping the estate-intro layout for visual rhythm. */}
         <Reveal className="order-1">
           <div className="relative">
+            {/* gold frame accent — placed before the image (DOM order) with
+                -inset so it frames the photo edges instead of overlapping it. */}
+            <div className="pointer-events-none absolute -inset-3 hidden rounded-[1.25rem] border border-gold/40 sm:block" />
             <ImagePlaceholder
               label={AQUEDUCT.imageLabel}
               slot="home_aqueduct"
-              ratio="4/5"
+              ratio="3/2"
               tone="dark"
               className="shadow-card"
             />
-            <div className="pointer-events-none absolute -bottom-4 -right-4 -z-0 hidden h-full w-full rounded-2xl border border-gold/40 sm:block" />
           </div>
         </Reveal>
 

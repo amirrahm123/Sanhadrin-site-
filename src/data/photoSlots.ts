@@ -47,13 +47,13 @@ export const PHOTO_SLOTS: PhotoSlot[] = [
     group: 'עמוד הבית',
     ratio: '4/5',
   },
-  { key: 'home_aqueduct', label: 'תמונת האקוודוקט — עמוד הבית', group: 'עמוד הבית', ratio: '4/5' },
+  { key: 'home_aqueduct', label: 'תמונת האקוודוקט — עמוד הבית', group: 'עמוד הבית', ratio: '3/2' },
   { key: 'event_card_weddings', label: 'כרטיס אירוע — חתונות', group: 'עמוד הבית', ratio: '4/5' },
   { key: 'event_card_barbat', label: 'כרטיס אירוע — בר/בת מצווה', group: 'עמוד הבית', ratio: '4/5' },
   { key: 'event_card_henna', label: 'כרטיס אירוע — חינה יוקרתית', group: 'עמוד הבית', ratio: '4/5' },
-  { key: 'area_card_about', label: 'כרטיס מתחם — האחוזה והגנים', group: 'עמוד הבית', ratio: '16/9' },
-  { key: 'area_card_halls', label: 'כרטיס מתחם — האולמות', group: 'עמוד הבית', ratio: '16/9' },
-  { key: 'area_card_culinary', label: 'כרטיס מתחם — קולינריה', group: 'עמוד הבית', ratio: '16/9' },
+  { key: 'area_card_about', label: 'כרטיס מתחם — האחוזה והגנים', group: 'עמוד הבית', ratio: '4/5' },
+  { key: 'area_card_halls', label: 'כרטיס מתחם — האולמות', group: 'עמוד הבית', ratio: '4/5' },
+  { key: 'area_card_culinary', label: 'כרטיס מתחם — קולינריה', group: 'עמוד הבית', ratio: '4/5' },
 
   // ── עמוד האחוזה והגנים ────────────────────────────────────────────────────
   {
