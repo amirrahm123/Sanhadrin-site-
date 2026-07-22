@@ -69,8 +69,32 @@ export const PHOTO_SLOTS: PhotoSlot[] = [
 
   // ── חתונות ────────────────────────────────────────────────────────────────
   { key: 'weddings_hero', label: 'רקע ראשי (Hero) — עמוד חתונות', group: 'חתונות', ratio: '16/9' },
-  { key: 'weddings_1', label: 'חתונות חורף', group: 'חתונות', ratio: '3/2' },
-  { key: 'weddings_2', label: 'חתונות צהריים', group: 'חתונות', ratio: '3/2' },
+  { key: 'weddings_1', label: 'חתונות חורף (כרטיס בעמוד חתונות)', group: 'חתונות', ratio: '3/2' },
+  { key: 'weddings_2', label: 'חתונות צהריים (כרטיס בעמוד חתונות)', group: 'חתונות', ratio: '3/2' },
+  {
+    key: 'noon_weddings_hero',
+    label: 'רקע ראשי (Hero) — עמוד חתונות צהריים',
+    group: 'חתונות',
+    ratio: '16/9',
+  },
+  {
+    key: 'noon_weddings_intro',
+    label: 'תמונת אינטרו — חתונות צהריים',
+    group: 'חתונות',
+    ratio: '4/5',
+  },
+  {
+    key: 'winter_weddings_hero',
+    label: 'רקע ראשי (Hero) — עמוד חתונות חורף',
+    group: 'חתונות',
+    ratio: '16/9',
+  },
+  {
+    key: 'winter_weddings_intro',
+    label: 'תמונת אינטרו — חתונות חורף',
+    group: 'חתונות',
+    ratio: '4/5',
+  },
 
   // ── בר/בת מצווה ──────────────────────────────────────────────────────────
   {
