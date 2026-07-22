@@ -28,6 +28,8 @@ export const NAV_ITEMS: NavItem[] = [
     label: 'אירועים',
     children: [
       { label: 'חתונות', to: '/weddings' },
+      { label: 'חתונות צהריים', to: '/noon-weddings' },
+      { label: 'חתונות חורף', to: '/winter-weddings' },
       { label: 'בר/בת מצווה', to: '/bar-bat-mitzvah' },
       { label: 'חינות יוקרתיות', to: '/henna' },
     ],
@@ -132,6 +134,8 @@ export type WeddingFeature = {
   body: string
   bullets: string[]
   imageLabel: string
+  /** Dedicated page for this wedding style — the card links here. */
+  to: string
 }
 
 export const WEDDINGS: { eyebrow: string; title: string; intro: string; features: WeddingFeature[] } = {
@@ -145,6 +149,7 @@ export const WEDDINGS: { eyebrow: string; title: string; intro: string; features
       body: 'שקיעות עוצרות נשימה נפרשות מעבר לחלונות, ולובי רחב ומפואר הופך לחלל קבלת פנים עוטף ומלכותי. חופות מעוצבות במגוון סגנונות משלימות ערב של חום ויוקרה.',
       bullets: ['שקיעות חורף מרהיבות', 'לובי קבלת פנים מפואר', 'מבחר חופות מעוצבות'],
       imageLabel: 'חתונת חורף',
+      to: '/winter-weddings',
     },
     {
       id: 'afternoon',
@@ -152,6 +157,7 @@ export const WEDDINGS: { eyebrow: string; title: string; intro: string; features
       body: 'אור יום טבעי ורך, קונספטים יצירתיים ואווירה קלילה ומאירת פנים. חתונות שישי וצהריים מזמינות צילום מהפנט ורגעים מוצפים שמש.',
       bullets: ['אור יום טבעי', 'קונספט יצירתי וחדשני', 'צילום יום מרהיב'],
       imageLabel: 'חתונת צהריים',
+      to: '/noon-weddings',
     },
   ],
 }
@@ -297,6 +303,71 @@ export const HENNA: CelebrationContent = {
   ],
   closingTitle: 'חוגגים חינה?',
   closingBody: 'בואו נחגוג יחד חינה מלאת צבע ושמחה.',
+}
+
+// Wedding sub-type pages — dedicated pages for the two wedding styles that also
+// appear as cards in the /weddings overview. Same CelebrationPage layout as
+// henna / bar-bat-mitzvah, each linking to its matching gallery category.
+export const NOON_WEDDING: CelebrationContent = {
+  eyebrow: 'Afternoon Weddings',
+  h1: 'חתונות צהריים באחוזת סנדרין',
+  heroSubtitle:
+    'אור יום רך, קונספטים יצירתיים ואווירה קלילה ומאירת פנים — חתונת צהריים או שישי שכולה שמש, צבע וצילום מהפנט.',
+  intro: {
+    title: 'חתונת יום, מוצפת אור ושמחה',
+    paragraphs: [
+      'חתונות צהריים וחתונות שישי מזמינות אווירה קלילה ומאירת פנים, עם אור יום טבעי שממלא את הגנים והאולמות ומעניק לכל רגע גוון חם ומחמיא.',
+      'בין כחמישים דונם של גנים, מזרקות ואקוודוקט רומי עתיק, צוות ההפקה והמעצב הבית שלנו יתפרו לכם קונספט יצירתי וייחודי — מהעיצוב והתאורה ועד הקולינריה, הכול כשר בהשגחת הרבנות.',
+    ],
+    imageLabel: 'חתונת צהריים באחוזה',
+  },
+  features: [
+    {
+      title: 'אור יום טבעי',
+      body: 'אור רך ומחמיא לאורך כל היום, שממלא את הגנים והאולמות ומעניק לצילומים גוון קסום.',
+    },
+    {
+      title: 'קונספט יצירתי וחדשני',
+      body: 'עיצוב והפקה בליווי המעצב הבית — כל חתונת יום נבנית סביב סגנון אישי וייחודי.',
+    },
+    {
+      title: 'צילום יום מרהיב',
+      body: 'הגנים, האקוודוקט ורחבת הדשא הופכים לתפאורה חלומית לצילומי חוץ מוצפי שמש.',
+    },
+  ],
+  closingTitle: 'חולמים על חתונת צהריים?',
+  closingBody: 'בואו לסיור באחוזה ונתכנן יחד יום בלתי נשכח.',
+}
+
+export const WINTER_WEDDING: CelebrationContent = {
+  eyebrow: 'Winter Weddings',
+  h1: 'חתונות חורף באחוזת סנדרין',
+  heroSubtitle:
+    'שקיעות עוצרות נשימה, לובי מפואר וחופות מעוצבות — חתונת חורף עוטפת, חמה ומלכותית.',
+  intro: {
+    title: 'חתונת חורף, חמה ומלכותית',
+    paragraphs: [
+      'שקיעות עוצרות נשימה נפרשות מעבר לחלונות הרחבים, ולובי מפואר הופך לחלל קבלת פנים עוטף ומלכותי — מוגן ונעים בכל מזג אוויר.',
+      'חופות מעוצבות במגוון סגנונות, תאורה חכמה וקולינריה עשירה בהשגחת הרבנות משלימות ערב של חום ויוקרה, בליווי צוות ההפקה והמעצב הבית שלנו מהרעיון ועד הפרט האחרון.',
+    ],
+    imageLabel: 'חתונת חורף באחוזה',
+  },
+  features: [
+    {
+      title: 'שקיעות חורף מרהיבות',
+      body: 'שמי הערב נצבעים מעבר לחלונות הרחבים ויוצרים רקע דרמטי לרגעים הגדולים שלכם.',
+    },
+    {
+      title: 'לובי קבלת פנים מפואר',
+      body: 'לובי רחב ומפואר הופך לחלל קבלת פנים עוטף ומלכותי, מוגן מכל מזג אוויר.',
+    },
+    {
+      title: 'מבחר חופות מעוצבות',
+      body: 'חופות במגוון סגנונות ועיצובים משלימות ערב של חום, אינטימיות ויוקרה.',
+    },
+  ],
+  closingTitle: 'חולמים על חתונת חורף?',
+  closingBody: 'בואו לסיור באחוזה ונתכנן יחד ערב בלתי נשכח.',
 }
 
 export const FOOTER = {

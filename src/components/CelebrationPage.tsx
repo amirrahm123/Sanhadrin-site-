@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
-import { Sparkles, ArrowLeft } from 'lucide-react'
+import { Sparkles, ArrowLeft, Images } from 'lucide-react'
 import type { CelebrationContent } from '../data/sections'
 import { PageHero } from './PageHero'
 import { Section } from './ui/Section'
 import { Reveal } from './ui/Reveal'
 import { ImagePlaceholder } from './ImagePlaceholder'
 import { ContactCta } from './ContactCta'
+import { Button } from './ui/Button'
 
 type CelebrationPageProps = {
   content: CelebrationContent
@@ -15,6 +16,8 @@ type CelebrationPageProps = {
   location: string
   /** sibling celebration links for internal linking */
   related: { label: string; to: string }[]
+  /** matching gallery category page — renders a "לצפייה בגלריה" button when set */
+  galleryLink?: string
   /** managed photo-slot key for the hero background */
   heroSlot?: string
   /** managed photo-slot key for the intro image */
@@ -30,6 +33,7 @@ export function CelebrationPage({
   path,
   location,
   related,
+  galleryLink,
   heroSlot,
   introSlot,
 }: CelebrationPageProps) {
@@ -88,6 +92,16 @@ export function CelebrationPage({
             </Reveal>
           ))}
         </div>
+
+        {/* Matching gallery category — visual proof */}
+        {galleryLink && (
+          <Reveal delay={0.1} className="mt-10 flex justify-center">
+            <Button as="link" to={galleryLink} variant="outline" size="lg">
+              <Images size={18} />
+              לצפייה בגלריה
+            </Button>
+          </Reveal>
+        )}
 
         {/* Related celebrations — internal linking */}
         {related.length > 0 && (

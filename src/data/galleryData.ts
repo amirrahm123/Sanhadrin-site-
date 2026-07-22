@@ -41,6 +41,7 @@ export const GALLERY_CATEGORIES: GalleryCategory[] = [
   { id: 'chateau-small-hall', title: 'שאטו - אולם קטן', images: placeholders('4/5') },
   { id: 'palais-large-hall', title: 'פאלה - אולם גדול', images: placeholders('16/9') },
   { id: 'luxury-henna', title: 'חינות יוקרתיות', images: placeholders('4/5') },
+  { id: 'winter-weddings', title: 'חתונות חורף', images: placeholders('4/5') },
 ]
 
 /** Base path for the gallery section. */
