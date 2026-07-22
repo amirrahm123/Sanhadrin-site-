@@ -3,7 +3,13 @@ import { Section, SectionHeading } from './ui/Section'
 import { Reveal } from './ui/Reveal'
 import { ImagePlaceholder } from './ImagePlaceholder'
 import { GALLERY } from '../data/sections'
-import { GALLERY_CATEGORIES, galleryPath, type GalleryCategory } from '../data/galleryData'
+import {
+  GALLERY_CATEGORIES,
+  galleryPath,
+  resolveGalleryImage,
+  type GalleryCategory,
+} from '../data/galleryData'
+import { useCategoryImages } from '../lib/galleryFolders'
 
 const CARD_SIZES = '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'
 
@@ -32,7 +38,9 @@ export function Gallery() {
 }
 
 function CategoryCard({ category }: { category: GalleryCategory }) {
-  const cover = category.images[0]
+  // Cover = the category's first live folder photo, or its placeholder.
+  const cover = useCategoryImages(category)[0]
+  const { src, srcSet } = cover ? resolveGalleryImage(cover) : {}
   return (
     <Link
       to={galleryPath(category.id)}
@@ -41,11 +49,12 @@ function CategoryCard({ category }: { category: GalleryCategory }) {
     >
       <div className="relative">
         <ImagePlaceholder
-          src={cover?.src}
+          src={src}
+          srcSet={srcSet}
           alt={cover?.alt}
-          sizes={cover?.src ? CARD_SIZES : undefined}
+          sizes={src ? CARD_SIZES : undefined}
           ratio="4/5"
-          label={cover?.src ? undefined : category.title}
+          label={src ? undefined : category.title}
           rounded={false}
           className="transition-transform duration-500 group-hover:scale-[1.03]"
         />
