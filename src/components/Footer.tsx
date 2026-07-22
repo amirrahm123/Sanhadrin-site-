@@ -78,6 +78,11 @@ export function Footer() {
             <span>© {BRAND.he}</span>
           </div>
         </div>
+
+        {/* Full images/likeness disclaimer — smallest, most subtle line, site-wide. */}
+        <p className="mx-auto mt-6 max-w-3xl text-center text-[0.7rem] leading-relaxed text-cream/40">
+          {FOOTER.imagesDisclaimer}
+        </p>
       </div>
     </footer>
   )
