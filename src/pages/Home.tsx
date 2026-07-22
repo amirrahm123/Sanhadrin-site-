@@ -112,22 +112,22 @@ export function Component() {
       {/* Explore the venue → about / halls / culinary */}
       <Section id="explore">
         <SectionHeading eyebrow="The Estate" title="מסע אל תוך המתחם" />
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-3 md:gap-8">
           {AREA_CARDS.map((c, i) => (
             <Reveal key={c.to} delay={(i % 3) * 0.08}>
               <Link
                 to={c.to}
-                className="group flex h-full flex-col gap-4 rounded-3xl border border-stone bg-ivory p-7 shadow-soft transition-shadow hover:shadow-card"
+                className="group flex h-full flex-col gap-5 rounded-3xl border border-stone bg-ivory p-8 shadow-soft transition-shadow hover:shadow-card md:p-9"
               >
-                <ImagePlaceholder label={c.label} slot={c.slot} ratio="16/9" />
-                <h3 className="flex items-center justify-between text-2xl text-emerald">
+                <ImagePlaceholder label={c.label} slot={c.slot} ratio="3/2" />
+                <h3 className="flex items-center justify-between text-2xl text-emerald md:text-3xl">
                   {c.label}
                   <ArrowLeft
-                    size={18}
+                    size={20}
                     className="text-gold transition-transform group-hover:-translate-x-1"
                   />
                 </h3>
-                <p className="text-sm leading-relaxed text-muted">{c.desc}</p>
+                <p className="text-base leading-relaxed text-muted">{c.desc}</p>
               </Link>
             </Reveal>
           ))}
