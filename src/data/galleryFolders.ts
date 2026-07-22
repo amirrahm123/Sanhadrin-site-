@@ -17,6 +17,8 @@ export const FOLDER_BACKED_CATEGORY_IDS = [
   'culinary',
   'luxury-henna',
   'winter-weddings',
+  'two-halls',
+  'palais-large-hall',
 ] as const
 
 export type FolderBackedCategoryId = (typeof FOLDER_BACKED_CATEGORY_IDS)[number]

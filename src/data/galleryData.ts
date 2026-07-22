@@ -82,13 +82,13 @@ export const GALLERY_CATEGORIES: GalleryCategory[] = [
   folderCategory('exclusive-events', 'Exclusive Events', '16/9', 'Exclusive event at Sandrine', {
     dir: 'ltr',
   }),
-  { id: 'two-halls', title: 'שני אולמות', ratio: '4/5', images: placeholders('4/5') },
+  folderCategory('two-halls', 'שני אולמות', '4/5', 'שני האולמות באחוזת סנדרין'),
   { id: 'event-design', title: 'עיצוב אירועים', ratio: '1/1', images: placeholders('1/1') },
   // The 'החופה החדשה' set lives in this folder.
   folderCategory('noon-weddings', 'חתונות צהריים', '4/5', 'חתונת צהריים באחוזת סנדרין'),
   folderCategory('culinary', 'קולינריה', '1/1', 'קולינריה באחוזת סנדרין'),
   { id: 'chateau-small-hall', title: 'שאטו - אולם קטן', ratio: '4/5', images: placeholders('4/5') },
-  { id: 'palais-large-hall', title: 'פאלה - אולם גדול', ratio: '16/9', images: placeholders('16/9') },
+  folderCategory('palais-large-hall', 'פאלה - אולם גדול', '16/9', 'אולם פאלה הגדול באחוזת סנדרין'),
   folderCategory('luxury-henna', 'חינות יוקרתיות', '4/5', 'חינה יוקרתית באחוזת סנדרין'),
   folderCategory('winter-weddings', 'חתונות חורף', '4/5', 'חתונת חורף באחוזת סנדרין'),
 ]
