@@ -77,6 +77,44 @@ export function buildResponsiveImage(publicId: string): { src: string; srcSet: s
   }
 }
 
+// Widths offered to the lightbox: larger than the grid tiles so zooming stays
+// crisp. c_limit never upscales, so a small original is served at its own size.
+const LIGHTBOX_WIDTHS = [1200, 1600, 2048]
+
+export type LightboxSlide = {
+  src: string
+  alt?: string
+  width?: number
+  height?: number
+  // Every srcSet entry carries a height (required by the lightbox); only emitted
+  // when the intrinsic aspect ratio is known.
+  srcSet?: { src: string; width: number; height: number }[]
+}
+
+/** A yet-another-react-lightbox image slide for a public_id (large + zoomable). */
+export function buildLightboxSlide(
+  publicId: string,
+  meta: { alt?: string; width?: number; height?: number } = {},
+): LightboxSlide {
+  const { alt, width, height } = meta
+  const src = deliveryUrl(publicId, LIGHTBOX_WIDTHS[LIGHTBOX_WIDTHS.length - 1])
+  // Without intrinsic dimensions we can't give srcSet entries a required height,
+  // so serve the single largest src and let the browser scale it.
+  if (!width || !height) return { src, ...(alt ? { alt } : {}) }
+  const aspect = height / width
+  return {
+    src,
+    ...(alt ? { alt } : {}),
+    width,
+    height,
+    srcSet: LIGHTBOX_WIDTHS.map((w) => ({
+      src: deliveryUrl(publicId, w),
+      width: w,
+      height: Math.round(w * aspect),
+    })),
+  }
+}
+
 /** Square, cropped thumbnail for the admin dashboard. */
 export function buildThumbUrl(publicId: string, size = 240): string {
   const { cloudName } = SITE.cloudinary

@@ -11,8 +11,11 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import type { GalleryCategory, GalleryImage } from '../data/galleryData'
 
-// category id → ordered Cloudinary public_ids for that folder (newest first).
-type FolderMap = Record<string, string[]>
+// One folder photo: its public_id + intrinsic pixel dimensions (for the grid's
+// CLS reservation and the lightbox's zoom limits).
+type FolderPhoto = { publicId: string; width?: number; height?: number }
+// category id → ordered folder photos (newest first).
+type FolderMap = Record<string, FolderPhoto[]>
 
 const GalleryFoldersContext = createContext<FolderMap>({})
 
@@ -23,14 +26,22 @@ export function GalleryFoldersProvider({ children }: { children: ReactNode }) {
     let cancelled = false
     fetch('/api/gallery-folders', { headers: { Accept: 'application/json' } })
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
-      .then((data: { folders?: Record<string, { public_id: string }[]> }) => {
-        if (cancelled || !data.folders) return
-        const map: FolderMap = {}
-        for (const [id, resources] of Object.entries(data.folders)) {
-          map[id] = (resources ?? []).map((r) => r.public_id)
-        }
-        setFolders(map)
-      })
+      .then(
+        (data: {
+          folders?: Record<string, { public_id: string; width?: number; height?: number }[]>
+        }) => {
+          if (cancelled || !data.folders) return
+          const map: FolderMap = {}
+          for (const [id, resources] of Object.entries(data.folders)) {
+            map[id] = (resources ?? []).map((r) => ({
+              publicId: r.public_id,
+              width: r.width,
+              height: r.height,
+            }))
+          }
+          setFolders(map)
+        },
+      )
       .catch(() => {
         /* keep empty → placeholders (today's site) */
       })
@@ -49,11 +60,13 @@ export function GalleryFoldersProvider({ children }: { children: ReactNode }) {
  * result exactly the same either way.
  */
 export function useCategoryImages(category: GalleryCategory): GalleryImage[] {
-  const publicIds = useContext(GalleryFoldersContext)[category.id]
-  if (!publicIds || publicIds.length === 0) return category.images
-  return publicIds.map((publicId) => ({
-    publicId,
+  const photos = useContext(GalleryFoldersContext)[category.id]
+  if (!photos || photos.length === 0) return category.images
+  return photos.map((p) => ({
+    publicId: p.publicId,
     ratio: category.ratio,
     alt: category.photoAlt,
+    width: p.width,
+    height: p.height,
   }))
 }

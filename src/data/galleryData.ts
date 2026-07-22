@@ -28,6 +28,9 @@ export type GalleryImage = {
   alt?: string
   /** Tile aspect ratio. Keep a category's tiles uniform for a clean grid. */
   ratio?: Ratio
+  /** Intrinsic pixel dimensions (folder photos) — used for lightbox zoom limits. */
+  width?: number
+  height?: number
 }
 
 /**
