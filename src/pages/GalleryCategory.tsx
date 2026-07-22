@@ -46,6 +46,7 @@ export function Component() {
       <PageHero
         path={galleryPath(category.id)}
         eyebrow="Gallery"
+        subtitle={category.heroDescription}
         breadcrumbs={[{ label: 'גלריה', to: '/gallery' }, { label: category.title }]}
       />
       <Section id={`gallery-${category.id}`}>

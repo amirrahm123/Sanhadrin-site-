@@ -55,6 +55,12 @@ export type GalleryCategory = {
   ratio: Ratio
   /** Alt text applied to folder-listed photos (accessibility). */
   photoAlt?: string
+  /**
+   * Optional hero description shown below the category headline, as one <p> per
+   * paragraph (styled like other page-hero subtitles). Omit for the default
+   * (headline only) gallery hero.
+   */
+  heroDescription?: string[]
   /** Static fallback tiles: designed placeholders shown until real photos exist. */
   images: GalleryImage[]
 }
@@ -73,7 +79,7 @@ const folderCategory = (
   title: string,
   ratio: Ratio,
   photoAlt: string,
-  extra: { dir?: 'rtl' | 'ltr' } = {},
+  extra: { dir?: 'rtl' | 'ltr'; heroDescription?: string[] } = {},
 ): GalleryCategory => ({ id, title, ratio, photoAlt, images: placeholders(ratio), ...extra })
 
 export const GALLERY_CATEGORIES: GalleryCategory[] = [
@@ -89,7 +95,15 @@ export const GALLERY_CATEGORIES: GalleryCategory[] = [
   folderCategory('culinary', 'קולינריה', '1/1', 'קולינריה באחוזת סנדרין'),
   { id: 'chateau-small-hall', title: 'שאטו - אולם קטן', ratio: '4/5', images: placeholders('4/5') },
   folderCategory('palais-large-hall', 'פאלה - אולם גדול', '16/9', 'אולם פאלה הגדול באחוזת סנדרין'),
-  folderCategory('luxury-henna', 'חינות יוקרתיות', '4/5', 'חינה יוקרתית באחוזת סנדרין'),
+  folderCategory('luxury-henna', 'חינות יוקרתיות', '4/5', 'חינה יוקרתית באחוזת סנדרין', {
+    heroDescription: [
+      'חינה שעושים רק פעם בחיים.',
+      'מסורת, צבעים, מוזיקה ואווירה שלא רואים בכל מקום.',
+      'אצלנו תוכלו לבחור את החוויה שמתאימה בדיוק לכם, חינה קסומה בגן האקוודוקט תחת כיפת השמיים, או חגיגה יוקרתית באחת מהאחוזות המרהיבות שלנו. כל מתחם מציע אופי ייחודי, אבל כולם נבנו כדי ליצור את אותו אפקט, וואו מהרגע הראשון.',
+      'בין אם אתם חולמים על חינה מסורתית ועשירה ובין אם על הפקה מודרנית ומעוצבת, אנחנו נדאג לכל פרט, מהעיצוב והאווירה ועד הקולינריה וההפקה, כדי שאתם פשוט תיהנו מכל רגע.',
+      'כי חינה היא לא עוד אירוע, היא חוויה של פעם בחיים. ובאחוזת סנדרין יודעים בדיוק איך להפוך אותה לבלתי נשכחת.',
+    ],
+  }),
   folderCategory('winter-weddings', 'חתונות חורף', '4/5', 'חתונת חורף באחוזת סנדרין'),
 ]
 

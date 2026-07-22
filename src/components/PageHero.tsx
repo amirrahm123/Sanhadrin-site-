@@ -16,8 +16,11 @@ type PageHeroProps = {
   path?: string
   /** Explicit <h1>, for pages without an SEO entry (e.g. 404). */
   title?: string
-  /** Short, page-specific intro line (do NOT reuse the homepage hero copy). */
-  subtitle?: string
+  /**
+   * Short, page-specific intro line (do NOT reuse the homepage hero copy).
+   * Pass an array to render several stacked paragraphs (same subtitle styling).
+   */
+  subtitle?: string | string[]
   /** Trail after "בית". Defaults to just this page. */
   breadcrumbs?: Crumb[]
   /** Show the "לתיאום סיור" CTA (scrolls to the footer form). */
@@ -99,14 +102,24 @@ export function PageHero({
 
       <motion.div {...fade(0.35)} className="mx-auto my-7 h-px w-24 bg-gold/60" />
 
-      {subtitle && (
-        <motion.p
-          {...fade(0.45)}
-          className="mx-auto max-w-xl text-base leading-relaxed text-cream/90 sm:text-lg"
-        >
-          {subtitle}
-        </motion.p>
-      )}
+      {subtitle &&
+        (Array.isArray(subtitle) ? (
+          <motion.div
+            {...fade(0.45)}
+            className="mx-auto flex max-w-2xl flex-col gap-4 text-base leading-relaxed text-cream/90 sm:text-lg"
+          >
+            {subtitle.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </motion.div>
+        ) : (
+          <motion.p
+            {...fade(0.45)}
+            className="mx-auto max-w-xl text-base leading-relaxed text-cream/90 sm:text-lg"
+          >
+            {subtitle}
+          </motion.p>
+        ))}
 
       {showCta && (
         <motion.div {...fade(0.6)} className="mt-9 flex justify-center">
