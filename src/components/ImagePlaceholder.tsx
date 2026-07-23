@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react'
 import { useSlotOverride } from '../lib/slots'
 
-type Ratio = '16/9' | '4/5' | '1/1' | '3/2' | '21/9'
+type Ratio = '16/9' | '4/5' | '2/3' | '1/1' | '3/2' | '21/9'
 
 type ImagePlaceholderProps = {
   label?: string
@@ -45,6 +45,7 @@ type ImagePlaceholderProps = {
 const ratioClass: Record<Ratio, string> = {
   '16/9': 'aspect-[16/9]',
   '4/5': 'aspect-[4/5]',
+  '2/3': 'aspect-[2/3]',
   '1/1': 'aspect-square',
   '3/2': 'aspect-[3/2]',
   '21/9': 'aspect-[21/9]',
@@ -55,6 +56,7 @@ const ratioClass: Record<Ratio, string> = {
 const ratioDims: Record<Ratio, [number, number]> = {
   '16/9': [1200, 675],
   '4/5': [1200, 1500],
+  '2/3': [1000, 1500],
   '1/1': [1200, 1200],
   '3/2': [1200, 800],
   '21/9': [1200, 514],

@@ -29,8 +29,13 @@ export function About() {
             <ImagePlaceholder
               label={ABOUT.imageLabel}
               slot="about_main"
-              ratio="4/5"
+              ratio="2/3"
               fit="cover"
+              // Tall 9:16 aerial → a 2/3 box shows nearly the whole scene, and
+              // biasing the crop to the bottom keeps the full venue (building +
+              // the lit monument on the lawn) in frame, trimming only the top
+              // sliver of sky rather than the grounds beneath.
+              objectPosition="center bottom"
               className="shadow-card"
             />
             <div className="pointer-events-none absolute inset-0 z-10 hidden rounded-2xl border border-gold/40 sm:block" />
