@@ -59,7 +59,7 @@ export const CONTACT = {
   phone: '04-622-2221',
   // Fixed: was +972046222221 — dropped the stray 0 after the country code.
   phoneIntl: '+97246222221',
-  whatsapp: '972526222221',
+  whatsapp: '972534343083',
   // Prefilled Hebrew WhatsApp message (encoded at use site).
   whatsappMessage: 'היי, אשמח לקבל פרטים על אירוע באחוזת סנדרין',
   location: 'מתחם רגבה, נהריה',

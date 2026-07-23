@@ -51,7 +51,7 @@ out in `index.html` if you ever want a second, direct tag instead.
 ## 2. Confirmed business data (already wired)
 In [`src/data/sections.ts`](src/data/sections.ts) `CONTACT`:
 - Phone `04-622-2221` → `tel:+97246222221`
-- WhatsApp `972526222221` (prefilled Hebrew message)
+- WhatsApp `972534343083` (prefilled Hebrew message)
 - Address `מתחם רגבה (BIG רגבה), רגבה 26814`
 - Hours: ראשון–חמישי 10:00–21:30 · שישי 09:30–13:00 · שבת סגור
 - Google Business: <https://maps.app.goo.gl/VDUEPkBFPHHQYibn8>
