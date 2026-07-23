@@ -84,10 +84,7 @@ const folderCategory = (
 
 export const GALLERY_CATEGORIES: GalleryCategory[] = [
   folderCategory('new-garden', 'הגן החדש שלנו', '4/5', 'הגן החדש באחוזת סנדרין'),
-  // Heading kept in English by request ("Exclusive Events").
-  folderCategory('exclusive-events', 'Exclusive Events', '16/9', 'Exclusive event at Sandrine', {
-    dir: 'ltr',
-  }),
+  folderCategory('exclusive-events', 'אירועים יוקרתיים', '16/9', 'אירוע יוקרתי באחוזת סנדרין'),
   folderCategory('two-halls', 'שני אולמות', '4/5', 'שני האולמות באחוזת סנדרין'),
   { id: 'event-design', title: 'עיצוב אירועים', ratio: '1/1', images: placeholders('1/1') },
   // The 'החופה החדשה' set lives in this folder.
