@@ -127,17 +127,23 @@ export function Component() {
             <Reveal key={c.to} delay={(i % 3) * 0.08}>
               <Link
                 to={c.to}
-                className="group flex h-full flex-col gap-5 rounded-3xl border border-stone bg-ivory p-8 shadow-soft transition-shadow hover:shadow-card md:p-9"
+                className="group flex h-full flex-col overflow-hidden rounded-3xl border border-stone bg-ivory shadow-soft transition-shadow hover:shadow-card"
               >
-                <ImagePlaceholder label={c.label} slot={c.slot} ratio="4/5" />
-                <h3 className="flex items-center justify-between text-2xl text-emerald md:text-3xl">
-                  {c.label}
-                  <ArrowLeft
-                    size={20}
-                    className="text-gold transition-transform group-hover:-translate-x-1"
-                  />
-                </h3>
-                <p className="text-base leading-relaxed text-muted">{c.desc}</p>
+                {/* Full-bleed image: card padding lives on the text block below,
+                    not around the photo, so the image fills the card's top
+                    edge-to-edge (rounded={false} + the card's overflow-hidden clip
+                    its top corners). */}
+                <ImagePlaceholder label={c.label} slot={c.slot} ratio="4/5" rounded={false} />
+                <div className="flex flex-1 flex-col gap-5 p-8 md:p-9">
+                  <h3 className="flex items-center justify-between text-2xl text-emerald md:text-3xl">
+                    {c.label}
+                    <ArrowLeft
+                      size={20}
+                      className="text-gold transition-transform group-hover:-translate-x-1"
+                    />
+                  </h3>
+                  <p className="text-base leading-relaxed text-muted">{c.desc}</p>
+                </div>
               </Link>
             </Reveal>
           ))}
