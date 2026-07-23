@@ -19,22 +19,24 @@ export function Aqueduct() {
             flipping the estate-intro layout for visual rhythm. */}
         <Reveal className="order-1">
           <div className="relative">
-            {/* gold frame accent — placed before the image (DOM order) with
-                -inset so it frames the photo edges instead of overlapping it. */}
-            <div className="pointer-events-none absolute -inset-3 hidden rounded-[1.25rem] border border-gold/40 sm:block" />
+            {/* gold frame accent — a ring hugging the photo edges. Placed after
+                the image (DOM order) and z-10 so it paints on top of the photo's
+                outer edge; inset-0 + matching radius makes it sit flush on the
+                photo with zero gap, so no background shows through. */}
             <ImagePlaceholder
               label={AQUEDUCT.imageLabel}
               slot="home_aqueduct"
               ratio="4/5"
               fit="cover"
-              // Portrait photo → a 4/5 box nearly matches it, so cover only trims
-              // a little. Bias the keep-window slightly above center so the arch
-              // crown and the blue monument beneath both stay in frame, trimming
-              // excess sky/foreground rather than cutting the subject.
+              // Portrait photo in a 4/5 box → cover trims only a little. Bias the
+              // keep-window slightly above center so the crop trims excess sky/
+              // foreground while keeping the full stone arch crown and the blue
+              // monument beneath it in frame — the subject is never cut.
               objectPosition="center 42%"
               tone="dark"
               className="shadow-card"
             />
+            <div className="pointer-events-none absolute inset-0 z-10 hidden rounded-2xl border border-gold/40 sm:block" />
           </div>
         </Reveal>
 

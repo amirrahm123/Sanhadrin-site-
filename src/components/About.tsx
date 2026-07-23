@@ -22,18 +22,18 @@ export function About() {
         {/* Image */}
         <Reveal delay={0.15} className="order-1 lg:order-2">
           <div className="relative">
-            {/* gold frame accent — a ring just outside the photo edges. Placed
-                before the image in DOM order so the image paints on top of it
-                (no z-index needed); -inset keeps the border fully outside the
-                photo, so it frames rather than overlaps. */}
-            <div className="pointer-events-none absolute -inset-3 hidden rounded-[1.25rem] border border-gold/40 sm:block" />
+            {/* gold frame accent — a ring hugging the photo edges. Placed after
+                the image in DOM order (and z-10) so it paints on top of the
+                photo's outer edge; inset-0 + matching radius makes it sit flush
+                on the photo with zero gap, so no background shows through. */}
             <ImagePlaceholder
               label={ABOUT.imageLabel}
               slot="about_main"
               ratio="4/5"
-              fit="contain"
+              fit="cover"
               className="shadow-card"
             />
+            <div className="pointer-events-none absolute inset-0 z-10 hidden rounded-2xl border border-gold/40 sm:block" />
           </div>
         </Reveal>
       </div>
