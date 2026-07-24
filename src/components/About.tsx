@@ -26,16 +26,13 @@ export function About() {
                 the image in DOM order (and z-10) so it paints on top of the
                 photo's outer edge; inset-0 + matching radius makes it sit flush
                 on the photo with zero gap, so no background shows through. */}
+            {/* ratio + default focal point are the slot's own (photoSlots.ts:
+                about_main); a manager-set focal point overrides that per photo. */}
             <ImagePlaceholder
               label={ABOUT.imageLabel}
               slot="about_main"
               ratio="2/3"
               fit="cover"
-              // Tall 9:16 aerial → a 2/3 box shows nearly the whole scene, and
-              // biasing the crop to the bottom keeps the full venue (building +
-              // the lit monument on the lawn) in frame, trimming only the top
-              // sliver of sky rather than the grounds beneath.
-              objectPosition="center bottom"
               className="shadow-card"
             />
             <div className="pointer-events-none absolute inset-0 z-10 hidden rounded-2xl border border-gold/40 sm:block" />

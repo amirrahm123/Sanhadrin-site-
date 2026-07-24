@@ -101,12 +101,22 @@ export async function uploadImage(
   }
 }
 
-export async function setSlot(slotKey: string, publicId: string, alt?: string): Promise<boolean> {
+export type SetSlotOptions = {
+  alt?: string
+  /** Per-photo focal point as CSS object-position, strict '<x>% <y>%' form. */
+  objectPosition?: string
+}
+
+export async function setSlot(
+  slotKey: string,
+  publicId: string,
+  opts: SetSlotOptions = {},
+): Promise<boolean> {
   try {
     const res = await fetch('/api/admin/set-slot', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slotKey, publicId, alt }),
+      body: JSON.stringify({ slotKey, publicId, alt: opts.alt, objectPosition: opts.objectPosition }),
     })
     return res.ok
   } catch {

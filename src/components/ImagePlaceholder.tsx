@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import { useSlotOverride } from '../lib/slots'
+import { SLOT_BY_KEY } from '../data/photoSlots'
 
 type Ratio = '16/9' | '4/5' | '2/3' | '1/1' | '3/2' | '21/9'
 
@@ -92,6 +93,12 @@ export function ImagePlaceholder({
   const effectiveSrcSet = srcSet ?? override?.srcSet
   const effectiveAlt = alt ?? override?.alt ?? label ?? ''
 
+  // Focal point precedence: the manager's per-photo focal point wins, then an
+  // explicit prop from the render site, then the slot's design-tuned default
+  // (single source of truth in photoSlots.ts). Undefined → CSS-centered.
+  const effectiveObjectPosition =
+    override?.objectPosition ?? objectPosition ?? (slot ? SLOT_BY_KEY[slot]?.focus : undefined)
+
   // Real photo path. Renders a real <img> (object-cover, width/height reserved
   // for CLS, lazy unless eager) whenever a slot override or explicit src exists.
   if (effectiveSrc) {
@@ -109,7 +116,9 @@ export function ImagePlaceholder({
           decoding="async"
           {...(eager ? { fetchPriority: 'high' as const } : {})}
           className={`h-full w-full ${fit === 'contain' ? 'object-contain' : 'object-cover'}`}
-          {...(objectPosition && fit !== 'contain' ? { style: { objectPosition } } : {})}
+          {...(effectiveObjectPosition && fit !== 'contain'
+            ? { style: { objectPosition: effectiveObjectPosition } }
+            : {})}
         />
       </div>
     )

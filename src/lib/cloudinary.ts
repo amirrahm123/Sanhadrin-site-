@@ -115,6 +115,17 @@ export function buildLightboxSlide(
   }
 }
 
+/**
+ * Cover-safe delivery URL (c_limit — scale down, never crop) at a given width.
+ * Used by the admin preview + slot thumbnail so what the manager sees matches
+ * the live site's `object-cover` + `object-position` crop EXACTLY. (Unlike
+ * buildThumbUrl, which hard-crops with c_fill,g_auto and would mislead the
+ * focal-point preview.)
+ */
+export function buildSlotPreviewUrl(publicId: string, width = 640): string {
+  return deliveryUrl(publicId, width)
+}
+
 /** Square, cropped thumbnail for the admin dashboard. */
 export function buildThumbUrl(publicId: string, size = 240): string {
   const { cloudName } = SITE.cloudinary

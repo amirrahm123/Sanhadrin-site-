@@ -29,7 +29,13 @@ export function SlotsProvider({ children }: { children: ReactNode }) {
   return <SlotsContext.Provider value={slots}>{children}</SlotsContext.Provider>
 }
 
-export type ResolvedSlotImage = { src: string; srcSet: string; alt?: string }
+export type ResolvedSlotImage = {
+  src: string
+  srcSet: string
+  alt?: string
+  /** Per-photo focal point (CSS object-position) if the manager set one. */
+  objectPosition?: string
+}
 
 /**
  * Resolve a slot key to its override image, or null when there's no override
@@ -41,5 +47,9 @@ export function useSlotOverride(slotKey?: string): ResolvedSlotImage | null {
   if (!slotKey) return null
   const entry = slots[slotKey]
   if (!entry?.publicId) return null
-  return { ...buildResponsiveImage(entry.publicId), alt: entry.alt }
+  return {
+    ...buildResponsiveImage(entry.publicId),
+    alt: entry.alt,
+    objectPosition: entry.objectPosition,
+  }
 }

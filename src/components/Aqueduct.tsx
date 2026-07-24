@@ -23,16 +23,13 @@ export function Aqueduct() {
                 the image (DOM order) and z-10 so it paints on top of the photo's
                 outer edge; inset-0 + matching radius makes it sit flush on the
                 photo with zero gap, so no background shows through. */}
+            {/* ratio + default focal point are the slot's own (photoSlots.ts:
+                home_aqueduct); a manager-set focal point overrides it per photo. */}
             <ImagePlaceholder
               label={AQUEDUCT.imageLabel}
               slot="home_aqueduct"
               ratio="4/5"
               fit="cover"
-              // Portrait photo in a 4/5 box → cover trims only a little. Bias the
-              // keep-window slightly above center so the crop trims excess sky/
-              // foreground while keeping the full stone arch crown and the blue
-              // monument beneath it in frame — the subject is never cut.
-              objectPosition="center 42%"
               tone="dark"
               className="shadow-card"
             />
