@@ -86,11 +86,11 @@ export const GALLERY_CATEGORIES: GalleryCategory[] = [
   folderCategory('new-garden', 'הגן החדש שלנו', '4/5', 'הגן החדש באחוזת סנדרין'),
   folderCategory('exclusive-events', 'אירועים יוקרתיים', '4/5', 'אירוע יוקרתי באחוזת סנדרין'),
   folderCategory('two-halls', 'שני אולמות', '4/5', 'שני האולמות באחוזת סנדרין'),
-  { id: 'event-design', title: 'עיצוב אירועים', ratio: '4/5', images: placeholders('4/5') },
+  folderCategory('event-design', 'עיצוב אירועים', '4/5', 'עיצוב אירועים באחוזת סנדרין'),
   // The 'החופה החדשה' set lives in this folder.
   folderCategory('noon-weddings', 'חתונות צהריים', '4/5', 'חתונת צהריים באחוזת סנדרין'),
   folderCategory('culinary', 'קולינריה', '4/5', 'קולינריה באחוזת סנדרין'),
-  { id: 'chateau-small-hall', title: 'שאטו - אולם קטן', ratio: '4/5', images: placeholders('4/5') },
+  folderCategory('chateau-small-hall', 'שאטו - אולם קטן', '4/5', 'אולם שאטו הקטן באחוזת סנדרין'),
   folderCategory('palais-large-hall', 'פאלה - אולם גדול', '4/5', 'אולם פאלה הגדול באחוזת סנדרין'),
   folderCategory('luxury-henna', 'חינות יוקרתיות', '4/5', 'חינה יוקרתית באחוזת סנדרין', {
     heroDescription: [

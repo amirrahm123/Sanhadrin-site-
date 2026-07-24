@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { requireAuth } from '../../lib/auth.js'
 import { clientIp, rateLimited } from '../../lib/rateLimit.js'
 import { assertCloudinaryConfigured, cloudinary, GALLERY_TAG, SLOT_FOLDER } from '../../lib/cloudinaryServer.js'
+import { categoryFolderPath, isFolderBackedCategory } from '../../src/data/galleryFolders.js'
 
 // The whole JSON body must stay under Vercel's ~4.5 MB serverless request cap;
 // the data-URI string dominates it, so cap the string well below that. The
@@ -39,8 +40,11 @@ function looksLikeImage(base64: string): boolean {
 }
 
 // Auth-required. Accepts a base64 data-URI image and uploads it to Cloudinary
-// server-side. target:'gallery' tags it for the public gallery; anything else
-// is a slot image, tucked in its own folder (never shown in the gallery).
+// server-side. Destination by target:
+//   'gallery'  → tagged for the flat public gallery pool (sandrine_gallery)
+//   'category' → a named category folder gallery/<categoryId> (folder-listed,
+//                deliberately UNtagged so it never leaks into the flat pool)
+//   else       → a slot image, tucked in its own folder (never in the gallery)
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!requireAuth(req, res)) return
   if (req.method !== 'POST') {
@@ -52,7 +56,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return
   }
 
-  const { image, target } = (req.body ?? {}) as { image?: unknown; target?: unknown }
+  const { image, target, categoryId } = (req.body ?? {}) as {
+    image?: unknown
+    target?: unknown
+    categoryId?: unknown
+  }
 
   if (typeof image !== 'string' || !ALLOWED_MIME.test(image)) {
     res.status(400).json({ error: 'invalid_image' })
@@ -67,13 +75,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return
   }
 
-  const isGallery = target === 'gallery'
+  // Resolve the upload destination. A category upload must name a KNOWN
+  // folder-backed category, so an authed request can't create stray folders.
+  let uploadOptions: { folder: string; tags?: string[] }
+  if (target === 'category') {
+    if (typeof categoryId !== 'string' || !isFolderBackedCategory(categoryId)) {
+      res.status(400).json({ error: 'invalid_category' })
+      return
+    }
+    uploadOptions = { folder: categoryFolderPath(categoryId) }
+  } else if (target === 'gallery') {
+    uploadOptions = { folder: GALLERY_TAG, tags: [GALLERY_TAG] }
+  } else {
+    uploadOptions = { folder: SLOT_FOLDER }
+  }
+
   try {
     assertCloudinaryConfigured()
-    const result = await cloudinary.uploader.upload(
-      image,
-      isGallery ? { folder: GALLERY_TAG, tags: [GALLERY_TAG] } : { folder: SLOT_FOLDER },
-    )
+    const result = await cloudinary.uploader.upload(image, uploadOptions)
     res.status(200).json({
       publicId: result.public_id,
       width: result.width,

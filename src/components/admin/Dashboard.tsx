@@ -5,6 +5,7 @@ import { buildSlotPreviewUrl } from '../../lib/cloudinary'
 import { fetchSlots, logout, removeSlot, setSlot, uploadImage } from '../../lib/adminApi'
 import { fileToDownscaledDataUrl, ImageTooLargeError } from '../../lib/imageResize'
 import { GalleryManager } from './GalleryManager'
+import { GalleryCategoriesManager } from './GalleryCategoriesManager'
 
 type ToastKind = 'ok' | 'err'
 type Toast = { id: number; kind: ToastKind; msg: string }
@@ -115,6 +116,8 @@ export function Dashboard({ onLogout }: { onLogout: () => void }) {
           </section>
         )
       })}
+
+      <GalleryCategoriesManager pushToast={pushToast} />
 
       <GalleryManager pushToast={pushToast} />
 

@@ -101,6 +101,50 @@ export async function uploadImage(
   }
 }
 
+/** Upload a downscaled data-URL image into a named category folder (gallery/<id>). */
+export async function uploadCategoryImage(
+  dataUrl: string,
+  categoryId: string,
+): Promise<UploadResult | null> {
+  try {
+    const res = await fetch('/api/admin/upload', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image: dataUrl, target: 'category', categoryId }),
+    })
+    if (!res.ok) return null
+    return (await res.json()) as UploadResult
+  } catch {
+    return null
+  }
+}
+
+export type FolderPhoto = { publicId: string; width?: number; height?: number }
+/** category id → its folder photos (newest first), same shape the site uses. */
+export type GalleryFolderMap = Record<string, FolderPhoto[]>
+
+/** Current per-category folder photos (cache-bypassed so the admin sees fresh). */
+export async function fetchGalleryFolders(): Promise<GalleryFolderMap> {
+  try {
+    const res = await noStore('/api/gallery-folders')
+    if (!res.ok) return {}
+    const data = (await res.json()) as {
+      folders?: Record<string, { public_id: string; width?: number; height?: number }[]>
+    }
+    const out: GalleryFolderMap = {}
+    for (const [id, resources] of Object.entries(data.folders ?? {})) {
+      out[id] = (resources ?? []).map((r) => ({
+        publicId: r.public_id,
+        width: r.width,
+        height: r.height,
+      }))
+    }
+    return out
+  } catch {
+    return {}
+  }
+}
+
 export type SetSlotOptions = {
   alt?: string
   /** Per-photo focal point as CSS object-position, strict '<x>% <y>%' form. */
