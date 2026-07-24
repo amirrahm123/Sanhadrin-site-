@@ -9,8 +9,10 @@ import { resolveGalleryImage, type GalleryCategory, type GalleryImage } from '..
 import { buildLightboxSlide } from '../lib/cloudinary'
 import { useCategoryImages } from '../lib/galleryFolders'
 
-// Grid tile can span the full row on mobile down to a quarter on desktop.
-const TILE_SIZES = '(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw'
+// Tile width per breakpoint, matching the grid below (2 cols ≤ desktop, 3 cols
+// on desktop) so the browser fetches an appropriately-sized image: ~a third of
+// the viewport on desktop, half elsewhere.
+const TILE_SIZES = '(min-width: 1024px) 33vw, 50vw'
 
 // A real photo becomes a large, zoomable lightbox slide; a placeholder (no
 // publicId/src) is not clickable and has no slide.
@@ -23,11 +25,14 @@ function toSlide(img: GalleryImage): SlideImage | null {
 }
 
 /**
- * The image grid for a single gallery category: 2 cols on mobile, 3 on tablet,
- * 4 on desktop. Reuses the designed ImagePlaceholder. Photos come live from the
- * category's Cloudinary folder (useCategoryImages), falling back to the designed
- * placeholder tiles until that folder has photos. Clicking a real photo opens a
- * full-screen lightbox (zoom / pan / arrow + swipe navigation, Esc to close).
+ * The image grid for a single gallery category: 2 cols on mobile/tablet, 3 on
+ * desktop — a deliberately low, FIXED column count (never tied to how many
+ * photos the category has) so each tile stays large and easy to see; extra
+ * photos add rows, not narrower columns. Reuses the designed ImagePlaceholder.
+ * Photos come live from the category's Cloudinary folder (useCategoryImages),
+ * falling back to the designed placeholder tiles until that folder has photos.
+ * Clicking a real photo opens a full-screen lightbox (zoom / pan / arrow + swipe
+ * navigation, Esc to close).
  */
 export function GalleryCategoryGrid({ category }: { category: GalleryCategory }) {
   const images = useCategoryImages(category)
@@ -46,7 +51,7 @@ export function GalleryCategoryGrid({ category }: { category: GalleryCategory })
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 md:gap-5 lg:grid-cols-3">
         {images.map((img, i) => {
           const { src, srcSet } = resolveGalleryImage(img)
           const slideIndex = slideOf[i]
@@ -62,7 +67,7 @@ export function GalleryCategoryGrid({ category }: { category: GalleryCategory })
             />
           )
           return (
-            <Reveal key={`${category.id}-${i}`} delay={(i % 4) * 0.05}>
+            <Reveal key={`${category.id}-${i}`} delay={(i % 3) * 0.05}>
               {slideIndex >= 0 ? (
                 <button
                   type="button"
