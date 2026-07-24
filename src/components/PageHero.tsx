@@ -64,7 +64,10 @@ export function PageHero({
       topSlot={
         <nav
           aria-label="פירורי לחם"
-          className="absolute inset-x-0 top-0 z-10 mx-auto w-full max-w-content px-5 pt-24 text-sm text-cream/70 sm:px-8 lg:px-10"
+          // Sit just below the fixed navbar using its real measured height
+          // (--nav-h), not a hardcoded pt-24 that a taller navbar would clip.
+          className="absolute inset-x-0 top-0 z-10 mx-auto w-full max-w-content px-5 text-sm text-cream/70 sm:px-8 lg:px-10"
+          style={{ paddingTop: 'calc(var(--nav-h, 6rem) + 0.75rem)' }}
         >
           <ol className="flex flex-wrap items-center gap-1.5">
             {trail.map((c, i) => (

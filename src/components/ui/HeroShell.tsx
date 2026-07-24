@@ -63,7 +63,17 @@ export function HeroShell({
 
       {topSlot}
 
-      <div className="relative z-10 mx-auto max-w-3xl px-6 pt-24 pb-16 text-center text-cream">
+      {/* Top padding clears the FIXED navbar. When a topSlot (breadcrumbs) is
+          present — every inner page via PageHero — the hero can hold tall content
+          (e.g. a multi-paragraph gallery intro) that top-aligns instead of
+          centering, so the clearance must beat the real navbar height (published
+          as --nav-h, ~112px desktop) plus room for the breadcrumb row; the
+          hardcoded pt-24 (96px) was shorter than the navbar and clipped the
+          eyebrow. The homepage hero (no topSlot) keeps the plain 6rem. */}
+      <div
+        className="relative z-10 mx-auto max-w-3xl px-6 pb-16 text-center text-cream"
+        style={{ paddingTop: topSlot ? 'calc(var(--nav-h, 6rem) + 3.5rem)' : '6rem' }}
+      >
         {children}
       </div>
 
