@@ -85,7 +85,7 @@ const folderCategory = (
 export const GALLERY_CATEGORIES: GalleryCategory[] = [
   folderCategory('new-garden', 'הגן החדש שלנו', '4/5', 'הגן החדש באחוזת סנדרין'),
   folderCategory('exclusive-events', 'אירועים יוקרתיים', '4/5', 'אירוע יוקרתי באחוזת סנדרין'),
-  folderCategory('two-halls', 'שני אולמות', '4/5', 'שני האולמות באחוזת סנדרין'),
+  folderCategory('two-halls', 'שתי אחוזות', '4/5', 'שני האולמות באחוזת סנדרין'),
   folderCategory('event-design', 'עיצוב אירועים', '4/5', 'עיצוב אירועים באחוזת סנדרין'),
   // The 'החופה החדשה' set lives in this folder.
   folderCategory('noon-weddings', 'חתונות צהריים', '4/5', 'חתונת צהריים באחוזת סנדרין'),
