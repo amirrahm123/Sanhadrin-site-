@@ -186,19 +186,17 @@ export const GALLERY = {
   title: 'הצצה אל האחוזה',
   subtitle: 'רגעים, מרחבים ופרטים — טעימה ממה שמחכה לכם בסנדרין.',
   cta: 'לגלריה המלאה',
+  // The home-page preview grid, in render order. Each tile owns a managed slot
+  // (photoSlots.ts) the manager can upload to; an empty slot falls back to the
+  // live `sandrine_gallery` feed, and only with neither does the label render as
+  // a designed placeholder. All six render square, so there's no per-tile ratio.
   tiles: [
-    { label: 'הגן החדש', ratio: '4/5' as const },
-    { label: 'אחוזת Palais', ratio: '16/9' as const },
-    { label: 'קבלת פנים', ratio: '1/1' as const },
-    { label: 'החופה', ratio: '4/5' as const },
-    { label: 'האקוודוקט', ratio: '16/9' as const },
-    { label: 'רחבת הריקודים', ratio: '1/1' as const },
-    { label: 'סוויטת הזוג', ratio: '4/5' as const },
-    { label: 'עמדות הבר', ratio: '1/1' as const },
-    { label: 'מזרקות הגן', ratio: '16/9' as const },
-    { label: 'אחוזת Chateau', ratio: '4/5' as const },
-    { label: 'בית הכנסת', ratio: '1/1' as const },
-    { label: 'תאורת הערב', ratio: '16/9' as const },
+    { label: 'הגן החדש', slot: 'home_preview_new_garden' },
+    { label: 'אחוזת Palais', slot: 'home_preview_palais' },
+    { label: 'קבלת פנים', slot: 'home_preview_reception' },
+    { label: 'החופה', slot: 'home_preview_chuppah' },
+    { label: 'האקוודוקט', slot: 'home_preview_aqueduct' },
+    { label: 'רחבת הריקודים', slot: 'home_preview_dancefloor' },
   ],
 } as const
 

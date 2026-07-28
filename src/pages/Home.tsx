@@ -10,9 +10,12 @@ import { ContactCta } from '../components/ContactCta'
 import { Seo } from '../components/Seo'
 import { ABOUT, GALLERY } from '../data/sections'
 import { GALLERY_IMAGE_ALT, useCloudinaryGallery } from '../lib/cloudinary'
+import { useSlotOverrides } from '../lib/slots'
 
 // Preview tiles render at ~50vw (mobile) / 33vw (>=md).
 const PREVIEW_SIZES = '(min-width: 768px) 33vw, 50vw'
+
+const PREVIEW_SLOT_KEYS = GALLERY.tiles.map((t) => t.slot)
 
 // Curated gateway cards — each links out to a dedicated, indexable page so the
 // home page stays a hub and page content isn't duplicated across the site.
@@ -30,8 +33,19 @@ const AREA_CARDS = [
 
 export function Component() {
   const gallery = useCloudinaryGallery()
-  // Newest 6 from the live folder; null → keep the designed placeholder tiles.
-  const previewImages = gallery.status === 'ready' ? gallery.images.slice(0, 6) : null
+
+  // Per-tile precedence for the preview grid: the manager's slot photo wins,
+  // else the next unused photo from the live `sandrine_gallery` feed (newest
+  // first), else the tile's designed placeholder. Feed photos are handed out
+  // only to the tiles whose slot is empty, so filling a slot never pushes a
+  // live photo out of the grid — it just takes that tile's turn.
+  const previewOverrides = useSlotOverrides(PREVIEW_SLOT_KEYS)
+  const feed = gallery.status === 'ready' ? gallery.images : []
+  let nextFeedImage = 0
+  const previewTiles = GALLERY.tiles.map((tile, i) => ({
+    tile,
+    fallback: previewOverrides[i] ? undefined : feed[nextFeedImage++],
+  }))
 
   return (
     <>
@@ -150,26 +164,25 @@ export function Component() {
       {/* Gallery preview → /gallery */}
       <Section id="gallery-preview" className="bg-stone/30">
         <SectionHeading eyebrow={GALLERY.eyebrow} title={GALLERY.title} subtitle={GALLERY.subtitle} />
-        {/* Square grid; shows the newest live photos, else placeholder tiles. */}
+        {/* Square grid; each tile shows its managed slot photo, else a live
+            photo from the tag feed, else the designed placeholder. `src` is
+            passed only when the slot is empty — in ImagePlaceholder an explicit
+            src outranks the slot override, so passing both would hide it. */}
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5">
-          {previewImages
-            ? previewImages.map((img, i) => (
-                <Reveal key={img.publicId} delay={(i % 3) * 0.06}>
-                  <ImagePlaceholder
-                    src={img.src}
-                    srcSet={img.srcSet}
-                    sizes={PREVIEW_SIZES}
-                    alt={GALLERY_IMAGE_ALT}
-                    ratio="1/1"
-                    className="shadow-soft"
-                  />
-                </Reveal>
-              ))
-            : GALLERY.tiles.slice(0, 6).map((tile, i) => (
-                <Reveal key={`${tile.label}-${i}`} delay={(i % 3) * 0.06}>
-                  <ImagePlaceholder label={tile.label} ratio="1/1" className="shadow-soft" />
-                </Reveal>
-              ))}
+          {previewTiles.map(({ tile, fallback }, i) => (
+            <Reveal key={tile.slot} delay={(i % 3) * 0.06}>
+              <ImagePlaceholder
+                label={tile.label}
+                slot={tile.slot}
+                {...(fallback
+                  ? { src: fallback.src, srcSet: fallback.srcSet, alt: GALLERY_IMAGE_ALT }
+                  : {})}
+                sizes={PREVIEW_SIZES}
+                ratio="1/1"
+                className="shadow-soft"
+              />
+            </Reveal>
+          ))}
         </div>
         <Reveal delay={0.1} className="mt-12 flex justify-center">
           <Button as="link" to="/gallery" variant="outline" size="lg">

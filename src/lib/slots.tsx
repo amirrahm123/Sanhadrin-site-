@@ -37,13 +37,7 @@ export type ResolvedSlotImage = {
   objectPosition?: string
 }
 
-/**
- * Resolve a slot key to its override image, or null when there's no override
- * (→ caller renders the designed placeholder). Safe to call without a provider
- * (defaults to no overrides).
- */
-export function useSlotOverride(slotKey?: string): ResolvedSlotImage | null {
-  const slots = useContext(SlotsContext)
+function resolveSlot(slots: SlotMap, slotKey?: string): ResolvedSlotImage | null {
   if (!slotKey) return null
   const entry = slots[slotKey]
   if (!entry?.publicId) return null
@@ -52,4 +46,24 @@ export function useSlotOverride(slotKey?: string): ResolvedSlotImage | null {
     alt: entry.alt,
     objectPosition: entry.objectPosition,
   }
+}
+
+/**
+ * Resolve a slot key to its override image, or null when there's no override
+ * (→ caller renders the designed placeholder). Safe to call without a provider
+ * (defaults to no overrides).
+ */
+export function useSlotOverride(slotKey?: string): ResolvedSlotImage | null {
+  return resolveSlot(useContext(SlotsContext), slotKey)
+}
+
+/**
+ * Same, for a fixed list of keys resolved in one context read. Lets a group of
+ * tiles see which of its slots are filled *before* rendering — the home-page
+ * gallery preview needs that to hand its live-feed photos to the empty tiles
+ * only.
+ */
+export function useSlotOverrides(slotKeys: readonly string[]): (ResolvedSlotImage | null)[] {
+  const slots = useContext(SlotsContext)
+  return slotKeys.map((key) => resolveSlot(slots, key))
 }

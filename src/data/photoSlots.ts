@@ -10,8 +10,10 @@
 // serverless functions under api/ without pulling React into the function
 // bundle.
 //
-// The gallery is NOT a slot — it stays tag-based (`sandrine_gallery`) and is
-// managed separately in the dashboard's gallery manager.
+// The /gallery page is NOT slot-based — it stays tag-based (`sandrine_gallery`)
+// and folder-backed per category, managed separately in the dashboard's gallery
+// managers. The home page's six preview tiles ARE slots (home_preview_*): a slot
+// photo wins there, and an empty slot falls back to the newest tagged photos.
 
 export type SlotRatio = '16/9' | '4/5' | '2/3' | '1/1' | '3/2' | '21/9'
 
@@ -75,6 +77,46 @@ export const PHOTO_SLOTS: PhotoSlot[] = [
   { key: 'area_card_about', label: 'כרטיס מתחם — האחוזה והגנים', group: 'עמוד הבית', ratio: '4/5' },
   { key: 'area_card_halls', label: 'כרטיס מתחם — האחוזות', group: 'עמוד הבית', ratio: '4/5' },
   { key: 'area_card_culinary', label: 'כרטיס מתחם — קולינריה', group: 'עמוד הבית', ratio: '4/5' },
+
+  // The six tiles of the "הצצה אל האחוזה" grid on the home page. All render in
+  // a square box. Leaving one empty is fine — the newest photos tagged
+  // `sandrine_gallery` fill the empty tiles automatically.
+  {
+    key: 'home_preview_new_garden',
+    label: 'הצצה אל האחוזה — הגן החדש',
+    group: 'עמוד הבית',
+    ratio: '1/1',
+  },
+  {
+    key: 'home_preview_palais',
+    label: 'הצצה אל האחוזה — אחוזת Palais',
+    group: 'עמוד הבית',
+    ratio: '1/1',
+  },
+  {
+    key: 'home_preview_reception',
+    label: 'הצצה אל האחוזה — קבלת פנים',
+    group: 'עמוד הבית',
+    ratio: '1/1',
+  },
+  {
+    key: 'home_preview_chuppah',
+    label: 'הצצה אל האחוזה — החופה',
+    group: 'עמוד הבית',
+    ratio: '1/1',
+  },
+  {
+    key: 'home_preview_aqueduct',
+    label: 'הצצה אל האחוזה — האקוודוקט',
+    group: 'עמוד הבית',
+    ratio: '1/1',
+  },
+  {
+    key: 'home_preview_dancefloor',
+    label: 'הצצה אל האחוזה — רחבת הריקודים',
+    group: 'עמוד הבית',
+    ratio: '1/1',
+  },
 
   // ── עמוד האחוזה והגנים ────────────────────────────────────────────────────
   {
