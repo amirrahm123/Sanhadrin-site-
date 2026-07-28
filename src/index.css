@@ -96,6 +96,322 @@
   background: var(--gold-soft);
 }
 
+/* ===========================================================================
+   ACCESSIBILITY WIDGET  (src/components/AccessibilityWidget.tsx)
+   Plain CSS on purpose: the html.a11y-* rules below are global display-mode
+   overrides that have to outrank utility classes, so they can't be Tailwind.
+   =========================================================================== */
+
+/* ── Floating trigger ──
+   Stacked ABOVE the WhatsApp float, which is `fixed bottom-5 left-5` (20px)
+   and 56px tall — i.e. physically bottom-LEFT, since Tailwind's `left-*` is
+   physical and unaffected by dir="rtl". 20 + 56 + 16 gutter = 92px, so the two
+   never touch. Both buttons are the same size at every breakpoint, so this one
+   offset holds on mobile too. */
+.a11y-float {
+  position: fixed;
+  bottom: 92px;
+  left: 20px;
+  z-index: 40;
+  width: 56px;
+  height: 56px;
+  border-radius: 9999px;
+  background: var(--gold);
+  color: var(--emerald-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 4px 16px rgba(15, 51, 41, 0.35);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+.a11y-float:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 24px rgba(15, 51, 41, 0.45);
+}
+.a11y-float:focus-visible {
+  outline: 2px solid var(--emerald-deep);
+  outline-offset: 3px;
+}
+
+/* ── Panel ── */
+.a11y-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+}
+.a11y-panel {
+  /* physical left, matching the trigger — an auto margin here is unambiguous,
+     unlike flex justify-content, which flips with dir="rtl". */
+  margin-right: auto;
+  background: var(--emerald-deep);
+  border: 1px solid rgba(194, 161, 77, 0.3);
+  border-radius: 16px;
+  width: 320px;
+  max-width: calc(100vw - 40px);
+  max-height: 80vh;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: a11ySlideIn 0.3s ease-out;
+}
+@keyframes a11ySlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.a11y-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid rgba(194, 161, 77, 0.2);
+}
+.a11y-panel-header h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--cream);
+}
+.a11y-panel-close {
+  background: none;
+  border: none;
+  color: var(--cream);
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.a11y-panel-close:hover {
+  color: var(--gold);
+}
+.a11y-panel-body {
+  padding: 18px 22px 22px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.a11y-section-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.a11y-font-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.a11y-font-btn {
+  flex: 1;
+  min-width: 42px;
+  padding: 8px 4px;
+  background: rgba(248, 244, 236, 0.08);
+  border: 1px solid rgba(248, 244, 236, 0.18);
+  border-radius: 8px;
+  color: var(--cream);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+.a11y-font-btn:hover {
+  background: rgba(194, 161, 77, 0.15);
+  border-color: rgba(194, 161, 77, 0.45);
+}
+.a11y-font-btn.active {
+  background: var(--gold);
+  color: var(--emerald-deep);
+  border-color: var(--gold);
+  font-weight: 700;
+}
+.a11y-toggles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.a11y-option-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 8px;
+  border-radius: 10px;
+  background: rgba(248, 244, 236, 0.06);
+  border: 1px solid rgba(248, 244, 236, 0.15);
+  color: var(--cream);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+.a11y-option-btn:hover {
+  background: rgba(194, 161, 77, 0.12);
+  border-color: rgba(194, 161, 77, 0.4);
+}
+.a11y-option-btn.active {
+  background: rgba(194, 161, 77, 0.2);
+  border-color: var(--gold);
+  /* gold-soft, not gold: 7.8:1 on emerald-deep vs 5.6:1, and it reads as
+     clearly "on" next to the dimmer inactive tiles. */
+  color: var(--gold-soft);
+}
+.a11y-option-icon {
+  font-size: 20px;
+}
+.a11y-reset-btn {
+  width: 100%;
+  padding: 12px;
+  background: rgba(248, 244, 236, 0.08);
+  border: 1px solid rgba(248, 244, 236, 0.2);
+  border-radius: 10px;
+  color: var(--cream);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+  margin-top: 4px;
+}
+.a11y-reset-btn:hover {
+  background: rgba(194, 161, 77, 0.15);
+  color: var(--gold-soft);
+  border-color: rgba(194, 161, 77, 0.4);
+}
+.a11y-statement-link {
+  display: block;
+  text-align: center;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--gold-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+.a11y-statement-link:hover {
+  color: var(--cream);
+}
+/* Every control in the panel gets a visible keyboard focus ring. */
+.a11y-panel :is(button, a):focus-visible {
+  outline: 2px solid var(--gold-soft);
+  outline-offset: 2px;
+}
+
+/* ── Display modes (classes set on <html>) ── */
+html.a11y-font-75 {
+  font-size: 75%;
+}
+html.a11y-font-90 {
+  font-size: 90%;
+}
+html.a11y-font-110 {
+  font-size: 110%;
+}
+html.a11y-font-125 {
+  font-size: 125%;
+}
+html.a11y-font-150 {
+  font-size: 150%;
+}
+
+/* High contrast. Scoped so it does NOT repaint the widget's own UI — the
+   original's bare `*` blacked out the panel you were using to turn it off. */
+html.a11y-contrast-high,
+html.a11y-contrast-high body {
+  background: #000 !important;
+  color: #fff !important;
+}
+html.a11y-contrast-high
+  body
+  *:not(.a11y-float):not(.a11y-float *):not(.a11y-overlay):not(.a11y-overlay *) {
+  background: #000 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+html.a11y-contrast-high body a:not(.a11y-overlay *) {
+  color: #ff0 !important;
+}
+html.a11y-contrast-high body :is(img, video):not(.a11y-overlay *) {
+  border: 1px solid #fff !important;
+}
+/* Belt and braces: re-assert the widget's palette, so it survives even where
+   the :not() chain above is out-specified. */
+html.a11y-contrast-high .a11y-float {
+  background: var(--gold) !important;
+  color: var(--emerald-deep) !important;
+}
+html.a11y-contrast-high .a11y-panel {
+  background: var(--emerald-deep) !important;
+  color: var(--cream) !important;
+  border-color: var(--gold) !important;
+}
+
+html.a11y-invert {
+  filter: invert(1) hue-rotate(180deg);
+}
+html.a11y-invert :is(img, video) {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+html.a11y-grayscale {
+  filter: grayscale(1);
+}
+
+html.a11y-links a {
+  text-decoration: underline !important;
+  font-weight: 700 !important;
+}
+
+html.a11y-readable,
+html.a11y-readable * {
+  font-family: Arial, Verdana, sans-serif !important;
+  letter-spacing: 0.03em;
+  line-height: 1.6;
+}
+
+html.a11y-no-motion *,
+html.a11y-no-motion *::before,
+html.a11y-no-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+html.a11y-cursor,
+html.a11y-cursor * {
+  cursor:
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><polygon points="0,0 0,36 10,28 16,40 22,38 16,26 28,26" fill="black" stroke="white" stroke-width="2"/></svg>')
+      0 0,
+    auto !important;
+}
+
 /* Respect reduced-motion globally as a safety net (framer-motion handles its own) */
 @media (prefers-reduced-motion: reduce) {
   html {

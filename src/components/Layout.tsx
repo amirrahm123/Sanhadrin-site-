@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom'
 import { Header } from './Header'
 import { Footer } from './Footer'
 import { FloatingContact } from './FloatingContact'
+import { AccessibilityWidget } from './AccessibilityWidget'
 import { ScrollToTop } from './ScrollToTop'
 import { StructuredData } from './StructuredData'
 import { SlotsProvider } from '../lib/slots'
@@ -41,6 +42,7 @@ export function Layout() {
           </main>
           <Footer />
           <FloatingContact />
+          <AccessibilityWidget />
         </div>
       </GalleryFoldersProvider>
     </SlotsProvider>

@@ -5,6 +5,35 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Accessibility settings (src/components/AccessibilityWidget.tsx) are
+         stored in localStorage and expressed as classes on <html>. Applying
+         them HERE — before the app hydrates — is what stops saved settings
+         from flashing unstyled on reload. Keep the storage key and the class
+         names in sync with the widget. -->
+    <script>
+      (function () {
+        try {
+          var s = JSON.parse(localStorage.getItem('sandrine-a11y')) || {}
+          var c = document.documentElement.classList
+          // Allow-list the font class: never write an arbitrary string from
+          // storage onto <html>.
+          if (/^a11y-font-(75|90|110|125|150)$/.test(s.fontSize)) c.add(s.fontSize)
+          var modes = {
+            contrast: 'a11y-contrast-high',
+            invert: 'a11y-invert',
+            grayscale: 'a11y-grayscale',
+            links: 'a11y-links',
+            readable: 'a11y-readable',
+            noMotion: 'a11y-no-motion',
+            cursor: 'a11y-cursor',
+          }
+          for (var k in modes) if (s[k]) c.add(modes[k])
+        } catch (e) {
+          /* no storage / bad JSON → plain site */
+        }
+      })()
+    </script>
+
     <!-- Google Search Console verification (meta-tag method).
          TODO(launch): replace the token; must match SITE.searchConsoleToken.
          Alternative: verify via DNS TXT record instead (see README). -->
