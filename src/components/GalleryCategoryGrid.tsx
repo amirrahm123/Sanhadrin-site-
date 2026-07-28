@@ -59,7 +59,10 @@ export function GalleryCategoryGrid({ category }: { category: GalleryCategory })
             <ImagePlaceholder
               src={src}
               srcSet={srcSet}
-              alt={img.alt}
+              // Inside the zoom button the photo is decorative: the button's
+              // aria-label already carries this exact description, so a
+              // duplicate alt makes every tile announce itself twice.
+              alt={slideIndex >= 0 ? '' : img.alt}
               sizes={src ? TILE_SIZES : undefined}
               ratio={img.ratio ?? '4/5'}
               label={src ? undefined : category.title}

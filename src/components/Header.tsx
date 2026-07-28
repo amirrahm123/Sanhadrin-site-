@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Menu, X, ChevronDown, Instagram, Facebook } from 'lucide-react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
@@ -249,7 +249,13 @@ function NavItemLink({ to, label, solid }: { to: string; label: string; solid: b
   )
 }
 
-/** Desktop dropdown group. Opens on hover and on keyboard focus (focus-within). */
+/**
+ * Desktop dropdown group. Opens on hover and on keyboard focus — but the open
+ * state now lives in React rather than in `group-hover:` classes, so the trigger
+ * can expose `aria-expanded`/`aria-controls` and Escape can dismiss the panel.
+ * A CSS-only dropdown can do neither: the state is invisible to assistive tech
+ * and unreachable from the keyboard.
+ */
 function NavGroup({
   label,
   to,
@@ -263,6 +269,10 @@ function NavGroup({
   solid: boolean
 }) {
   const { pathname } = useLocation()
+  const [open, setOpen] = useState(false)
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLAnchorElement & HTMLButtonElement>(null)
+  const panelId = useId()
   // Active when the label's own route or any child route is current.
   const groupActive = to === pathname || items.some((i) => i.to === pathname)
 
@@ -276,20 +286,57 @@ function NavGroup({
         : 'text-cream/90 hover:text-cream'
   }`
 
+  const triggerProps = {
+    className: triggerCls,
+    'aria-expanded': open,
+    'aria-controls': panelId,
+  }
+
   return (
-    <div className="group relative">
+    <div
+      ref={wrapRef}
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      // Don't yank the panel away on mouse-out while the keyboard is inside it.
+      onMouseLeave={() => {
+        if (!wrapRef.current?.contains(document.activeElement)) setOpen(false)
+      }}
+      // React maps onFocus/onBlur to focusin/focusout, so these fire for
+      // anything inside the group — the keyboard equivalent of hover.
+      onFocus={() => setOpen(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setOpen(false)
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape' && open) {
+          setOpen(false)
+          triggerRef.current?.focus()
+        }
+      }}
+    >
       {to ? (
-        <NavLink to={to} end aria-haspopup="true" className={triggerCls}>
+        <NavLink to={to} end ref={triggerRef} {...triggerProps}>
           {label}
-          <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
+          <ChevronDown
+            size={14}
+            className={`transition-transform ${open ? 'rotate-180' : ''}`}
+          />
         </NavLink>
       ) : (
-        <button type="button" aria-haspopup="true" className={triggerCls}>
+        <button type="button" ref={triggerRef} {...triggerProps}>
           {label}
-          <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
+          <ChevronDown
+            size={14}
+            className={`transition-transform ${open ? 'rotate-180' : ''}`}
+          />
         </button>
       )}
-      <div className="invisible absolute right-0 top-full z-50 min-w-[12rem] translate-y-1 pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+      <div
+        id={panelId}
+        className={`absolute right-0 top-full z-50 min-w-[12rem] pt-2 transition-all duration-200 ${
+          open ? 'visible translate-y-0 opacity-100' : 'invisible translate-y-1 opacity-0'
+        }`}
+      >
         {/* Solid cream panel so the dark item text always reads (a transparent
             panel over the dark hero made the items blend in). */}
         <ul className="overflow-hidden rounded-2xl border border-stone bg-ivory p-1.5 shadow-card">

@@ -113,7 +113,10 @@ export function Component() {
                 to={c.to}
                 className="group flex h-full flex-col overflow-hidden rounded-3xl bg-ivory shadow-soft transition-shadow hover:shadow-card"
               >
-                <ImagePlaceholder label={c.label} slot={c.slot} ratio="4/5" rounded={false} />
+                {/* alt="" — the card's own <h3> and description name this
+                    image right below it, so a description here would make the
+                    link announce the same words twice. */}
+                <ImagePlaceholder label={c.label} slot={c.slot} alt="" ratio="4/5" rounded={false} />
                 <div className="flex flex-1 flex-col gap-2 p-6">
                   <h3 className="flex items-center justify-between text-2xl text-emerald">
                     {c.label}
@@ -144,7 +147,10 @@ export function Component() {
                     not around the photo, so the image fills the card's top
                     edge-to-edge (rounded={false} + the card's overflow-hidden clip
                     its top corners). */}
-                <ImagePlaceholder label={c.label} slot={c.slot} ratio="4/5" rounded={false} />
+                {/* alt="" — the card's own <h3> and description name this
+                    image right below it, so a description here would make the
+                    link announce the same words twice. */}
+                <ImagePlaceholder label={c.label} slot={c.slot} alt="" ratio="4/5" rounded={false} />
                 <div className="flex flex-1 flex-col gap-5 p-8 md:p-9">
                   <h3 className="flex items-center justify-between text-2xl text-emerald md:text-3xl">
                     {c.label}

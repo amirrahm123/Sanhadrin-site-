@@ -56,6 +56,9 @@ export function ContactForm() {
     if (errors[key]) setErrors((e) => ({ ...e, [key]: undefined }))
   }
 
+  // Fields in DOM order — so a failed submit focuses the FIRST invalid one.
+  const FIELD_ORDER: (keyof FormState)[] = ['name', 'phone', 'email', 'eventType']
+
   function validate(): boolean {
     const next: Errors = {}
     if (!form.name.trim()) next.name = 'נא למלא שם מלא'
@@ -65,6 +68,13 @@ export function ContactForm() {
       next.email = 'נא להזין כתובת אימייל תקינה'
     if (!form.eventType) next.eventType = 'נא לבחור סוג אירוע'
     setErrors(next)
+
+    // Move focus to the first field that failed. Without this a failed submit
+    // is silent for keyboard/screen-reader users: the messages render far from
+    // the focus point and nothing announces them (WCAG 3.3.1).
+    const firstInvalid = FIELD_ORDER.find((k) => next[k])
+    if (firstInvalid) document.getElementById(firstInvalid)?.focus()
+
     return Object.keys(next).length === 0
   }
 
@@ -117,10 +127,21 @@ export function ContactForm() {
     }
   }
 
+  // placeholder at /70 (not /40) so it clears 4.5:1 on the field background.
   const fieldCls =
-    'w-full rounded-xl border border-cream/20 bg-cream/5 px-4 py-3 text-cream placeholder:text-cream/40 outline-none transition focus:border-gold focus:bg-cream/10 focus:ring-1 focus:ring-gold/50'
+    'w-full rounded-xl border border-cream/20 bg-cream/5 px-4 py-3 text-cream placeholder:text-cream/70 outline-none transition focus:border-gold focus:bg-cream/10 focus:ring-1 focus:ring-gold/50'
   const labelCls = 'mb-1.5 block text-sm font-medium text-cream/80'
   const errCls = 'mt-1 text-xs text-gold-soft'
+
+  /**
+   * Wires a field to its error message: `aria-describedby` points at the
+   * message so a screen reader reads WHY the field is invalid, and `role=alert`
+   * on the message itself announces it the moment it appears.
+   */
+  const errorProps = (key: keyof FormState) => ({
+    'aria-invalid': !!errors[key],
+    ...(errors[key] ? { 'aria-describedby': `${key}-error` } : {}),
+  })
 
   return (
     <Section id="contact-form" dark grain>
@@ -140,6 +161,9 @@ export function ContactForm() {
               {submitted ? (
                 <motion.div
                   key="success"
+                  // Submitting swaps the whole form out for this panel — with no
+                  // live region the change is invisible to a screen reader.
+                  role="status"
                   initial={reduce ? false : { opacity: 0, scale: 0.96 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -193,9 +217,13 @@ export function ContactForm() {
                       onChange={(e) => update('name', e.target.value)}
                       className={fieldCls}
                       placeholder="ישראל ישראלי"
-                      aria-invalid={!!errors.name}
+                      {...errorProps('name')}
                     />
-                    {errors.name && <p className={errCls}>{errors.name}</p>}
+                    {errors.name && (
+                      <p id="name-error" role="alert" className={errCls}>
+                        {errors.name}
+                      </p>
+                    )}
                   </div>
 
                   <div className="sm:col-span-1">
@@ -209,14 +237,18 @@ export function ContactForm() {
                       onChange={(e) => update('phone', e.target.value)}
                       className={fieldCls}
                       placeholder="050-0000000"
-                      aria-invalid={!!errors.phone}
+                      {...errorProps('phone')}
                     />
-                    {errors.phone && <p className={errCls}>{errors.phone}</p>}
+                    {errors.phone && (
+                      <p id="phone-error" role="alert" className={errCls}>
+                        {errors.phone}
+                      </p>
+                    )}
                   </div>
 
                   <div className="sm:col-span-2">
                     <label className={labelCls} htmlFor="email">
-                      אימייל <span className="text-cream/40">(לא חובה)</span>
+                      אימייל <span className="text-cream/70">(לא חובה)</span>
                     </label>
                     <input
                       id="email"
@@ -227,9 +259,13 @@ export function ContactForm() {
                       onChange={(e) => update('email', e.target.value)}
                       className={`${fieldCls} text-start`}
                       placeholder="name@example.com"
-                      aria-invalid={!!errors.email}
+                      {...errorProps('email')}
                     />
-                    {errors.email && <p className={errCls}>{errors.email}</p>}
+                    {errors.email && (
+                      <p id="email-error" role="alert" className={errCls}>
+                        {errors.email}
+                      </p>
+                    )}
                   </div>
 
                   <div className="sm:col-span-1">
@@ -241,7 +277,7 @@ export function ContactForm() {
                       value={form.eventType}
                       onChange={(e) => update('eventType', e.target.value)}
                       className={`${fieldCls} appearance-none`}
-                      aria-invalid={!!errors.eventType}
+                      {...errorProps('eventType')}
                     >
                       <option value="" disabled className="text-ink">
                         בחירת סוג אירוע
@@ -252,7 +288,11 @@ export function ContactForm() {
                         </option>
                       ))}
                     </select>
-                    {errors.eventType && <p className={errCls}>{errors.eventType}</p>}
+                    {errors.eventType && (
+                      <p id="eventType-error" role="alert" className={errCls}>
+                        {errors.eventType}
+                      </p>
+                    )}
                   </div>
 
                   <div className="sm:col-span-1">
@@ -298,7 +338,10 @@ export function ContactForm() {
                   </div>
 
                   {status === 'error' && (
-                    <div className="sm:col-span-2 rounded-xl border border-gold/40 bg-gold/10 px-4 py-3 text-sm text-cream">
+                    <div
+                      role="alert"
+                      className="sm:col-span-2 rounded-xl border border-gold/40 bg-gold/10 px-4 py-3 text-sm text-cream"
+                    >
                       אירעה תקלה בשליחת הטופס. אפשר להתקשר אלינו או לשלוח הודעת וואטסאפ ונחזור אליכם.
                     </div>
                   )}

@@ -39,7 +39,9 @@ export function Footer() {
 
           {/* Nav */}
           <div className="md:justify-self-end">
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gold">ניווט</h4>
+            {/* h2, not h4: the footer's only heading level below the page h1 —
+                an h4 here skipped straight from h1/h2 and broke the outline. */}
+            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gold">ניווט</h2>
             <ul className="grid grid-cols-2 gap-x-8 gap-y-2.5">
               {NAV_LINKS.map((item) => (
                 <li key={item.to}>
@@ -67,7 +69,7 @@ export function Footer() {
 
         <div className="flex flex-col items-center gap-3 text-center md:flex-row md:justify-between md:text-start">
           <p className="text-xs text-cream/60">{FOOTER.seoLine}</p>
-          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-cream/50">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-cream/70">
             <span>{FOOTER.disclaimer}</span>
             <span className="hidden md:inline">·</span>
             {/* TODO: link to a dedicated accessibility statement page when written. */}
@@ -80,7 +82,7 @@ export function Footer() {
         </div>
 
         {/* Full images/likeness disclaimer — smallest, most subtle line, site-wide. */}
-        <p className="mx-auto mt-6 max-w-3xl text-center text-[0.7rem] leading-relaxed text-cream/40">
+        <p className="mx-auto mt-6 max-w-3xl text-center text-[0.7rem] leading-relaxed text-cream/70">
           {FOOTER.imagesDisclaimer}
         </p>
       </div>

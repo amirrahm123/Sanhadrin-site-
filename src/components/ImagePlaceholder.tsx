@@ -133,12 +133,17 @@ export function ImagePlaceholder({
   const captionColor = tone === 'dark' ? 'text-cream/80' : 'text-emerald/70'
   const sealColor = tone === 'dark' ? 'rgba(217,193,137,0.55)' : 'rgba(194,161,77,0.65)'
 
+  // An uncaptioned placeholder (label="" or omitted — e.g. the full-bleed hero
+  // background) is purely decorative, so hide it from assistive tech entirely.
+  // Exposing role="img" with an empty aria-label announced an unnamed image on
+  // every page; a generic 'תמונת המחשה' name would be noise, not information.
+  const decorative = !label
+
   return (
     <div
       className={`group relative overflow-hidden ${radius} ${ratioClass[ratio]} ${className}`}
       style={bg as CSSProperties}
-      role="img"
-      aria-label={label ?? 'תמונת המחשה'}
+      {...(decorative ? { 'aria-hidden': true } : { role: 'img', 'aria-label': label })}
     >
       {/* decorative aqueduct / arch motif */}
       <svg
