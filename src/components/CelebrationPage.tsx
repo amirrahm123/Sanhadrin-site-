@@ -67,7 +67,10 @@ export function CelebrationPage({
                 ratio="4/5"
                 className="shadow-card"
               />
-              <div className="pointer-events-none absolute -bottom-4 -left-4 -z-0 hidden h-full w-full rounded-2xl border border-gold/40 sm:block" />
+              {/* gold frame accent — same ring as the home page's estate block:
+                  after the image in DOM order (and z-10) so it paints on top of
+                  the photo's outer edge, inset-0 so it hugs it with no gap. */}
+              <div className="pointer-events-none absolute inset-0 z-10 hidden rounded-2xl border border-gold/40 sm:block" />
             </div>
           </Reveal>
         </div>
