@@ -12,6 +12,8 @@
   --emerald-deep: #0f3329;
   --gold: #c2a14d;
   --gold-soft: #d9c189;
+  /* AA-contrast gold for text on light surfaces only — see tailwind.config.js */
+  --gold-deep: #836920;
   --stone: #e6decf;
   --ink: #2b2a26;
   --muted: #6b665c;
@@ -57,9 +59,12 @@
     @apply h-px w-full bg-gradient-to-l from-transparent via-gold/50 to-transparent;
   }
 
-  /* Small uppercase-ish eyebrow label above section titles */
+  /* Small uppercase-ish eyebrow label above section titles.
+     Defaults to the AA-contrast gold because most eyebrows sit on a light
+     section. On a DARK section add `text-gold` (or `text-gold-soft` over a
+     photo) to override — gold-deep only reaches 2.87:1 on emerald-deep. */
   .eyebrow {
-    @apply latin text-gold text-sm md:text-base font-medium tracking-[0.22em] uppercase;
+    @apply latin text-gold-deep text-sm md:text-base font-medium tracking-[0.22em] uppercase;
   }
 
   /* Subtle film grain / paper texture for dark sections */

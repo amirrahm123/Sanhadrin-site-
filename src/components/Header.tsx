@@ -153,15 +153,19 @@ export function Header() {
                           end
                           onClick={() => setOpen(false)}
                           className={({ isActive }) =>
-                            `mb-1 block text-sm font-semibold uppercase tracking-wider transition-colors ${
-                              isActive ? 'text-gold-soft' : 'text-gold hover:text-emerald'
+                            // Drawer sits on cream: gold-soft was 1.60:1 here,
+                            // the worst pair on the site. Both states use
+                            // gold-deep now, with an underline (not colour
+                            // alone) marking the current page.
+                            `mb-1 block text-sm font-semibold uppercase tracking-wider text-gold-deep transition-colors ${
+                              isActive ? 'underline underline-offset-4' : 'hover:text-emerald'
                             }`
                           }
                         >
                           {item.label}
                         </NavLink>
                       ) : (
-                        <p className="mb-1 text-sm font-semibold uppercase tracking-wider text-gold">
+                        <p className="mb-1 text-sm font-semibold uppercase tracking-wider text-gold-deep">
                           {item.label}
                         </p>
                       )}
@@ -228,10 +232,12 @@ function NavItemLink({ to, label, solid }: { to: string; label: string; solid: b
       to={to}
       end={to === '/'}
       className={({ isActive }) =>
+        // solid = cream bar → gold-deep (4.78:1); transparent = over the dark
+        // hero → gold-soft. Same accent, picked per surface.
         `relative px-3 py-2 text-base font-medium transition-colors ${
           solid
             ? isActive
-              ? 'text-gold'
+              ? 'text-gold-deep'
               : 'text-ink/80 hover:text-emerald'
             : isActive
               ? 'text-gold-soft'
@@ -279,7 +285,7 @@ function NavGroup({
   const triggerCls = `inline-flex items-center gap-1 px-3 py-2 text-base font-medium transition-colors ${
     solid
       ? groupActive
-        ? 'text-gold'
+        ? 'text-gold-deep'
         : 'text-ink/80 hover:text-emerald'
       : groupActive
         ? 'text-gold-soft'
@@ -345,10 +351,12 @@ function NavGroup({
               <NavLink
                 to={i.to}
                 className={({ isActive }) =>
+                  // Ivory panel → gold-deep on both the active row's gold/15
+                  // tint (4.65:1) and the plain panel (5.24:1).
                   `block rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors ${
                     isActive
-                      ? 'bg-gold/15 text-gold'
-                      : 'text-emerald hover:bg-stone/60 hover:text-gold'
+                      ? 'bg-gold/15 text-gold-deep'
+                      : 'text-emerald hover:bg-stone/60 hover:text-gold-deep'
                   }`
                 }
               >
@@ -389,7 +397,11 @@ function MobileLink({
       end={to === '/'}
       onClick={onNavigate}
       className={({ isActive }) =>
-        `${base} ${isActive ? 'text-gold' : 'text-ink hover:text-emerald'}`
+        // Cream drawer → gold-deep, plus an underline so the current page is
+        // not signalled by colour alone.
+        `${base} ${
+          isActive ? 'text-gold-deep underline underline-offset-4' : 'text-ink hover:text-emerald'
+        }`
       }
     >
       {label}

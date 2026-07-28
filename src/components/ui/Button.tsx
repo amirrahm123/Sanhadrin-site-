@@ -19,7 +19,8 @@ const variants: Record<Variant, string> = {
   // gold outline on dark surfaces
   outlineLight:
     'border border-gold/70 text-cream hover:bg-gold hover:text-emerald-deep hover:border-gold',
-  ghost: 'text-emerald hover:text-gold',
+  // ghost only ever sits on light surfaces → the AA-contrast gold
+  ghost: 'text-emerald hover:text-gold-deep',
 }
 
 const sizes: Record<Size, string> = {

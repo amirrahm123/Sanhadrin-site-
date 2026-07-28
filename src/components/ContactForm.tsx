@@ -148,7 +148,8 @@ export function ContactForm() {
       <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
         {/* Left: form / success */}
         <Reveal>
-          <span className="eyebrow">{CONTACT_SECTION.eyebrow}</span>
+          {/* dark section → the lighter decorative gold reads, gold-deep doesn't */}
+          <span className="eyebrow text-gold">{CONTACT_SECTION.eyebrow}</span>
           <h2 className="mt-4 text-3xl leading-tight text-cream md:text-4xl lg:text-5xl">
             {CONTACT_SECTION.title}
           </h2>

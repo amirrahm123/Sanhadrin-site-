@@ -45,7 +45,7 @@ export function Weddings() {
                     </li>
                   ))}
                 </ul>
-                <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-medium text-emerald transition-colors group-hover:text-gold">
+                <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-medium text-emerald transition-colors group-hover:text-gold-deep">
                   לעמוד המלא
                   <ArrowLeft size={15} className="transition-transform group-hover:-translate-x-1" />
                 </span>

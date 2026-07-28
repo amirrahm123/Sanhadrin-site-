@@ -8,7 +8,8 @@ export function Garden() {
     <Section id="garden" dark grain>
       <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
         <Reveal className="lg:col-span-5">
-          <span className="eyebrow">{GARDEN.eyebrow}</span>
+          {/* dark section → the lighter decorative gold reads, gold-deep doesn't */}
+          <span className="eyebrow text-gold">{GARDEN.eyebrow}</span>
           <h2 className="mt-4 text-3xl leading-tight text-cream md:text-4xl lg:text-5xl">
             {GARDEN.title}
           </h2>

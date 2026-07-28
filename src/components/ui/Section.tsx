@@ -44,7 +44,9 @@ export function SectionHeading({
   const alignCls = align === 'center' ? 'text-center items-center mx-auto' : 'text-start items-start'
   return (
     <Reveal className={`flex flex-col gap-4 ${alignCls} max-w-2xl mb-12 md:mb-16`}>
-      {eyebrow && <span className="eyebrow">{eyebrow}</span>}
+      {/* .eyebrow defaults to the light-surface gold; on a dark section the
+          lighter decorative gold is the readable one (5.57:1 vs 2.87:1). */}
+      {eyebrow && <span className={`eyebrow ${dark ? 'text-gold' : ''}`}>{eyebrow}</span>}
       <h2 className={`text-3xl md:text-4xl lg:text-5xl leading-tight ${dark ? 'text-cream' : ''}`}>
         {title}
       </h2>

@@ -39,7 +39,8 @@ export function Aqueduct() {
 
         {/* Story */}
         <Reveal delay={0.15} className="order-2 flex flex-col gap-6">
-          <span className="eyebrow">{AQUEDUCT.eyebrow}</span>
+          {/* dark section → the lighter decorative gold reads, gold-deep doesn't */}
+          <span className="eyebrow text-gold">{AQUEDUCT.eyebrow}</span>
           <h2 className="text-3xl leading-tight text-cream md:text-4xl lg:text-5xl">
             {AQUEDUCT.title}
           </h2>

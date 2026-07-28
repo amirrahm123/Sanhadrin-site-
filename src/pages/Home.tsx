@@ -65,7 +65,7 @@ export function Component() {
                 <div key={s.label} className="text-center sm:text-start">
                   <div className="flex items-baseline justify-center gap-1 sm:justify-start">
                     <span className="font-serif text-3xl font-bold text-emerald">{s.value}</span>
-                    <span className="font-serif text-base text-gold">{s.unit}</span>
+                    <span className="font-serif text-base text-gold-deep">{s.unit}</span>
                   </div>
                   <p className="mt-1 text-xs text-muted">{s.label}</p>
                 </div>

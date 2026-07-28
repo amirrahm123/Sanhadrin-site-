@@ -49,7 +49,7 @@ export function Halls() {
                       </h3>
                       <span className="text-sm text-muted">{hall.he}</span>
                     </div>
-                    <p className="mt-1 text-sm font-medium uppercase tracking-wide text-gold">
+                    <p className="mt-1 text-sm font-medium uppercase tracking-wide text-gold-deep">
                       {hall.tagline}
                     </p>
                   </div>
@@ -73,7 +73,7 @@ export function Halls() {
 
                   <a
                     href="#contact-form"
-                    className="group mt-1 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-emerald transition-colors hover:text-gold"
+                    className="group mt-1 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-emerald transition-colors hover:text-gold-deep"
                   >
                     {HALLS_SECTION.cta}
                     <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />

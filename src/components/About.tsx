@@ -49,7 +49,7 @@ export function About() {
                 <span className="font-serif text-4xl font-bold text-emerald md:text-5xl">
                   {s.value}
                 </span>
-                <span className="font-serif text-lg text-gold">{s.unit}</span>
+                <span className="font-serif text-lg text-gold-deep">{s.unit}</span>
               </div>
               <p className="mt-2 text-sm text-muted">{s.label}</p>
             </div>
