@@ -210,7 +210,9 @@
 .a11y-section-label {
   font-size: 0.72rem;
   font-weight: 700;
-  color: var(--gold);
+  /* gold-soft, matching the active toggle tiles: 7.8:1 on emerald-deep vs
+     gold's 5.6:1, which this small and this widely letter-spaced needs. */
+  color: var(--gold-soft);
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -280,12 +282,13 @@
      clearly "on" next to the dimmer inactive tiles. */
   color: var(--gold-soft);
 }
-.a11y-option-icon {
-  font-size: 20px;
-}
 .a11y-reset-btn {
   width: 100%;
   padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   background: rgba(248, 244, 236, 0.08);
   border: 1px solid rgba(248, 244, 236, 0.2);
   border-radius: 10px;

@@ -1,6 +1,17 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
+import {
+  Contrast,
+  Droplet,
+  Link as LinkIcon,
+  MousePointer,
+  Moon,
+  Pause,
+  RotateCcw,
+  Type,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 
 /**
  * Floating accessibility panel (IS 5568 / תקנות נגישות השירות).
@@ -34,14 +45,17 @@ const FONT_SIZES: { cls: string | null; label: string }[] = [
   { cls: 'a11y-font-150', label: '150%' },
 ]
 
-const TOGGLES: { key: ToggleKey; cls: string; label: string; icon: string }[] = [
-  { key: 'contrast', cls: 'a11y-contrast-high', label: 'ניגודיות גבוהה', icon: '◐' },
-  { key: 'invert', cls: 'a11y-invert', label: 'ניגודיות הפוכה', icon: '◑' },
-  { key: 'grayscale', cls: 'a11y-grayscale', label: 'גווני אפור', icon: '◒' },
-  { key: 'links', cls: 'a11y-links', label: 'הדגשת קישורים', icon: '🔗' },
-  { key: 'readable', cls: 'a11y-readable', label: 'פונט קריא', icon: 'Aa' },
-  { key: 'noMotion', cls: 'a11y-no-motion', label: 'עצירת אנימציות', icon: '⏸' },
-  { key: 'cursor', cls: 'a11y-cursor', label: 'סמן גדול', icon: '🖱' },
+// Real SVG icons rather than text glyphs (◐ ◑ ◒ 🔗 ⏸ 🖱): a bare character
+// falls back to whatever the Hebrew font stack has, which is how the reset
+// button ended up rendering a stray ט.
+const TOGGLES: { key: ToggleKey; cls: string; label: string; icon: LucideIcon }[] = [
+  { key: 'contrast', cls: 'a11y-contrast-high', label: 'ניגודיות גבוהה', icon: Contrast },
+  { key: 'invert', cls: 'a11y-invert', label: 'ניגודיות הפוכה', icon: Moon },
+  { key: 'grayscale', cls: 'a11y-grayscale', label: 'גווני אפור', icon: Droplet },
+  { key: 'links', cls: 'a11y-links', label: 'הדגשת קישורים', icon: LinkIcon },
+  { key: 'readable', cls: 'a11y-readable', label: 'פונט קריא', icon: Type },
+  { key: 'noMotion', cls: 'a11y-no-motion', label: 'עצירת אנימציות', icon: Pause },
+  { key: 'cursor', cls: 'a11y-cursor', label: 'סמן גדול', icon: MousePointer },
 ]
 
 const FOCUSABLE =
@@ -186,24 +200,28 @@ export function AccessibilityWidget() {
             תצוגה
           </div>
           <div className="a11y-toggles" role="group" aria-labelledby={`${titleId}-display`}>
-            {TOGGLES.map((t) => (
-              <button
-                type="button"
-                key={t.key}
-                className={`a11y-option-btn${settings[t.key] ? ' active' : ''}`}
-                aria-pressed={!!settings[t.key]}
-                onClick={() => toggle(t.key)}
-              >
-                <span className="a11y-option-icon" aria-hidden="true">
-                  {t.icon}
-                </span>
-                <span>{t.label}</span>
-              </button>
-            ))}
+            {TOGGLES.map((t) => {
+              const Icon = t.icon
+              return (
+                <button
+                  type="button"
+                  key={t.key}
+                  className={`a11y-option-btn${settings[t.key] ? ' active' : ''}`}
+                  aria-pressed={!!settings[t.key]}
+                  onClick={() => toggle(t.key)}
+                >
+                  <Icon size={20} aria-hidden="true" />
+                  <span>{t.label}</span>
+                </button>
+              )
+            })}
           </div>
 
+          {/* A real SVG icon, not a text glyph — the bare ↺ (U+21BA) fell back
+              to a wrong glyph in the Hebrew font stack. */}
           <button type="button" className="a11y-reset-btn" onClick={reset}>
-            <span aria-hidden="true">↺</span> איפוס הגדרות
+            <RotateCcw size={16} aria-hidden="true" />
+            איפוס הגדרות
           </button>
 
           {/* TODO(launch): /accessibility (הצהרת נגישות) does not exist yet —
