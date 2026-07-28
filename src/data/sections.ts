@@ -34,7 +34,7 @@ export const NAV_ITEMS: NavItem[] = [
       { label: 'חינות יוקרתיות', to: '/henna' },
     ],
   },
-  { label: 'האולמות', to: '/halls' },
+  { label: 'האחוזות', to: '/halls' },
   { label: 'קולינריה', to: '/culinary' },
   { label: 'גלריה', to: GALLERY_BASE, children: GALLERY_NAV_LINKS },
   // Scroll target — the contact form lives in the global footer (id=contact-form).
@@ -91,11 +91,11 @@ export const ABOUT = {
   title: 'אחוזה שנבנתה כדי להגשים לכם כל חלום',
   paragraphs: [
     'אחוזת סנדרין היא מתחם האירועים הגדול בישראל — כחמישים דונם של גנים פורחים, מזרקות ונחלים, הנפרשים לאורכו של אקוודוקט רומי עתיק. כאן הטבע, ההיסטוריה והיוקרה נפגשים לחוויה אחת בלתי נשכחת.',
-    'בלב האחוזה שלושה אולמות מפוארים ואולם כנסים אלגנטי, המתאימים לאירועים פרטיים ועסקיים כאחד. ניתן לשכור כל אולם בנפרד — או לשמור את האחוזה כולה באופן בלעדי, כך שהיום כולו שלכם בלבד.',
+    'בלב המתחם שלוש אחוזות מפוארות ואולם כנסים אלגנטי, המתאימים לאירועים פרטיים ועסקיים כאחד. ניתן לשכור כל אחוזה בנפרד — או לשמור את המתחם כולו באופן בלעדי, כך שהיום כולו שלכם בלבד.',
   ],
   stats: [
     { value: '50', unit: 'דונם', label: 'גנים ומרחבים פתוחים' },
-    { value: '3', unit: 'אולמות', label: 'יוקרתיים + אולם כנסים' },
+    { value: '3', unit: 'אחוזות', label: 'יוקרתיות + אולם כנסים' },
     { value: '1000', unit: 'אורחים', label: 'בקיבולת המרבית' },
     { value: '1', unit: 'אקוודוקט', label: 'רומי עתיק לאורך הגנים' },
   ],
@@ -188,7 +188,7 @@ export const GALLERY = {
   cta: 'לגלריה המלאה',
   tiles: [
     { label: 'הגן החדש', ratio: '4/5' as const },
-    { label: 'אולם Palais', ratio: '16/9' as const },
+    { label: 'אחוזת Palais', ratio: '16/9' as const },
     { label: 'קבלת פנים', ratio: '1/1' as const },
     { label: 'החופה', ratio: '4/5' as const },
     { label: 'האקוודוקט', ratio: '16/9' as const },
@@ -196,7 +196,7 @@ export const GALLERY = {
     { label: 'סוויטת הזוג', ratio: '4/5' as const },
     { label: 'עמדות הבר', ratio: '1/1' as const },
     { label: 'מזרקות הגן', ratio: '16/9' as const },
-    { label: 'אולם Chateau', ratio: '4/5' as const },
+    { label: 'אחוזת Chateau', ratio: '4/5' as const },
     { label: 'בית הכנסת', ratio: '1/1' as const },
     { label: 'תאורת הערב', ratio: '16/9' as const },
   ],

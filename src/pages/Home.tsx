@@ -24,7 +24,7 @@ const EVENT_CARDS = [
 
 const AREA_CARDS = [
   { to: '/about', label: 'האחוזה והגנים', slot: 'area_card_about', desc: 'חמישים דונם, אקוודוקט רומי עתיק וגן זכוכית ייחודי.' },
-  { to: '/halls', label: 'האולמות', slot: 'area_card_halls', desc: 'שלושה אולמות וגנים פרטיים — לכל גודל אירוע.' },
+  { to: '/halls', label: 'האחוזות', slot: 'area_card_halls', desc: 'שלוש אחוזות וגנים פרטיים — לכל גודל אירוע.' },
   { to: '/culinary', label: 'קולינריה', slot: 'area_card_culinary', desc: 'מטבח גבוה, עמדות שף, והכול כשר בהשגחת הרבנות.' },
 ]
 

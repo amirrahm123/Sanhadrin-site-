@@ -35,7 +35,7 @@ export function Halls() {
                   {hall.flagship && (
                     <span className="absolute right-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-gold px-3.5 py-1.5 text-xs font-semibold text-emerald-deep shadow-soft">
                       <Crown size={14} />
-                      אולם הדגל
+                      אחוזת הדגל
                     </span>
                   )}
                 </div>
@@ -89,7 +89,7 @@ export function Halls() {
       <Reveal delay={0.1} className="mt-12">
         <div className="rounded-3xl bg-emerald px-6 py-8 text-cream md:px-10 md:py-9">
           <p className="mb-6 text-center font-serif text-lg text-gold-soft md:text-xl">
-            בכל אולם, כלול בכל אירוע
+            בכל אחוזה, כלול בכל אירוע
           </p>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {HALLS_SECTION.sharedHighlights.map((h) => (

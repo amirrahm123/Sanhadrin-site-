@@ -9,7 +9,7 @@ export function Component() {
         path="/halls"
         heroSlot="halls_hero"
         eyebrow="The Halls"
-        subtitle="שלושה אולמות וגנים פרטיים — מאולם הדגל הענק ועד אולם בוטיק אינטימי, לכל אירוע הבמה המושלמת שלו."
+        subtitle="שלוש אחוזות וגנים פרטיים — מאחוזת הדגל הענקית ועד אחוזת בוטיק אינטימית, לכל אירוע הבמה המושלמת שלו."
       />
       <Halls />
       <ContactCta location="halls" />

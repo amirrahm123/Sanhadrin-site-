@@ -41,7 +41,7 @@ export const SLOT_GROUPS = [
   'חתונות',
   'בר/בת מצווה',
   'חינה',
-  'האולמות',
+  'האחוזות',
   'קולינריה',
   'גלריה',
 ] as const
@@ -73,7 +73,7 @@ export const PHOTO_SLOTS: PhotoSlot[] = [
   { key: 'event_card_barbat', label: 'כרטיס אירוע — בר/בת מצווה', group: 'עמוד הבית', ratio: '4/5' },
   { key: 'event_card_henna', label: 'כרטיס אירוע — חינה יוקרתית', group: 'עמוד הבית', ratio: '4/5' },
   { key: 'area_card_about', label: 'כרטיס מתחם — האחוזה והגנים', group: 'עמוד הבית', ratio: '4/5' },
-  { key: 'area_card_halls', label: 'כרטיס מתחם — האולמות', group: 'עמוד הבית', ratio: '4/5' },
+  { key: 'area_card_halls', label: 'כרטיס מתחם — האחוזות', group: 'עמוד הבית', ratio: '4/5' },
   { key: 'area_card_culinary', label: 'כרטיס מתחם — קולינריה', group: 'עמוד הבית', ratio: '4/5' },
 
   // ── עמוד האחוזה והגנים ────────────────────────────────────────────────────
@@ -130,11 +130,11 @@ export const PHOTO_SLOTS: PhotoSlot[] = [
   { key: 'henna_hero', label: 'רקע ראשי (Hero) — עמוד חינה', group: 'חינה', ratio: '16/9' },
   { key: 'henna_intro', label: 'תמונת אינטרו — חינה', group: 'חינה', ratio: '4/5' },
 
-  // ── האולמות ───────────────────────────────────────────────────────────────
-  { key: 'halls_hero', label: 'רקע ראשי (Hero) — עמוד האולמות', group: 'האולמות', ratio: '16/9' },
-  { key: 'halls_1', label: 'אולם Palais', group: 'האולמות', ratio: '4/5' },
-  { key: 'halls_2', label: 'אולם Chateau', group: 'האולמות', ratio: '4/5' },
-  { key: 'halls_3', label: 'אולם Garden', group: 'האולמות', ratio: '4/5' },
+  // ── האחוזות ───────────────────────────────────────────────────────────────
+  { key: 'halls_hero', label: 'רקע ראשי (Hero) — עמוד האחוזות', group: 'האחוזות', ratio: '16/9' },
+  { key: 'halls_1', label: 'אחוזת Palais', group: 'האחוזות', ratio: '4/5' },
+  { key: 'halls_2', label: 'אחוזת Chateau', group: 'האחוזות', ratio: '4/5' },
+  { key: 'halls_3', label: 'אחוזת Garden', group: 'האחוזות', ratio: '4/5' },
 
   // ── קולינריה ──────────────────────────────────────────────────────────────
   { key: 'culinary_hero', label: 'רקע ראשי (Hero) — עמוד קולינריה', group: 'קולינריה', ratio: '16/9' },
