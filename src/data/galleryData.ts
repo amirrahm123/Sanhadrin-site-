@@ -93,7 +93,11 @@ export const GALLERY_CATEGORIES: GalleryCategory[] = [
 }),
   // The 'החופה החדשה' set lives in this folder.
   folderCategory('noon-weddings', 'חתונות צהריים', '4/5', 'חתונת צהריים באחוזת סנדרין'),
-  folderCategory('culinary', 'קולינריה', '4/5', 'קולינריה באחוזת סנדרין'),
+  folderCategory('culinary', 'קולינריה', '4/5', 'קולינריה באחוזת סנדרין', {
+  heroDescription: [
+    'חוויה קולינרית המשלבת מטבח שף מוקפד, חומרי גלם מובחרים ועמדות קבלת פנים מרהיבות בהשראת מטבחים מכל רחבי העולם – הכול כשר בהשגחת הרבנות, ללא פשרות על איכות, יצירתיות וטעם.',
+  ],
+}),
   folderCategory('chateau-small-hall', 'שאטו - האחוזה הקטנה', '4/5', 'אחוזת שאטו הקטנה באולמי סנדרין'),
   folderCategory('palais-large-hall', 'פאלה - האחוזה הגדולה', '4/5', 'אחוזת פאלה הגדולה באולמי סנדרין'),
   folderCategory('luxury-henna', 'חינות יוקרתיות', '4/5', 'חינה יוקרתית באחוזת סנדרין', {
