@@ -86,7 +86,11 @@ export const GALLERY_CATEGORIES: GalleryCategory[] = [
   folderCategory('new-garden', 'הגן החדש שלנו', '4/5', 'הגן החדש באחוזת סנדרין'),
   folderCategory('exclusive-events', 'אירועים יוקרתיים', '4/5', 'אירוע יוקרתי באחוזת סנדרין'),
   folderCategory('two-halls', 'שתי אחוזות', '4/5', 'שתי האחוזות באולמי סנדרין'),
-  folderCategory('event-design', 'עיצוב אירועים', '4/5', 'עיצוב אירועים באחוזת סנדרין'),
+  folderCategory('event-design', 'עיצוב אירועים', '4/5', 'עיצוב אירועים באחוזת סנדרין', {
+  heroDescription: [
+    'באחוזת סנדרין כל חלום עיצובי יכול להפוך למציאות. המבנים היוקרתיים והייחודיים של המתחם מעניקים אינספור אפשרויות עיצוב, ומאפשרים ליצור אירועים מרהיבים בהתאמה אישית, בדיוק כפי שדמיינתם.',
+  ],
+}),
   // The 'החופה החדשה' set lives in this folder.
   folderCategory('noon-weddings', 'חתונות צהריים', '4/5', 'חתונת צהריים באחוזת סנדרין'),
   folderCategory('culinary', 'קולינריה', '4/5', 'קולינריה באחוזת סנדרין'),
