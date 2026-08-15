@@ -54,6 +54,30 @@
     @apply font-display tracking-latin;
   }
 
+  /* ── Mobile nav drawer scroller ──
+     Plain CSS, not Tailwind utilities, for two reasons: the dvh fallback needs
+     two declarations of the SAME property in cascade order (Tailwind would emit
+     two classes and let stylesheet order decide the winner), and env() inside an
+     arbitrary value is fragile.
+
+     - max-height bounds the panel so its content scrolls INSIDE it instead of
+       running off the bottom of the fixed header, which is what made the last
+       items unreachable.
+     - dvh (with a vh fallback for older engines) tracks the mobile URL bar, so
+       the bottom isn't cut off when it's expanded — and it re-resolves on
+       rotation, so landscape works with no extra code.
+     - overscroll-behavior: contain stops the scroll from chaining to the page
+       once the panel hits either end.
+     - the safe-area pad keeps the last row clear of the home indicator. */
+  .drawer-scroll {
+    max-height: calc(100vh - var(--nav-h, 4.5rem));
+    max-height: calc(100dvh - var(--nav-h, 4.5rem));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+  }
+
   /* Thin gold hairline divider */
   .hairline {
     @apply h-px w-full bg-gradient-to-l from-transparent via-gold/50 to-transparent;

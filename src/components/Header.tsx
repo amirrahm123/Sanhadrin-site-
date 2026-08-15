@@ -4,6 +4,7 @@ import { Menu, X, ChevronDown, Instagram, Facebook } from 'lucide-react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { NAV_ITEMS, BRAND, CONTACT, HERO, isNavGroup } from '../data/sections'
 import { Button } from './ui/Button'
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock'
 import logoUrl from '../assets/logo.avif'
 
 export function Header() {
@@ -40,13 +41,8 @@ export function Header() {
     setOpen(false)
   }, [pathname])
 
-  // lock body scroll while drawer is open
-  useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : ''
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [open])
+  // Freeze the page behind the drawer (iOS-safe, keeps the scroll position).
+  useBodyScrollLock(open)
 
   // Solid bar when scrolled, when the drawer is open, or on any inner page
   // (only the home hero is dark/full-bleed enough for a transparent bar).
@@ -136,13 +132,18 @@ export function Header() {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="xl:hidden"
+            // overflow-hidden so the panel is clipped while its height animates
+            // — the inner .drawer-scroll element is what actually scrolls.
+            className="overflow-hidden xl:hidden"
             initial={reduce ? false : { opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, height: 0 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="border-t border-stone/70 bg-cream px-5 pb-8 pt-2 sm:px-8">
+            {/* .drawer-scroll (index.css) caps the height at the visual viewport
+                minus the nav bar and scrolls internally, with overscroll
+                containment + safe-area padding. */}
+            <div className="drawer-scroll border-t border-stone/70 bg-cream px-5 pt-2 sm:px-8">
               <nav className="flex flex-col">
                 {NAV_ITEMS.map((item) =>
                   isNavGroup(item) ? (
