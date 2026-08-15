@@ -83,9 +83,6 @@ export function ContactForm() {
     if (!validate()) return
     if (honeypot.current?.value) return // bot
 
-    // Fire the tracking event on submit — works before GTM's real id is live.
-    track('form_submit', { event_type: form.eventType })
-
     setStatus('submitting')
     // Empty optional values render as a clean dash instead of a blank row.
     const orDash = (v: string) => v.trim() || '—'
@@ -117,6 +114,10 @@ export function ContactForm() {
       })
       const data = await res.json().catch(() => ({}))
       if (res.ok && data.success) {
+        // Tracked only once the inquiry is actually accepted. Firing this at
+        // submit time counted failed sends as conversions, so the rate read
+        // highest exactly when the form was broken.
+        track('form_submit', { event_type: form.eventType })
         setSubmitted(true)
         setStatus('idle')
       } else {

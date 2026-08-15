@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { v2 as cloudinary } from 'cloudinary'
+import { clientIp, rateLimited } from '../lib/rateLimit.js'
 
 // Serverless gallery listing (Vercel, Node runtime).
 //
@@ -40,6 +41,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // call per 10s per edge region, and stale-while-revalidate serves the cached
   // list during refresh so bursts never hit the rate limit.
   res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=30')
+
+  // The edge cache is the first shield, but a varying query string (?x=1, ?x=2)
+  // misses it and reaches origin every time — enough to burn the Cloudinary
+  // Admin API quota, after which every visitor sees placeholder tiles. A real
+  // visitor hits this once per page load, so 60/min/IP is far above normal use.
+  if (rateLimited('public-read', clientIp(req), { windowMs: 60_000, max: 60 })) {
+    res.status(429).json({ error: 'too_many_requests' })
+    return
+  }
 
   try {
     const result = await cloudinary.api.resources_by_tag(GALLERY_TAG, {

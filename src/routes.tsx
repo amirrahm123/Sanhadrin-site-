@@ -1,5 +1,6 @@
 import type { RouteRecord } from 'vite-react-ssg'
 import { Layout } from './components/Layout'
+import { ErrorFallback } from './components/ErrorFallback'
 import { GALLERY_CATEGORIES, galleryPath } from './data/galleryData'
 
 /**
@@ -11,6 +12,9 @@ export const routes: RouteRecord[] = [
   {
     path: '/',
     element: <Layout />,
+    // Catches render/hydration errors anywhere in the public tree (including
+    // Layout itself) instead of unmounting to a blank page.
+    errorElement: <ErrorFallback />,
     entry: 'src/components/Layout.tsx',
     children: [
       { index: true, lazy: () => import('./pages/Home') },
@@ -40,5 +44,5 @@ export const routes: RouteRecord[] = [
   // Standalone admin dashboard — deliberately OUTSIDE the public Layout (no
   // header/footer/contact chrome) and its own lazy chunk, so public routes
   // never load any admin code. noindex is set in the page's <Head>.
-  { path: '/admin', lazy: () => import('./pages/Admin') },
+  { path: '/admin', lazy: () => import('./pages/Admin'), errorElement: <ErrorFallback /> },
 ]

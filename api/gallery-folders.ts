@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { v2 as cloudinary } from 'cloudinary'
 import { FOLDER_BACKED_CATEGORY_IDS, categoryFolderPath } from '../src/data/galleryFolders.js'
+import { clientIp, rateLimited } from '../lib/rateLimit.js'
 
 // Serverless per-category gallery listing (Vercel, Node runtime).
 //
@@ -59,12 +60,22 @@ async function listFolder(folder: string): Promise<GalleryResource[]> {
   }
 }
 
-export default async function handler(_req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Short edge cache (+ SWR): folder edits appear within ~30s while the
   // Cloudinary Admin API is shielded to ~one origin sweep per 30s per edge
   // region; stale-while-revalidate serves the cached map during refresh so
   // bursts never hit the rate limit.
   res.setHeader('Cache-Control', 'public, s-maxage=30, stale-while-revalidate=120')
+
+  // The tightest public limit on the site: one cache miss here fans out to a
+  // Cloudinary Search call PER folder (ten of them below), so this endpoint is
+  // the cheapest way to exhaust the Admin API quota — and a varying query
+  // string walks straight past the edge cache. A visitor needs it once per
+  // page load.
+  if (rateLimited('public-read', clientIp(req), { windowMs: 60_000, max: 30 })) {
+    res.status(429).json({ error: 'too_many_requests' })
+    return
+  }
 
   const ids = FOLDER_BACKED_CATEGORY_IDS
   const lists = await Promise.all(ids.map((id) => listFolder(categoryFolderPath(id))))
