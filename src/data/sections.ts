@@ -96,7 +96,7 @@ export const ABOUT = {
   stats: [
     { value: '50', unit: 'דונם', label: 'גנים ומרחבים פתוחים' },
     { value: '3', unit: 'אחוזות', label: 'יוקרתיות + אולם כנסים' },
-    { value: '1000', unit: 'אורחים', label: 'בקיבולת המרבית' },
+    { value: '1,800', unit: 'אורחים', label: 'בקיבולת המרבית' },
     { value: '1', unit: 'אקוודוקט', label: 'רומי עתיק לאורך הגנים' },
   ],
   imageLabel: 'מבט אל האחוזה',
