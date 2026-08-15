@@ -44,7 +44,14 @@ export function Halls() {
                 <div className={`flex flex-col justify-center gap-5 p-7 md:p-10 ${reverse ? 'lg:order-1' : ''}`}>
                   <div>
                     <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                      <h3 className="latin text-3xl font-semibold text-emerald md:text-4xl">
+                      {/* Latin names get the display face + its tracking; a
+                          Hebrew name gets the site's Hebrew heading face, since
+                          Cormorant Garamond carries no Hebrew glyphs. */}
+                      <h3
+                        className={`text-3xl font-semibold text-emerald md:text-4xl ${
+                          hall.latinName ? 'latin' : 'font-serif'
+                        }`}
+                      >
                         {hall.name}
                       </h3>
                       <span className="text-sm text-muted">{hall.he}</span>

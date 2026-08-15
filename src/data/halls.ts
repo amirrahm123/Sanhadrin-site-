@@ -4,7 +4,16 @@ export type AspectRatio = '16/9' | '4/5' | '1/1' | '3/2'
 
 export type Hall = {
   id: string
-  name: string // Latin display name
+  name: string // display name (Latin or Hebrew — see latinName)
+  /**
+   * True when `name` is written in Latin script, so the card renders it in the
+   * Latin display face with its letter-spacing (`.latin`). Leave unset for a
+   * Hebrew name: Cormorant Garamond has no Hebrew glyphs, and `tracking-latin`
+   * pulls Hebrew letters apart. Explicit on purpose — sniffing the first
+   * character would silently pick the wrong face for a name starting with a
+   * quote, a digit, or any non-Latin character.
+   */
+  latinName?: boolean
   he: string // Hebrew descriptor
   capacity: string
   tagline: string
@@ -33,6 +42,7 @@ export const HALLS: Hall[] = [
   {
     id: 'palais',
     name: 'Palais',
+    latinName: true,
     he: 'אחוזה + גן',
     capacity: 'עד 1,800 אורחים',
     tagline: 'אחוזת הדגל',
@@ -45,6 +55,7 @@ export const HALLS: Hall[] = [
   {
     id: 'chateau',
     name: 'Chateau',
+    latinName: true,
     he: 'אחוזה + גן',
     capacity: 'עד 500 אורחים',
     tagline: 'יוקרה במידה מושלמת',
@@ -55,13 +66,13 @@ export const HALLS: Hall[] = [
   },
   {
     id: 'garden-hall',
-    name: 'Garden',
+    name: 'אקוודוקט',
     he: 'אחוזת בוטיק אינטימית',
     capacity: 'אחוזת בוטיק',
     tagline: 'בהשראת צרפת ורומא',
     description:
       'אחוזת בוטיק אינטימית בהשראה צרפתית-רומית, לאירועים מצומצמים ומוקפדים. כל פרט תוכנן ביד אמן — מקום שבו האווירה היא הכוכבת.',
     highlights: ['עיצוב צרפתי-רומי', 'אווירה בוטיק מוקפדת', 'מושלמת לאירועים אינטימיים'],
-    imageLabel: 'אחוזת Garden',
+    imageLabel: 'אחוזת אקוודוקט',
   },
 ]

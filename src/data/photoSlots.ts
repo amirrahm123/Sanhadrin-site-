@@ -176,7 +176,7 @@ export const PHOTO_SLOTS: PhotoSlot[] = [
   { key: 'halls_hero', label: 'רקע ראשי (Hero) — עמוד האחוזות', group: 'האחוזות', ratio: '16/9' },
   { key: 'halls_1', label: 'אחוזת Palais', group: 'האחוזות', ratio: '4/5' },
   { key: 'halls_2', label: 'אחוזת Chateau', group: 'האחוזות', ratio: '4/5' },
-  { key: 'halls_3', label: 'אחוזת Garden', group: 'האחוזות', ratio: '4/5' },
+  { key: 'halls_3', label: 'אחוזת אקוודוקט', group: 'האחוזות', ratio: '4/5' },
 
   // ── קולינריה ──────────────────────────────────────────────────────────────
   { key: 'culinary_hero', label: 'רקע ראשי (Hero) — עמוד קולינריה', group: 'קולינריה', ratio: '16/9' },
