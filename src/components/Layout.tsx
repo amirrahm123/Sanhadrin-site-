@@ -9,8 +9,9 @@ import { SlotsProvider } from '../lib/slots'
 import { GalleryFoldersProvider } from '../lib/galleryFolders'
 
 /**
- * Shared shell wrapping every route: header, footer and the floating WhatsApp
- * CTA stay mounted while the routed page renders into <Outlet/>. SlotsProvider
+ * Shared shell wrapping every route: header, footer and the floating
+ * WhatsApp + Instagram CTA pair stay mounted while the routed page renders into
+ * <Outlet/>. SlotsProvider
  * fetches admin-assigned photos (client-side) so any slotted ImagePlaceholder
  * swaps them in; GalleryFoldersProvider fetches each gallery category's live
  * Cloudinary folder once and shares it across routes. With neither, the site

@@ -46,8 +46,10 @@ not in JSX.
 - **Gallery:** CSS `columns` for natural masonry with varied tile ratios (no JS layout).
 - **Contact form:** client-side only. Validates name/phone/event-type, then animates to an
   elegant success state. No network request is made.
-- **Floating CTA:** WhatsApp FAB (bottom-left for RTL), appears after 600px scroll; uses a
-  demo number — replace `CONTACT.whatsapp` in `src/data/sections.ts`.
+- **Floating CTA:** a matched WhatsApp + Instagram FAB pair (bottom-left, same size/shadow/
+  animation), appears after 600px scroll. WhatsApp uses a demo number — replace
+  `CONTACT.whatsapp` in `src/data/sections.ts`. Instagram's colour is a one-line switch:
+  `INSTAGRAM_STYLE` in `src/components/FloatingContact.tsx` (`'gradient'` | `'brand'`).
 - **Phone / location:** `04-622-2221`, מרכז רגבה–נהריה (from the brief). Update in
   `src/data/sections.ts` → `CONTACT`.
 

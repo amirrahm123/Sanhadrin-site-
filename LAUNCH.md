@@ -84,7 +84,7 @@ add a route in `src/routes.tsx` **and** an entry in `seo.ts` with the same path.
 - [ ] Paste a page URL into the [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/) — OG image/title/description preview correctly (also test a WhatsApp share).
 - [ ] Rich Results / Schema test on the homepage — LocalBusiness parses (add `SITE.geo` for the map pin).
 - [ ] Submit `sitemap.xml` in Google Search Console; confirm indexing over the following days.
-- [ ] In GTM Preview, confirm `phone_click`, `whatsapp_click` and `form_submit` reach the dataLayer.
+- [ ] In GTM Preview, confirm `phone_click`, `whatsapp_click`, `instagram_click` and `form_submit` reach the dataLayer.
 - [ ] Send a real test submission and confirm it arrives at morvsandrine@gmail.com.
 - [ ] Run Lighthouse (mobile) — aim for green Performance/SEO/Best-Practices/Accessibility.
 

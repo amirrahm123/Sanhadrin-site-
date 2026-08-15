@@ -103,11 +103,12 @@
    =========================================================================== */
 
 /* ── Floating trigger ──
-   Stacked ABOVE the WhatsApp float, which is `fixed bottom-5 left-5` (20px)
-   and 56px tall — i.e. physically bottom-LEFT, since Tailwind's `left-*` is
-   physical and unaffected by dir="rtl". 20 + 56 + 16 gutter = 92px, so the two
-   never touch. Both buttons are the same size at every breakpoint, so this one
-   offset holds on mobile too. */
+   Stacked ABOVE the WhatsApp + Instagram float pair, which sits at
+   `fixed bottom-5 left-5` (20px) and is 56px tall — i.e. physically
+   bottom-LEFT, since Tailwind's `left-*` is physical and unaffected by
+   dir="rtl". 20 + 56 + 16 gutter = 92px, so they never touch. The pair grows
+   sideways (124px wide), not upwards, and both floats are the same size at
+   every breakpoint, so this one offset holds on mobile too. */
 .a11y-float {
   position: fixed;
   bottom: 92px;
