@@ -7,6 +7,7 @@ import { Reveal } from '../components/ui/Reveal'
 import { Button } from '../components/ui/Button'
 import { ImagePlaceholder } from '../components/ImagePlaceholder'
 import { ContactCta } from '../components/ContactCta'
+import { Reviews } from '../components/Reviews'
 import { Seo } from '../components/Seo'
 import { ABOUT, GALLERY } from '../data/sections'
 import { GALLERY_IMAGE_ALT, useCloudinaryGallery } from '../lib/cloudinary'
@@ -196,6 +197,9 @@ export function Component() {
           </Button>
         </Reveal>
       </Section>
+
+      {/* Social proof — the last thing read before the contact CTA */}
+      <Reviews />
 
       <ContactCta location="home" />
     </>
