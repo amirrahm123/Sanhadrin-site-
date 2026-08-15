@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Menu, X, ChevronDown, Instagram, Facebook } from 'lucide-react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
@@ -7,14 +7,33 @@ import { Button } from './ui/Button'
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock'
 import logoUrl from '../assets/logo.avif'
 
+// Same selector the accessibility panel uses for its own trap — one definition
+// of "focusable" across the site's two modal surfaces.
+const FOCUSABLE =
+  'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+
+// Tailwind's `xl` — the breakpoint at which the drawer is replaced by the
+// desktop nav (`xl:hidden` on the drawer, `xl:flex` on the nav).
+const XL_QUERY = '(min-width: 1280px)'
+
 export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const reduce = useReducedMotion()
   const barRef = useRef<HTMLDivElement>(null)
+  const drawerRef = useRef<HTMLDivElement>(null)
+  const toggleRef = useRef<HTMLButtonElement>(null)
+  const drawerId = useId()
+  const drawerTitleId = useId()
   const { pathname } = useLocation()
 
   const isHome = pathname === '/'
+
+  // Closing always hands focus back to the hamburger, however it was closed.
+  const closeDrawer = useCallback(() => {
+    setOpen(false)
+    toggleRef.current?.focus()
+  }, [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -43,6 +62,74 @@ export function Header() {
 
   // Freeze the page behind the drawer (iOS-safe, keeps the scroll position).
   useBodyScrollLock(open)
+
+  // Crossing up to the desktop breakpoint hides the drawer via CSS while `open`
+  // would stay true — leaving the page scroll-locked with nothing on screen to
+  // explain it. Close it as soon as the desktop nav takes over.
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return
+    const mq = window.matchMedia(XL_QUERY)
+    const onChange = (e: MediaQueryListEvent | MediaQueryList) => {
+      if (e.matches) setOpen(false)
+    }
+    onChange(mq)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+
+  // Modal behaviour for the drawer: focus moves in on open, Tab cycles inside
+  // it, Escape closes and returns focus to the hamburger.
+  useEffect(() => {
+    if (!open) return
+    const drawer = drawerRef.current
+    if (!drawer) return
+
+    drawer.querySelector<HTMLElement>(FOCUSABLE)?.focus({ preventScroll: true })
+
+    const onKey = (e: KeyboardEvent) => {
+      // The accessibility panel is a portalled dialog that renders ABOVE this
+      // one and runs an identical trap on `document`. When it is open, it owns
+      // the keyboard — otherwise both traps would fight over Tab and a single
+      // Escape would close both.
+      const a11yOverlay = document.querySelector('.a11y-overlay')
+      if (a11yOverlay?.contains(document.activeElement)) return
+
+      if (e.key === 'Escape') {
+        closeDrawer()
+        return
+      }
+      if (e.key !== 'Tab') return
+
+      // The hamburger sits outside the drawer but belongs to it — it's the
+      // close control — and it precedes the drawer in the DOM, so the cycle is
+      // [hamburger, ...drawer items] and matches the natural tab order.
+      const toggle = toggleRef.current
+      const cycle = [
+        ...(toggle ? [toggle] : []),
+        ...Array.from(drawer.querySelectorAll<HTMLElement>(FOCUSABLE)),
+      ]
+      if (cycle.length === 0) return
+      const first = cycle[0]
+      const last = cycle[cycle.length - 1]
+      const active = document.activeElement
+
+      if (e.shiftKey && active === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault()
+        first.focus()
+      } else if (!cycle.includes(active as HTMLElement)) {
+        // Focus escaped some other way (browser chrome, a stray programmatic
+        // focus) — pull it back into the drawer.
+        e.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [open, closeDrawer])
 
   // Solid bar when scrolled, when the drawer is open, or on any inner page
   // (only the home hero is dark/full-bleed enough for a transparent bar).
@@ -116,9 +203,11 @@ export function Header() {
           {/* Mobile toggle */}
           <button
             type="button"
-            onClick={() => setOpen((v) => !v)}
+            ref={toggleRef}
+            onClick={() => (open ? closeDrawer() : setOpen(true))}
             aria-label={open ? 'סגירת תפריט' : 'פתיחת תפריט'}
             aria-expanded={open}
+            aria-controls={drawerId}
             className={`inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors xl:hidden ${
               solid ? 'text-emerald hover:bg-stone/60' : 'text-cream hover:bg-cream/10'
             }`}
@@ -143,7 +232,17 @@ export function Header() {
             {/* .drawer-scroll (index.css) caps the height at the visual viewport
                 minus the nav bar and scrolls internally, with overscroll
                 containment + safe-area padding. */}
-            <div className="drawer-scroll border-t border-stone/70 bg-cream px-5 pt-2 sm:px-8">
+            <div
+              ref={drawerRef}
+              id={drawerId}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={drawerTitleId}
+              className="drawer-scroll border-t border-stone/70 bg-cream px-5 pt-2 sm:px-8"
+            >
+              <h2 id={drawerTitleId} className="sr-only">
+                תפריט ניווט
+              </h2>
               <nav className="flex flex-col">
                 {NAV_ITEMS.map((item) =>
                   isNavGroup(item) ? (
