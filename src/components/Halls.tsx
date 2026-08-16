@@ -1,8 +1,10 @@
-import { Check, Crown, ArrowLeft } from 'lucide-react'
+import { Check, Crown, ArrowLeft, Images } from 'lucide-react'
 import { Section, SectionHeading } from './ui/Section'
 import { Reveal } from './ui/Reveal'
+import { Button } from './ui/Button'
 import { ImagePlaceholder } from './ImagePlaceholder'
 import { HALLS, HALLS_SECTION } from '../data/halls'
+import { galleryPath } from '../data/galleryData'
 
 export function Halls() {
   return (
@@ -78,13 +80,31 @@ export function Halls() {
                     ))}
                   </ul>
 
-                  <a
-                    href="#contact-form"
-                    className="group mt-1 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-emerald transition-colors hover:text-gold-deep"
-                  >
-                    {HALLS_SECTION.cta}
-                    <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
-                  </a>
+                  {/* Row, not stacked: a hall with no gallery category simply
+                      drops its button and the CTA keeps its place — the gap
+                      only applies between children that exist. */}
+                  <div className="mt-1 flex flex-wrap items-center gap-x-5 gap-y-3">
+                    <a
+                      href="#contact-form"
+                      className="group inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-emerald transition-colors hover:text-gold-deep"
+                    >
+                      {HALLS_SECTION.cta}
+                      <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
+                    </a>
+
+                    {hall.galleryCategory && (
+                      <Button
+                        as="link"
+                        to={galleryPath(hall.galleryCategory)}
+                        variant="outline"
+                        size="md"
+                        aria-label={HALLS_SECTION.galleryCtaAria(hall.name)}
+                      >
+                        <Images size={16} />
+                        {HALLS_SECTION.galleryCta}
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </article>
             </Reveal>
