@@ -3,6 +3,8 @@
 User-agent: *
 Allow: /
 
-# The Sitemap line is rewritten at build time with the real origin
-# (scripts/gen-sitemap.mjs). TODO(launch): confirm the domain once SITE.url is set.
-Sitemap: https://REPLACE-WITH-DOMAIN.com/sitemap.xml
+# The Sitemap line is rewritten at build time with the real origin taken from
+# the built canonicals (scripts/gen-sitemap.mjs), which also appends
+# `Disallow: /admin`. This static copy is the fallback if that step is skipped —
+# keep it in sync with SITE.url in src/data/site.ts.
+Sitemap: https://sandrine-events.com/sitemap.xml

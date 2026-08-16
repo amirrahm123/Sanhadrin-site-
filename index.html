@@ -39,9 +39,9 @@
          Alternative: verify via DNS TXT record instead (see README). -->
     <meta name="google-site-verification" content="REPLACE_WITH_SEARCH_CONSOLE_TOKEN" />
 
-    <!-- Google Tag Manager. TODO(launch): replace GTM-XXXXXXX (must match
-         SITE.gtmId). GA4 is configured *inside* GTM (see README). dataLayer is
-         initialised here so events fire even before the real container is live. -->
+    <!-- Google Tag Manager — container GTM-MR3ZVXJF (must match SITE.gtmId and
+         the noscript snippet in <body>). GA4 is configured *inside* GTM (see
+         README). dataLayer is initialised here so events queue correctly. -->
     <script>
       window.dataLayer = window.dataLayer || [];
       (function (w, d, s, l, i) {
@@ -53,7 +53,7 @@
         j.async = true;
         j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
         f.parentNode.insertBefore(j, f);
-      })(window, document, 'script', 'dataLayer', 'GTM-XXXXXXX');
+      })(window, document, 'script', 'dataLayer', 'GTM-MR3ZVXJF');
     </script>
     <!-- End Google Tag Manager -->
 
@@ -80,10 +80,10 @@
     />
   </head>
   <body>
-    <!-- Google Tag Manager (noscript). TODO(launch): replace GTM-XXXXXXX. -->
+    <!-- Google Tag Manager (noscript) — same container as the head snippet. -->
     <noscript
       ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+        src="https://www.googletagmanager.com/ns.html?id=GTM-MR3ZVXJF"
         height="0"
         width="0"
         style="display: none; visibility: hidden"

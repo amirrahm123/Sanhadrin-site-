@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 export const SITE = {
   // No trailing slash. Used for canonical URLs, OG URLs and the sitemap.
-  // TODO(launch): replace with Sandrine's real domain.
-  url: 'https://REPLACE-WITH-DOMAIN.com',
+  url: 'https://sandrine-events.com',
 
   name: 'אחוזת סנדרין',
   nameLatin: 'Sandrine Events',
@@ -16,8 +15,8 @@ export const SITE = {
   ogImage: '/og-image.svg',
 
   // Google Tag Manager container. GA4 is configured *through* GTM (see README).
-  // TODO(launch): replace with the real GTM container id.
-  gtmId: 'GTM-XXXXXXX',
+  // Must stay in sync with both snippets in index.html (head + noscript).
+  gtmId: 'GTM-MR3ZVXJF',
 
   // GA4 measurement id — configured inside GTM, kept here for reference.
   // TODO(launch): replace with the real GA4 id.
