@@ -83,7 +83,7 @@ const folderCategory = (
 ): GalleryCategory => ({ id, title, ratio, photoAlt, images: placeholders(ratio), ...extra })
 
 export const GALLERY_CATEGORIES: GalleryCategory[] = [
-  folderCategory('new-garden', 'הגן החדש שלנו', '4/5', 'הגן החדש באחוזת סנדרין', {
+  folderCategory('new-garden', 'גן האקוודוקט','4/5', 'גן האקוודוקט באחוזת סנדרין', {
   heroDescription: [
     'גן האקוודוקט שלנו הוא מתחם ייחודי מסוגו, שתוכנן סביב מבנה זכוכית מרהיב המכניס את הטבע פנימה ויוצר תחושה של אירוע בלב הגן, לצד הנוחות והיוקרה של אולם אירועים.',
     'רחבת הריקודים, האקוסטיקה המוקפדת והאווירה הקסומה משתלבות יחד לחוויה יוצאת דופן, כשברקע ניצב האקוודוקט המרשים – סימן ההיכר של המתחם והנוף שהופך כל אירוע לבלתי נשכח.',

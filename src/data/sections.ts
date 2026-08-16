@@ -115,7 +115,7 @@ export const AQUEDUCT = {
 
 export const GARDEN = {
   eyebrow: 'The New Garden',
-  title: 'הגן החדש — קסם לאורך האקוודוקט',
+ title: 'גן האקוודוקט — קסם לאורך אמת המים העתיקה',
   paragraphs: [
     'גן קסום הנפרש לאורך האקוודוקט הרומי: משטחי דשא מדורגים, ערוגות פרחים וירק עוטף עד קצה האופק. מבנה ייחודי בעל גג זכוכית מכניס את הירוק פנימה — חוויה של אוויר פתוח ומרחב מקורה כאחד, בכל מזג אוויר.',
     'תאורת רחבת ריקודים יוצאת דופן, מזרקות מים ופסיפסי רצפה בעבודת יד יוצרים אווירה חד-פעמית. עמדות בר צמודות לרחבה, והפקות קונספט בליווי המעצב הבית — כל ערב הופך ליצירה.',
@@ -191,7 +191,7 @@ export const GALLERY = {
   // live `sandrine_gallery` feed, and only with neither does the label render as
   // a designed placeholder. All six render square, so there's no per-tile ratio.
   tiles: [
-    { label: 'הגן החדש', slot: 'home_preview_new_garden' },
+   { label: 'גן האקוודוקט', slot: 'home_preview_new_garden' },
     { label: 'אחוזת Palais', slot: 'home_preview_palais' },
     { label: 'קבלת פנים', slot: 'home_preview_reception' },
     { label: 'החופה', slot: 'home_preview_chuppah' },

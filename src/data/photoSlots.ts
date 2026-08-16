@@ -83,7 +83,7 @@ export const PHOTO_SLOTS: PhotoSlot[] = [
   // `sandrine_gallery` fill the empty tiles automatically.
   {
     key: 'home_preview_new_garden',
-    label: 'הצצה אל האחוזה — הגן החדש',
+   label: 'הצצה אל האחוזה — גן האקוודוקט',
     group: 'עמוד הבית',
     ratio: '1/1',
   },
@@ -125,10 +125,10 @@ export const PHOTO_SLOTS: PhotoSlot[] = [
     group: 'עמוד האחוזה והגנים',
     ratio: '16/9',
   },
-  { key: 'garden_1', label: 'הגן החדש — גג הזכוכית', group: 'עמוד האחוזה והגנים', ratio: '4/5' },
-  { key: 'garden_2', label: 'הגן החדש — רחבת הריקודים', group: 'עמוד האחוזה והגנים', ratio: '4/5' },
-  { key: 'garden_3', label: 'הגן החדש — מזרקות ופסיפס', group: 'עמוד האחוזה והגנים', ratio: '4/5' },
-  { key: 'garden_4', label: 'הגן החדש — ערוגות הפריחה', group: 'עמוד האחוזה והגנים', ratio: '4/5' },
+  { key: 'garden_1', label: 'גן האקוודוקט — גג הזכוכית', group: 'עמוד האחוזה והגנים', ratio: '4/5' },
+  { key: 'garden_2', label: 'גן האקוודוקט — רחבת הריקודים', group: 'עמוד האחוזה והגנים', ratio: '4/5' },
+  { key: 'garden_3', label: 'גן האקוודוקט — מזרקות ופסיפס', group: 'עמוד האחוזה והגנים', ratio: '4/5' },
+  { key: 'garden_4', label: 'גן האקוודוקט — ערוגות הפריחה', group: 'עמוד האחוזה והגנים', ratio: '4/5' },
 
   // ── חתונות ────────────────────────────────────────────────────────────────
   { key: 'weddings_hero', label: 'רקע ראשי (Hero) — עמוד חתונות', group: 'חתונות', ratio: '16/9' },
