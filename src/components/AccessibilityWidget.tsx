@@ -32,18 +32,53 @@ const STORAGE_KEY = 'sandrine-a11y'
 
 type ToggleKey = 'contrast' | 'invert' | 'grayscale' | 'links' | 'readable' | 'noMotion' | 'cursor'
 
-type Settings = {
-  fontSize?: string | null
-} & Partial<Record<ToggleKey, boolean>>
+type StepperKey = 'fontSize' | 'brightness' | 'saturation'
 
-const FONT_SIZES: { cls: string | null; label: string }[] = [
-  { cls: 'a11y-font-75', label: '75%' },
-  { cls: 'a11y-font-90', label: '90%' },
-  { cls: null, label: '100%' },
-  { cls: 'a11y-font-110', label: '110%' },
-  { cls: 'a11y-font-125', label: '125%' },
-  { cls: 'a11y-font-150', label: '150%' },
-]
+type Settings = Partial<Record<StepperKey, string | null>> & Partial<Record<ToggleKey, boolean>>
+
+// Graded controls: pick-one rows of percentage buttons. `cls: null` is the
+// neutral/off step, so "no class on <html>" is always the default state and
+// reset simply clears the key.
+//
+// Every row is rendered in a 3-column grid, so each `steps` list should be a
+// multiple of 3 — otherwise the last row sits short (which is exactly how the
+// font row used to render 5 + 1).
+const STEPPERS: { key: StepperKey; label: string; steps: { cls: string | null; label: string }[] }[] =
+  [
+    {
+      key: 'fontSize',
+      label: 'גודל טקסט',
+      steps: [
+        { cls: 'a11y-font-75', label: '75%' },
+        { cls: 'a11y-font-90', label: '90%' },
+        { cls: null, label: '100%' },
+        { cls: 'a11y-font-110', label: '110%' },
+        { cls: 'a11y-font-125', label: '125%' },
+        { cls: 'a11y-font-150', label: '150%' },
+      ],
+    },
+    // Deliberately narrow ranges. The panel is portalled into <body>, so the
+    // page filter dims/desaturates the panel itself — keeping the extremes
+    // mild is what guarantees the controls stay legible enough to undo.
+    {
+      key: 'brightness',
+      label: 'בהירות',
+      steps: [
+        { cls: 'a11y-bright-75', label: '75%' },
+        { cls: null, label: '100%' },
+        { cls: 'a11y-bright-125', label: '125%' },
+      ],
+    },
+    {
+      key: 'saturation',
+      label: 'רוויה',
+      steps: [
+        { cls: 'a11y-sat-50', label: '50%' },
+        { cls: null, label: '100%' },
+        { cls: 'a11y-sat-150', label: '150%' },
+      ],
+    },
+  ]
 
 // Real SVG icons rather than text glyphs (◐ ◑ ◒ 🔗 ⏸ 🖱): a bare character
 // falls back to whatever the Hebrew font stack has, which is how the reset
@@ -82,9 +117,15 @@ function saveSettings(s: Settings) {
 function applyToDOM(settings: Settings) {
   if (typeof document === 'undefined') return
   const html = document.documentElement
-  FONT_SIZES.forEach((f) => f.cls && html.classList.remove(f.cls))
+  STEPPERS.forEach((s) => s.steps.forEach((step) => step.cls && html.classList.remove(step.cls)))
   TOGGLES.forEach((t) => html.classList.remove(t.cls))
-  if (settings.fontSize) html.classList.add(settings.fontSize)
+  // Only re-add a stored class that this row actually owns — never write an
+  // arbitrary string from localStorage onto <html> (same rule as the
+  // pre-hydration script in index.html).
+  STEPPERS.forEach((s) => {
+    const cls = settings[s.key]
+    if (cls && s.steps.some((step) => step.cls === cls)) html.classList.add(cls)
+  })
   TOGGLES.forEach((t) => settings[t.key] && html.classList.add(t.cls))
 }
 
@@ -150,11 +191,10 @@ export function AccessibilityWidget() {
     saveSettings(next)
   }
 
-  const setFontSize = (cls: string | null) => update({ ...settings, fontSize: cls })
+  const setStep = (key: StepperKey, cls: string | null) => update({ ...settings, [key]: cls })
   const toggle = (key: ToggleKey) => update({ ...settings, [key]: !settings[key] })
+  // Clears steppers and toggles alike — every setting lives in this one object.
   const reset = () => update({})
-
-  const currentFont = settings.fontSize ?? null
 
   const panel = (
     <div
@@ -179,42 +219,55 @@ export function AccessibilityWidget() {
         </div>
 
         <div className="a11y-panel-body">
-          <div className="a11y-section-label" id={`${titleId}-font`}>
-            גודל טקסט
-          </div>
-          <div className="a11y-font-row" role="group" aria-labelledby={`${titleId}-font`}>
-            {FONT_SIZES.map((f) => (
-              <button
-                type="button"
-                key={f.label}
-                className={`a11y-font-btn${f.cls === currentFont ? ' active' : ''}`}
-                aria-pressed={f.cls === currentFont}
-                onClick={() => setFontSize(f.cls)}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="a11y-section-label" id={`${titleId}-display`}>
-            תצוגה
-          </div>
-          <div className="a11y-toggles" role="group" aria-labelledby={`${titleId}-display`}>
-            {TOGGLES.map((t) => {
-              const Icon = t.icon
-              return (
-                <button
-                  type="button"
-                  key={t.key}
-                  className={`a11y-option-btn${settings[t.key] ? ' active' : ''}`}
-                  aria-pressed={!!settings[t.key]}
-                  onClick={() => toggle(t.key)}
+          {STEPPERS.map((s) => {
+            const current = settings[s.key] ?? null
+            return (
+              <div key={s.key} className="a11y-step-group">
+                <div className="a11y-section-label" id={`${titleId}-${s.key}`}>
+                  {s.label}
+                </div>
+                <div
+                  className="a11y-step-row"
+                  role="group"
+                  aria-labelledby={`${titleId}-${s.key}`}
                 >
-                  <Icon size={20} aria-hidden="true" />
-                  <span>{t.label}</span>
-                </button>
-              )
-            })}
+                  {s.steps.map((step) => (
+                    <button
+                      type="button"
+                      key={step.label}
+                      className={`a11y-step-btn${step.cls === current ? ' active' : ''}`}
+                      aria-pressed={step.cls === current}
+                      onClick={() => setStep(s.key, step.cls)}
+                    >
+                      {step.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )
+          })}
+
+          <div className="a11y-step-group">
+            <div className="a11y-section-label" id={`${titleId}-display`}>
+              תצוגה
+            </div>
+            <div className="a11y-toggles" role="group" aria-labelledby={`${titleId}-display`}>
+              {TOGGLES.map((t) => {
+                const Icon = t.icon
+                return (
+                  <button
+                    type="button"
+                    key={t.key}
+                    className={`a11y-option-btn${settings[t.key] ? ' active' : ''}`}
+                    aria-pressed={!!settings[t.key]}
+                    onClick={() => toggle(t.key)}
+                  >
+                    <Icon size={20} aria-hidden="true" />
+                    <span>{t.label}</span>
+                  </button>
+                )
+              })}
+            </div>
           </div>
 
           {/* A real SVG icon, not a text glyph — the bare ↺ (U+21BA) fell back

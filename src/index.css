@@ -228,6 +228,11 @@
 .a11y-panel-body {
   padding: 18px 22px 22px;
   overflow-y: auto;
+  /* Required for the scroll to engage: as a column flex item this defaults to
+     min-height: auto, which refuses to shrink below its content, so the panel's
+     overflow: hidden would clip the reset button and statement link out of
+     reach instead of scrolling to them. */
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -241,14 +246,26 @@
   letter-spacing: 2px;
   text-transform: uppercase;
 }
-.a11y-font-row {
+/* Label + buttons travel together; the 14px body gap then separates groups. */
+.a11y-step-group {
   display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 8px;
 }
-.a11y-font-btn {
-  flex: 1;
-  min-width: 42px;
+/* Sections keep their natural height and let the body scroll instead of
+   compressing — otherwise the taller panel squashes the button rows. */
+.a11y-panel-body > * {
+  flex-shrink: 0;
+}
+/* A fixed 3-column grid, not flex-wrap: wrap. Wrapping is what left the font
+   row as 5 buttons + a lonely 150%; a grid gives 6 → 3+3 and 3 → one even
+   row, at any panel width. */
+.a11y-step-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.a11y-step-btn {
   padding: 8px 4px;
   background: rgba(248, 244, 236, 0.08);
   border: 1px solid rgba(248, 244, 236, 0.18);
@@ -262,11 +279,11 @@
     background 0.2s,
     border-color 0.2s;
 }
-.a11y-font-btn:hover {
+.a11y-step-btn:hover {
   background: rgba(194, 161, 77, 0.15);
   border-color: rgba(194, 161, 77, 0.45);
 }
-.a11y-font-btn.active {
+.a11y-step-btn.active {
   background: var(--gold);
   color: var(--emerald-deep);
   border-color: var(--gold);
@@ -400,15 +417,58 @@ html.a11y-contrast-high .a11y-panel {
   border-color: var(--gold) !important;
 }
 
-html.a11y-invert {
-  filter: invert(1) hue-rotate(180deg);
+/* Filter modes compose through custom properties rather than each setting its
+   own `filter`. Separate `filter` declarations on <html> do NOT stack — they
+   override, so the old rules meant grayscale silently cancelled invert. Each
+   class contributes one variable; a single declaration below builds the whole
+   chain, so any combination works.
+   Applying the filter to the *root* element is deliberate: the Filter Effects
+   spec exempts the document root from creating a containing block, so
+   position: fixed (the float button, the header) keeps working. */
+html {
+  --a11y-gray: 0;
+  --a11y-invert: 0;
+  --a11y-hue: 0deg;
+  --a11y-bright: 1;
+  --a11y-sat: 1;
 }
-html.a11y-invert :is(img, video) {
-  filter: invert(1) hue-rotate(180deg);
+html.a11y-grayscale {
+  --a11y-gray: 1;
+}
+html.a11y-invert {
+  --a11y-invert: 1;
+  --a11y-hue: 180deg;
+}
+html.a11y-bright-75 {
+  --a11y-bright: 0.75;
+}
+html.a11y-bright-125 {
+  --a11y-bright: 1.25;
+}
+html.a11y-sat-50 {
+  --a11y-sat: 0.5;
+}
+html.a11y-sat-150 {
+  --a11y-sat: 1.5;
 }
 
-html.a11y-grayscale {
-  filter: grayscale(1);
+/* One composed chain, applied only when at least one filter mode is on — an
+   unconditional `filter` on <html> would rasterise the whole page for every
+   visitor. Order matters: saturate before grayscale so an explicit greyscale
+   choice always wins, and brightness last so it grades the final result. */
+html.a11y-grayscale,
+html.a11y-invert,
+html.a11y-bright-75,
+html.a11y-bright-125,
+html.a11y-sat-50,
+html.a11y-sat-150 {
+  filter: saturate(var(--a11y-sat)) grayscale(var(--a11y-gray)) invert(var(--a11y-invert))
+    hue-rotate(var(--a11y-hue)) brightness(var(--a11y-bright));
+}
+/* Photos are re-inverted so they stay photographs; brightness/saturation are
+   inherited from the page chain and intentionally not undone here. */
+html.a11y-invert :is(img, video) {
+  filter: invert(1) hue-rotate(180deg);
 }
 
 html.a11y-links a {

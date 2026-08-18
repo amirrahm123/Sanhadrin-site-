@@ -15,9 +15,14 @@
         try {
           var s = JSON.parse(localStorage.getItem('sandrine-a11y')) || {}
           var c = document.documentElement.classList
-          // Allow-list the font class: never write an arbitrary string from
-          // storage onto <html>.
-          if (/^a11y-font-(75|90|110|125|150)$/.test(s.fontSize)) c.add(s.fontSize)
+          // Allow-list every graded class: never write an arbitrary string
+          // from storage onto <html>. Keep in sync with STEPPERS in the widget.
+          var steps = {
+            fontSize: /^a11y-font-(75|90|110|125|150)$/,
+            brightness: /^a11y-bright-(75|125)$/,
+            saturation: /^a11y-sat-(50|150)$/,
+          }
+          for (var step in steps) if (steps[step].test(s[step])) c.add(s[step])
           var modes = {
             contrast: 'a11y-contrast-high',
             invert: 'a11y-invert',
