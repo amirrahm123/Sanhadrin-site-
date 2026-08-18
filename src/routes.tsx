@@ -36,6 +36,7 @@ export const routes: RouteRecord[] = [
         lazy: () => import('./pages/GalleryCategory'),
         getStaticPaths: () => GALLERY_CATEGORIES.map((c) => galleryPath(c.id)),
       },
+      { path: 'accessibility', lazy: () => import('./pages/Accessibility') },
       // Pre-rendered 404.html (Vercel serves it for unknown paths) + SPA fallback.
       { path: '404', lazy: () => import('./pages/NotFound') },
       { path: '*', lazy: () => import('./pages/NotFound') },

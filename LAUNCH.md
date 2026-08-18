@@ -29,7 +29,7 @@ All launch values live in **one file: [`src/data/site.ts`](src/data/site.ts)**
 | **Geo coordinates** (JSON-LD) | `SITE.geo` (currently `null`) | not set — do **not** guess |
 | ~~**Social share image**~~ ✅ done | `SITE.ogImage` → `public/og-image.jpg` (1200×630) | real photo |
 | ~~**Sister-brand link**~~ ✅ done | `Footer.tsx` (`FOOTER.crossLink`) | `https://www.glory-wedding.com` |
-| **Accessibility statement** | `Footer.tsx` (`FOOTER.accessibility`, `href="#"`) | `#` |
+| ~~**Accessibility statement**~~ ✅ done | `/accessibility` — client text in `src/data/accessibility.ts` | live |
 
 > The GTM id and Search Console token appear in `index.html` because they must
 > load as early/raw HTML. Keep `SITE.gtmId` / `SITE.searchConsoleToken` in sync

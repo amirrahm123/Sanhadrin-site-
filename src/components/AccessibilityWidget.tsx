@@ -277,9 +277,6 @@ export function AccessibilityWidget() {
             איפוס הגדרות
           </button>
 
-          {/* TODO(launch): /accessibility (הצהרת נגישות) does not exist yet —
-              the catch-all route renders the 404 page until it is written.
-              The footer link at Footer.tsx should point at the same path. */}
           <Link to="/accessibility" className="a11y-statement-link" onClick={close}>
             למידע נוסף — הצהרת נגישות
           </Link>

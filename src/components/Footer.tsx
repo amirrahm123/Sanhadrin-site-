@@ -72,10 +72,9 @@ export function Footer() {
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-cream/70">
             <span>{FOOTER.disclaimer}</span>
             <span className="hidden md:inline">·</span>
-            {/* TODO: link to a dedicated accessibility statement page when written. */}
-            <a href="#" className="transition-colors hover:text-gold">
+            <Link to="/accessibility" className="transition-colors hover:text-gold">
               {FOOTER.accessibility}
-            </a>
+            </Link>
             <span className="hidden md:inline">·</span>
             <span>© {BRAND.he}</span>
           </div>

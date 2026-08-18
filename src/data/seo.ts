@@ -73,6 +73,14 @@ export const SEO: Record<string, SeoEntry> = {
       'מטבח גבוה באחוזת סנדרין — עמדות קבלת פנים מכל העולם, שירות אמריקאי וקינוחים מרהיבים, הכול כשר בהשגחת הרבנות.',
     h1: 'קולינריה',
   },
+  // Indexable on purpose: an accessibility statement is a public legal
+  // declaration and is expected to be findable (and linkable by regulators).
+  '/accessibility': {
+    title: 'הצהרת נגישות | אחוזת סנדרין',
+    description:
+      'הצהרת הנגישות של אחוזת סנדרין — הנגשת האתר והאולם, אמצעי הנגישות הזמינים באתר ודרכי יצירת קשר בנושאי נגישות.',
+    h1: 'הצהרת נגישות',
+  },
   '/gallery': {
     title: 'גלריה | אחוזת סנדרין',
     description:
