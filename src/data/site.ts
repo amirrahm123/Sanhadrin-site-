@@ -4,7 +4,7 @@
 // ---------------------------------------------------------------------------
 export const SITE = {
   // No trailing slash. Used for canonical URLs, OG URLs and the sitemap.
-  url: 'https://sandrine-events.com',
+url: 'https://www.sandrine-events.com',
 
   name: 'אחוזת סנדרין',
   nameLatin: 'Sandrine Events',
