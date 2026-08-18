@@ -29,6 +29,12 @@ export function Seo({ path }: { path: string }) {
       <meta property="og:description" content={entry.description} />
       <meta property="og:url" content={canonical} />
       <meta property="og:image" content={ogImage} />
+      {/* Explicit dimensions/type let WhatsApp render the preview on the first
+          fetch instead of showing a bare card until it crawls the image. */}
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:type" content="image/jpeg" />
+      <meta property="og:image:alt" content={entry.h1} />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />

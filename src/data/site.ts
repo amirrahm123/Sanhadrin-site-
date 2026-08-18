@@ -10,9 +10,10 @@ export const SITE = {
   nameLatin: 'Sandrine Events',
   locale: 'he_IL',
 
-  // 1200×630 social share image (public/og-image.svg placeholder for now).
-  // TODO(launch): replace with a real estate photo exported to og-image.jpg.
-  ogImage: '/og-image.svg',
+  // 1200×630 social share image (public/og-image.jpg) — the colonnade chuppah
+  // with the aqueduct behind it. Dimensions/type are hard-coded in Seo.tsx, so
+  // any replacement must stay 1200×630 JPEG.
+  ogImage: '/og-image.jpg',
 
   // Google Tag Manager container. GA4 is configured *through* GTM (see README).
   // Must stay in sync with both snippets in index.html (head + noscript).

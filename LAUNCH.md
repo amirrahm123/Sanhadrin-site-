@@ -27,7 +27,7 @@ All launch values live in **one file: [`src/data/site.ts`](src/data/site.ts)**
 | **Search Console token** | `index.html` `<meta name="google-site-verification">` **and** `SITE.searchConsoleToken` | `REPLACE_WITH_SEARCH_CONSOLE_TOKEN` |
 | **Web3Forms access key** | `SITE.web3formsKey` | `REPLACE_WITH_WEB3FORMS_KEY` |
 | **Geo coordinates** (JSON-LD) | `SITE.geo` (currently `null`) | not set — do **not** guess |
-| **Social share image** | `public/og-image.svg` → replace with real `og-image.jpg` and update `SITE.ogImage` | branded SVG placeholder |
+| ~~**Social share image**~~ ✅ done | `SITE.ogImage` → `public/og-image.jpg` (1200×630) | real photo |
 | ~~**Sister-brand link**~~ ✅ done | `Footer.tsx` (`FOOTER.crossLink`) | `https://www.glory-wedding.com` |
 | **Accessibility statement** | `Footer.tsx` (`FOOTER.accessibility`, `href="#"`) | `#` |
 
